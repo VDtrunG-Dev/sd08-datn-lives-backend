@@ -28,6 +28,7 @@ import java.sql.Date;
 @Table(name = "t_user")
 public class TUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
