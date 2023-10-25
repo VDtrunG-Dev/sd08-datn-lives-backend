@@ -22,7 +22,7 @@ public class BillController {
         return billService.getAllBills();
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateBillStatus(@PathVariable Long id, @RequestParam("status") Integer status) {
         TBill updatedBill = billService.updateBillStatus(id, status);
         if (updatedBill != null) {
