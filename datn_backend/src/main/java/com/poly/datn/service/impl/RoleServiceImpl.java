@@ -4,16 +4,13 @@ import com.poly.datn.model.TRole;
 import com.poly.datn.repository.IRoleRepository;
 import com.poly.datn.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Component
 public class RoleServiceImpl implements IRoleService {
@@ -23,6 +20,11 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public List<TRole> getAllRoles() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    public Page<TRole> getAll(Integer status, Pageable pageable) {
+        return roleRepository.findByStatus(status, pageable);
     }
 
     @Override
@@ -52,5 +54,16 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public void deleteRole(Long id) {
         roleRepository.findById(id).ifPresent(role -> roleRepository.delete(role));
+    }
+
+    @Override
+    public Page<TRole> getInActiveRoles(Integer status, Pageable pageable) {
+        return roleRepository.findByStatus(status, pageable);
+    }
+
+    @Override
+    public Page<TRole> getAllStatus(Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return roleRepository.findAll(pageable);
     }
 }
