@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class RoleServiceImpl implements IRoleService {
@@ -66,4 +67,21 @@ public class RoleServiceImpl implements IRoleService {
         Pageable pageable = PageRequest.of(page, 5);
         return roleRepository.findAll(pageable);
     }
+
+    @Override
+    public List<TRole> searchAll(String nameRole, String description) {
+        return roleRepository.findAll().stream()
+                .filter(roleByName -> roleByName.getName().contains(nameRole))
+                .filter(roleByName -> roleByName.getDescription().contains(description))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TRole> searchByKeyword(String keyword) {
+        return roleRepository.findAll().stream()
+                .filter(role -> role.getName().contains(keyword)
+                        || role.getDescription().contains(keyword))
+                .collect(Collectors.toList());
+    }
+
 }

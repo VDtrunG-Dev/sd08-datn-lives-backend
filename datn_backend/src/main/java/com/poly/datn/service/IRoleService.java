@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface IRoleService {
     List<TRole> getAllRoles();
+
     Page<TRole> getAll(Integer status, Pageable pageable);
 
     Optional<TRole> getRoleById(Long id);
@@ -18,7 +19,13 @@ public interface IRoleService {
     TRole updateRole(Long id, TRole updatedRole);
 
     void deleteRole(Long id);
+
     Page<TRole> getInActiveRoles(Integer status, Pageable pageable);
+
     Page<TRole> getAllStatus(Integer page);
+
+    List<TRole> searchAll(String nameRole, String createdBy);
+
+    List<TRole> searchByKeyword(String keyword);
 
 }

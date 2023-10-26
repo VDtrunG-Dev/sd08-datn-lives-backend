@@ -114,4 +114,13 @@ public class RoleController {
         Page<TRole> inActiveRoles = roleService.getInActiveRoles(0, PageRequest.of(page, 5));
         return ResponseEntity.ok(inActiveRoles);
     }
+
+    @GetMapping("search-all/")
+    public List<TRole> searchAll(@RequestParam String nameRole, @RequestParam String description){
+        return roleService.searchAll(nameRole, description);
+    }
+    @GetMapping("search-by-keyword/")
+    public List<TRole> searchByKeyword(@RequestParam String keyword){
+        return roleService.searchByKeyword(keyword);
+    }
 }
