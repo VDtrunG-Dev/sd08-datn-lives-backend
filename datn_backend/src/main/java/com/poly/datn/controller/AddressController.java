@@ -44,4 +44,10 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", addressServices.deleteAddressById(id),""));
     }
+
+    @PutMapping("/active/{id}")
+    private ResponseEntity<?> pageActive(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok", addressServices.active(id),""));
+    }
 }

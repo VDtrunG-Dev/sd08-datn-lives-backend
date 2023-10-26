@@ -55,4 +55,11 @@ public class UserController {
                 new ResponseObject("Delete", userServices.deleteUserById(id),"")
         );
     }
+
+    @PutMapping("/active/{id}")
+    private ResponseEntity<?> pageACtiveeUser(@PathVariable(name = "id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("Delete", userServices.active(id),"")
+        );
+    }
 }
