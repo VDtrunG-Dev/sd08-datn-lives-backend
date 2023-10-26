@@ -58,18 +58,18 @@ public class BillDetailController {
     }
 
     @PostMapping("/addnew")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody BillDetailRequest request) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
+    public ResponseEntity<ResponseObject> insertBillDetail(@RequestBody BillDetailRequest request) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong BillDetailService
+        // BillDetailService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Create new successfully", billDetailService.createBillDetail(request))
         );
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody BillDetailRequest request, @PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc cập nhật sản phẩm.
+    public ResponseEntity<ResponseObject> updateBillDetail(@RequestBody BillDetailRequest request, @PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong BillDetailService
+        // BillDetailService sẽ xử lý việc cập nhật sản phẩm.
         try {
             TBillDetail paymentTypeUpdate = billDetailService.updateBillDetail(id, request);
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -85,9 +85,9 @@ public class BillDetailController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc xóa sản phẩm.
+    public ResponseEntity<ResponseObject> deleteBillDetail(@PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong BillDetailService
+        // BillDetailService sẽ xử lý việc xóa sản phẩm.
         try {
             billDetailService.deleteBillDetail(id);
             return ResponseEntity.status(HttpStatus.OK).body(

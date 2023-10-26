@@ -24,9 +24,20 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     }
 
     @Override
+    public List<TShippingMethod> getAllDeleted() {
+        return shippingmethodRepository.getAllDeleted();
+    }
+
+    @Override
     public Page<TShippingMethod> PageGetAllTShippingMethods(Integer pageNo, Integer pageSize) {
         Pageable pageable= PageRequest.of(pageNo,pageSize);
         return shippingmethodRepository.PageGetAllSmethods(pageable);
+    }
+
+    @Override
+    public Page<TShippingMethod> PageGetAllDeletedSmethods(Integer pageNo, Integer pageSize) {
+        Pageable pageable= PageRequest.of(pageNo,pageSize);
+        return shippingmethodRepository.PageGetAllDeletedSmethods(pageable);
     }
 
     @Override
@@ -56,6 +67,20 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         if (sMethodOptional.isPresent()) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod = request.dto(sMethod);
+            return shippingmethodRepository.save(sMethod);
+        } else {
+            return null;
+
+        }
+    }
+
+    @Override
+    public TShippingMethod updateTShippingMethodActive(Long id, ShippingMethodRequest request) {
+        Optional<TShippingMethod> sMethodOptional = shippingmethodRepository.findById(id);
+        if (sMethodOptional.isPresent()) {
+            TShippingMethod sMethod = sMethodOptional.get();
+            sMethod = request.dto(sMethod);
+            sMethod.setStatus(1);
             return shippingmethodRepository.save(sMethod);
         } else {
             return null;

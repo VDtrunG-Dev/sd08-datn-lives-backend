@@ -23,6 +23,11 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
         return paymentTypeRepository.getAllActive();
     }
 
+    @Override
+    public List<TPaymentType> getAllDeleted() {
+        return paymentTypeRepository.getAllDeleted();
+    }
+
 //    @Override
 //    public List<TPaymentType> getAll() {
 //        return paymentTypeRepository.findAll();
@@ -32,6 +37,12 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     public Page<TPaymentType> PageGetAllPaymenttypes(Integer pageNo, Integer pageSize) {
         Pageable pageable= PageRequest.of(pageNo,pageSize);
         return paymentTypeRepository.PageGetAllPaymenttypes(pageable);
+    }
+
+    @Override
+    public Page<TPaymentType> PageGetAllPaymenttypesDeleted(Integer pageNo, Integer pageSize) {
+        Pageable pageable= PageRequest.of(pageNo,pageSize);
+        return paymentTypeRepository.PageGetAllPaymenttypesDeleted(pageable);
     }
 
     @Override
@@ -64,7 +75,19 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
             return paymentTypeRepository.save(paymentType);
         } else {
             return null;
+        }
+    }
 
+    @Override
+    public TPaymentType updatePaymentTypeActive(Long id, PaymentTypeRequest request) {
+        Optional<TPaymentType> paymentTypeOptional = paymentTypeRepository.findById(id);
+        if (paymentTypeOptional.isPresent()) {
+            TPaymentType paymentType = paymentTypeOptional.get();
+            paymentType = request.dto(paymentType);
+            paymentType.setStatus(1);
+            return paymentTypeRepository.save(paymentType);
+        } else {
+            return null;
         }
     }
 

@@ -12,11 +12,18 @@ import java.util.List;
 
 @Repository
 public interface BillDetailRepository extends JpaRepository<TBillDetail,Long> {
-    @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=1",nativeQuery = true)
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail",nativeQuery = true)
     List<TBillDetail> getAllActive();
 
     List<TBillDetail> findByBillId(Long billId);
 
-    @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=1",nativeQuery = true)
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail",nativeQuery = true)
     Page<TBillDetail> PageGetAllBillDetails(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =1",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDaThanhToan(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =2",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDaHuy(Pageable pageable);
+
 }

@@ -27,12 +27,16 @@ public class PaymentTypeController {
     private PaymentTypeService paymentTypeService;
 
     @GetMapping()
-//    public List<TPaymentType> getAllActive() {
-//        return paymentTypeService.getAll();
-//    }
     public List<TPaymentType> getAllActive() {
         return paymentTypeService.getAllActice();
     }
+
+
+    @GetMapping("/deleted")
+    public List<TPaymentType> getAllDeleted() {
+        return paymentTypeService.getAllDeleted();
+    }
+
 
     @GetMapping("/page")
     public ResponseEntity<ResponseObject> getPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
@@ -40,6 +44,15 @@ public class PaymentTypeController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Pagination Successfully"
                         , paymentTypeService.PageGetAllPaymenttypes(pageNo, pageSize))
+        );
+    }
+
+    @GetMapping("/pageDeleted")
+    public ResponseEntity<ResponseObject> getPageDeleted(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
+            , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Pagination Successfully"
+                        , paymentTypeService.PageGetAllPaymenttypesDeleted(pageNo,pageSize))
         );
     }
 
@@ -59,18 +72,18 @@ public class PaymentTypeController {
     }
 
     @PostMapping("/addnew")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody PaymentTypeRequest request) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
+    public ResponseEntity<ResponseObject> insertPaymenttype(@RequestBody PaymentTypeRequest request) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
+        // PaymenttypeService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Create new successfully", paymentTypeService.createPaymentType(request))
         );
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody PaymentTypeRequest request, @PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc cập nhật sản phẩm.
+    public ResponseEntity<ResponseObject> updatePaymenttype(@RequestBody PaymentTypeRequest request, @PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
+        // PaymenttypeService sẽ xử lý việc cập nhật sản phẩm.
         try {
             TPaymentType paymentTypeUpdate = paymentTypeService.updatePaymentType(id, request);
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -82,13 +95,29 @@ public class PaymentTypeController {
                     new ResponseObject("failed", "Can't find any to update4", "")
             );
         }
+    }
 
+    @PutMapping("/updateActive/{id}")
+    public ResponseEntity<ResponseObject> updatePaymenttypeActive(@RequestBody PaymentTypeRequest request, @PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
+        // PaymenttypeService sẽ xử lý việc cập nhật sản phẩm.
+        try {
+            TPaymentType paymentTypeUpdate = paymentTypeService.updatePaymentType(id, request);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
+            );
+        } catch (IllegalArgumentException e) {
+            // Xử lý lỗi nếu sản phẩm không tồn tại hoặc không thể update.
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Can't find any to update4", "")
+            );
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc xóa sản phẩm.
+    public ResponseEntity<ResponseObject> deletePaymenttype(@PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
+        // PaymenttypeService sẽ xử lý việc xóa sản phẩm.
         try {
             paymentTypeService.deletePaymentType(id);
             return ResponseEntity.status(HttpStatus.OK).body(

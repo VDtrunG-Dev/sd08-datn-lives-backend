@@ -14,9 +14,15 @@ public interface PaymentTypeRepository extends JpaRepository<TPaymentType,Long> 
     @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=1",nativeQuery = true)
     List<TPaymentType> getAllActive();
 
+    @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=0",nativeQuery = true)
+    List<TPaymentType> getAllDeleted();
+
     List<TPaymentType> findByName(String paymenTypeName);
 
     @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=1",nativeQuery = true)
     Page<TPaymentType> PageGetAllPaymenttypes(Pageable pageable);
+
+    @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=0",nativeQuery = true)
+    Page<TPaymentType> PageGetAllPaymenttypesDeleted(Pageable pageable);
 
 }

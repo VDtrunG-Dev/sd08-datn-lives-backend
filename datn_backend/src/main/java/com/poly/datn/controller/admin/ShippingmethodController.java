@@ -28,11 +28,13 @@ public class ShippingmethodController {
     private ShippingmethodService shippingmethodService;
 
     @GetMapping()
-//    public List<TShippingMethod> getAllActive() {
-//        return shippingmethodService.getAll();
-//    }
     public List<TShippingMethod> getAllActive() {
         return shippingmethodService.getAllActice();
+    }
+
+    @GetMapping("/deleted")
+    public List<TShippingMethod> getAllDeleted() {
+        return shippingmethodService.getAllDeleted();
     }
 
     @GetMapping("/page")
@@ -41,6 +43,15 @@ public class ShippingmethodController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Pagination Successfully"
                         , shippingmethodService.PageGetAllTShippingMethods(pageNo,pageSize))
+        );
+    }
+
+    @GetMapping("/pageDeleted")
+    public ResponseEntity<ResponseObject> getPageDeleted(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
+            , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Pagination Successfully"
+                        , shippingmethodService.PageGetAllDeletedSmethods(pageNo,pageSize))
         );
     }
 
@@ -60,18 +71,18 @@ public class ShippingmethodController {
     }
 
     @PostMapping("/addnew")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody ShippingMethodRequest request) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
+    public ResponseEntity<ResponseObject> insertShippingmethod(@RequestBody ShippingMethodRequest request) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
+        // ShippingmethodService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Create new successfully", shippingmethodService.createTShippingMethod(request))
         );
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody ShippingMethodRequest request, @PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc cập nhật sản phẩm.
+    public ResponseEntity<ResponseObject> updateShippingmethod(@RequestBody ShippingMethodRequest request, @PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
+        // ShippingmethodService sẽ xử lý việc cập nhật sản phẩm.
         try {
             TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethod(id, request);
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -83,13 +94,29 @@ public class ShippingmethodController {
                     new ResponseObject("failed", "Can't find any to update4", "")
             );
         }
+    }
 
+    @PutMapping("/updateActive/{id}")
+    public ResponseEntity<ResponseObject> updateShippingmethodActive(@RequestBody ShippingMethodRequest request, @PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
+        // ShippingmethodService sẽ xử lý việc cập nhật sản phẩm.
+        try {
+            TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethod(id, request);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
+            );
+        } catch (IllegalArgumentException e) {
+            // Xử lý lỗi nếu sản phẩm không tồn tại hoặc không thể update.
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Can't find any to update4", "")
+            );
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc xóa sản phẩm.
+    public ResponseEntity<ResponseObject> deleteShippingmethod(@PathVariable Long id) {
+        // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
+        // ShippingmethodService sẽ xử lý việc xóa sản phẩm.
         try {
             shippingmethodService.deleteTShippingMethod(id);
             return ResponseEntity.status(HttpStatus.OK).body(
