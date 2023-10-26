@@ -1,9 +1,11 @@
 package com.poly.datn.service;
 
 import com.poly.datn.model.TPoints;
+import com.poly.datn.model.TRank;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IPointService {
 
@@ -18,4 +20,11 @@ public interface IPointService {
     List<TPoints> getAll();
 
     Page<TPoints> getAllPaginated(int page, int size);
+
+    Optional<TPoints> getPointsById(Long id);
+
+
+    List<TPoints> getAllByStatus(int status);
+
+
 }

@@ -21,4 +21,6 @@ public interface IVoucherService {
     TVoucher updateVoucher(Long id, TVoucher updatedVoucher);
 
     boolean deleteVoucher(Long id);
+
+    List<TVoucher> getAllVouchersByStatus(int status);
 }

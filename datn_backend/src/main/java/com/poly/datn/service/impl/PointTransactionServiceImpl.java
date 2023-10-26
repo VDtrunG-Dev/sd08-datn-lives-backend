@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PointTransactionServiceImpl implements IPointTransactionService {
@@ -16,41 +17,52 @@ public class PointTransactionServiceImpl implements IPointTransactionService {
     @Autowired
     private IPointTransactionRepository pointTransactionRepository;
 
-    @Override
-    public TPointTransactions saveTransaction(TPointTransactions transaction) {
-        return pointTransactionRepository.save(transaction);
-    }
-
-    @Override
-    public TPointTransactions updateTransaction(Long id, TPointTransactions transaction) {
-        if (!pointTransactionRepository.existsById(id)) {
-            throw new RuntimeException("Transaction not found!");
-        }
-        transaction.setTransactionId(id);
-        return pointTransactionRepository.save(transaction);
-    }
-
-
-    @Override
-    public void deleteTransaction(Long id) {
-        if (!pointTransactionRepository.existsById(id)) {
-            throw new RuntimeException("Transaction not found!");
-        }
-        pointTransactionRepository.deleteById(id);
-    }
 
     @Override
     public List<TPointTransactions> getAllTransactions() {
         return pointTransactionRepository.findAll();
     }
 
-    @Override
-    public TPointTransactions getTransactionById(Long id) {
-        return pointTransactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Transaction not found!"));
-    }
 
     @Override
     public Page<TPointTransactions> getAllTransactionsPaginated(int page, int size) {
         return pointTransactionRepository.findAll(PageRequest.of(page, size));
+    }
+
+    @Override
+    public Optional<TPointTransactions> getPointTransactionsById(Long id) {
+        return pointTransactionRepository.findById(id);
+    }
+
+    @Override
+    public TPointTransactions savePointTransaction(TPointTransactions pointTransaction) {
+        return pointTransactionRepository.save(pointTransaction);
+    }
+
+    @Override
+    public TPointTransactions updatePointTransaction(TPointTransactions pointTransaction) {
+        if (pointTransactionRepository.existsById(pointTransaction.getTransactionId())) {
+            return pointTransactionRepository.save(pointTransaction);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean deletePointTransactionById(Long id) {
+        if (pointTransactionRepository.existsById(id)) {
+            pointTransactionRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return pointTransactionRepository.existsById(id);
+    }
+
+    @Override
+    public List<TPointTransactions> getAllByStatus(int status) {
+        return pointTransactionRepository.findByStatus(status);
     }
 }

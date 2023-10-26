@@ -45,7 +45,7 @@ public class RankServiceImpl implements IRankService {
 
     @Override
     public Optional<TRank> getRankById(Long id) {
-        return Optional.empty();
+        return rankRepository.findById(id);
     }
 
     @Override
@@ -58,6 +58,15 @@ public class RankServiceImpl implements IRankService {
     public Page<TRank> getAllPaged(int page, int size) {
         return rankRepository.findAll(PageRequest.of(page, size));
     }
+
+    @Override
+    public List<TRank> getAllRanksByStatus(int status) {
+        return rankRepository.findByStatus(status);
+    }
+
+
+
+
 
 
 }

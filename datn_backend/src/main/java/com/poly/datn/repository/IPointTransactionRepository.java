@@ -6,8 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IPointTransactionRepository extends JpaRepository<TPointTransactions, Long> {
 
     Page<TPointTransactions> findAll(Pageable pageable);
+
+
+    List<TPointTransactions> findByStatus(int status);
+
 }

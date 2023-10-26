@@ -1,9 +1,12 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.ResponseObject;
+import com.poly.datn.model.TPointTransactions;
 import com.poly.datn.model.TPoints;
 import com.poly.datn.service.impl.PointServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/point")
@@ -64,4 +68,29 @@ public class PointController {
         return ResponseEntity.ok(pointService.getAllPaginated(page, size));
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
+        Optional<TPoints> foundPoints = pointService.getPointsById(id);
+        if (foundPoints.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Tìm kiếm point thành công!", foundPoints)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("false", "Không thể tìm thấy point có id  = " + id, "")
+            );
+        }
+    }
+
+
+
+    @GetMapping("/bystatus")
+    public ResponseEntity<List<TPoints>> getAllByStatus() {
+        List<TPoints> points = pointService.getAllByStatus(0);
+        if (points.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(points);
+    }
 }

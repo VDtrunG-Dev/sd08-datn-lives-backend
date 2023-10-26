@@ -30,7 +30,7 @@ public class VoucherServiceImpl implements IVoucherService {
 
     @Override
     public Optional<TVoucher> getVoucherById(Long id) {
-        return Optional.empty();
+        return voucherRepository.findById(id);
     }
 
     @Override
@@ -56,6 +56,11 @@ public class VoucherServiceImpl implements IVoucherService {
         }
         return false;
 
+    }
+
+    @Override
+    public List<TVoucher> getAllVouchersByStatus(int status) {
+        return voucherRepository.findByStatus(status);
     }
 
 

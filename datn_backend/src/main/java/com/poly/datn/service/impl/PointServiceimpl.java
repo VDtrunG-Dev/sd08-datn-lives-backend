@@ -47,4 +47,14 @@ public class PointServiceimpl implements IPointService {
     public Page<TPoints> getAllPaginated(int page, int size) {
         return pointRepository.findAll(PageRequest.of(page, size));
     }
+
+    @Override
+    public Optional<TPoints> getPointsById(Long id) {
+        return pointRepository.findById(id);
+    }
+
+    @Override
+    public List<TPoints> getAllByStatus(int status) {
+        return pointRepository.findByStatus(status);
+    }
 }

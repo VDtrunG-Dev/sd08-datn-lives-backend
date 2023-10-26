@@ -1,5 +1,7 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.ResponseObject;
+import com.poly.datn.model.TRank;
 import com.poly.datn.model.TVoucher;
 import com.poly.datn.service.impl.VoucherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -74,4 +77,29 @@ public class VoucherController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found with the provided ID.");
         }
     }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
+        Optional<TVoucher> foundVoucher = voucherService.getVoucherById(id);
+        if (foundVoucher.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Tìm kiếm voucher thành công!", foundVoucher)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("false", "Không thể tìm thấy voucher có id  = " + id, "")
+            );
+        }
+    }
+
+    @GetMapping("/bystatus")
+    public ResponseEntity<List<TVoucher>> getAllByStatus() {
+        List<TVoucher> vouchers = voucherService.getAllVouchersByStatus(0);
+        if (vouchers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(vouchers);
+    }
+
 }

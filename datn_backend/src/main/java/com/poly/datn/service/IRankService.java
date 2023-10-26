@@ -20,5 +20,7 @@ public interface IRankService {
 
     Page<TRank> getAllPaged(int page, int size);
 
+    List<TRank> getAllRanksByStatus(int status);
+
 
 }

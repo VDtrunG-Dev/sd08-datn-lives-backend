@@ -1,6 +1,7 @@
 package com.poly.datn.controller.admin;
 
 
+import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TRank;
 import com.poly.datn.service.impl.RankServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -80,11 +82,37 @@ public class RankController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
+        Optional<TRank> foundRank = rankService.getRankById(id);
+        if (foundRank.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Tìm kiếm rank thành công!", foundRank)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("false", "Không thể tìm thấy rank có id  = " + id, "")
+            );
+        }
+    }
+
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<String> handleDBExceptions(DataAccessException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database error occurred.");
     }
+
+    @GetMapping("/bystatus")
+    public ResponseEntity<List<TRank>> getAllByStatus() {
+        List<TRank> ranks = rankService.getAllRanksByStatus(0);
+        if (ranks.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(ranks);
+    }
+
+
+
 
 
 }
