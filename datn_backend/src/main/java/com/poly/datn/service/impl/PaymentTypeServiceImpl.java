@@ -1,9 +1,7 @@
 package com.poly.datn.service.impl;
 
-import com.poly.datn.dto.custom.PaymentTypeCustom;
-import com.poly.datn.dto.request.PaymentTypeRequest;
+import com.poly.datn.dto.PaymentTypeRequest;
 import com.poly.datn.model.TPaymentType;
-import com.poly.datn.model.TProduct;
 import com.poly.datn.repository.PaymentTypeRepository;
 import com.poly.datn.service.PaymentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +23,10 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
         return paymentTypeRepository.getAllActive();
     }
 
-    @Override
-    public List<TPaymentType> getAll() {
-        return paymentTypeRepository.findAll();
-    }
+//    @Override
+//    public List<TPaymentType> getAll() {
+//        return paymentTypeRepository.findAll();
+//    }
 
     @Override
     public Page<TPaymentType> PageGetAllPaymenttypes(Integer pageNo, Integer pageSize) {

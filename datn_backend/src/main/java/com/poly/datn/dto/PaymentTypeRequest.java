@@ -1,4 +1,4 @@
-package com.poly.datn.dto.request;
+package com.poly.datn.dto;
 
 import com.poly.datn.model.TPaymentType;
 import lombok.Getter;

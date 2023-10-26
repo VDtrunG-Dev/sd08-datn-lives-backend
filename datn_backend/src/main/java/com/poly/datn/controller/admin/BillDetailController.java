@@ -1,9 +1,9 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.BillDetailRequest;
 import com.poly.datn.dto.ResponseObject;
-import com.poly.datn.dto.PaymentTypeRequest;
-import com.poly.datn.model.TPaymentType;
-import com.poly.datn.service.PaymentTypeService;
+import com.poly.datn.model.TBillDetail;
+import com.poly.datn.service.BillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +21,16 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/paymenttype")
-public class PaymentTypeController {
+@RequestMapping("/api/billdatail")
+public class BillDetailController {
     @Autowired
-    private PaymentTypeService paymentTypeService;
-
+    private BillDetailService billDetailService;
     @GetMapping()
-//    public List<TPaymentType> getAllActive() {
-//        return paymentTypeService.getAll();
+//    public List<TBillDetail> getAllActive() {
+//        return billDetailService.getAll();
 //    }
-    public List<TPaymentType> getAllActive() {
-        return paymentTypeService.getAllActice();
+    public List<TBillDetail> getAllActive() {
+        return billDetailService.getAllActice();
     }
 
     @GetMapping("/page")
@@ -39,17 +38,17 @@ public class PaymentTypeController {
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Pagination Successfully"
-                        , paymentTypeService.PageGetAllPaymenttypes(pageNo, pageSize))
+                        , billDetailService.PageGetAllBillDetails(pageNo, pageSize))
         );
     }
 
     //    C1
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
-        Optional<TPaymentType> foundPaymentType = paymentTypeService.getPaymentTypeById(id);
-        if (foundPaymentType.isPresent()) {
+        Optional<TBillDetail> foundBillDetail = billDetailService.getBillDetailById(id);
+        if (foundBillDetail.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Query successfully!", foundPaymentType)
+                    new ResponseObject("ok", "Query successfully!", foundBillDetail)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -59,20 +58,20 @@ public class PaymentTypeController {
     }
 
     @PostMapping("/addnew")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody PaymentTypeRequest request) {
+    public ResponseEntity<ResponseObject> insertProduct(@RequestBody BillDetailRequest request) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
         // ProductService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Create new successfully", paymentTypeService.createPaymentType(request))
+                new ResponseObject("ok", "Create new successfully", billDetailService.createBillDetail(request))
         );
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody PaymentTypeRequest request, @PathVariable Long id) {
+    public ResponseEntity<ResponseObject> updateProduct(@RequestBody BillDetailRequest request, @PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
         // ProductService sẽ xử lý việc cập nhật sản phẩm.
         try {
-            TPaymentType paymentTypeUpdate = paymentTypeService.updatePaymentType(id, request);
+            TBillDetail paymentTypeUpdate = billDetailService.updateBillDetail(id, request);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
             );
@@ -90,7 +89,7 @@ public class PaymentTypeController {
         // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
         // ProductService sẽ xử lý việc xóa sản phẩm.
         try {
-            paymentTypeService.deletePaymentType(id);
+            billDetailService.deleteBillDetail(id);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Delete successfully", "")
             );

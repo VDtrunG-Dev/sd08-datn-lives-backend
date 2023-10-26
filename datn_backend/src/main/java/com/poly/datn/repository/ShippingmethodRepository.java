@@ -17,6 +17,6 @@ public interface ShippingmethodRepository extends JpaRepository<TShippingMethod,
 
     List<TShippingMethod> findByName(String smethodName);
 
-    @Query(value = "select id,name,created_at,updated_at,status from t_payment_type where status=1",nativeQuery = true)
+    @Query(value = "select id,name,price,description,created_by,updated_by,created_at,updated_at,status from t_shipping_method where status=1",nativeQuery = true)
     Page<TShippingMethod> PageGetAllSmethods(Pageable pageable);
 }
