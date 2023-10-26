@@ -1,19 +1,20 @@
 package com.poly.datn.service;
 
 import com.poly.datn.model.TProduct;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IProductService {
     
-    List<TProduct> getAllProducts();
+    Page<TProduct> getAllProducts(int page);
 
     Optional<TProduct> getProductById(Long id);
 
-    TProduct createProduct(TProduct product);
+    String createProduct(TProduct product);
 
-    TProduct updateProduct(Long id, TProduct updatedProduct);
+    String updateProduct(Long id, TProduct updatedProduct);
 
-    void deleteProduct(Long id);
+    String deleteProduct(Long id);
 }

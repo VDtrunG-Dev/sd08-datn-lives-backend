@@ -4,6 +4,8 @@ import com.poly.datn.model.TAddress;
 import com.poly.datn.repository.IAddressRepository;
 import com.poly.datn.service.IAddressServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +17,8 @@ public class AddressServicesImpl implements IAddressServices {
     private IAddressRepository addressRepository;
 
     @Override
-    public List<TAddress> findAll() {
-        return addressRepository.findAll();
+    public Page<TAddress> findAll(int pageNumber) {
+        return addressRepository.findAll(PageRequest.of(pageNumber,5));
     }
 
     @Override
@@ -43,6 +45,12 @@ public class AddressServicesImpl implements IAddressServices {
             return "Xoá Thất Bại";
         }
         return "Xoá thành công";
+    }
+
+    @Override
+    public String updateAddress(TAddress address) {
+        addressRepository.save(address);
+        return "Cập Nhập Thành Công";
     }
 
 }

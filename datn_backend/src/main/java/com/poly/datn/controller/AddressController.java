@@ -19,15 +19,29 @@ public class AddressController {
 
 
     @GetMapping("")
-    private ResponseEntity<?> findAll(){
+    private ResponseEntity<?> findAll(@RequestParam(name = "page") int pageNumber){
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", "Thành công",addressServices.findAll()));
+                ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber)));
     }
 
     @PostMapping("/add")
-    private ResponseEntity<?> pageAdd(@RequestBody TAddress address){
+    private ResponseEntity<?> pageAdd(@RequestBody TAddress address ){
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", addressServices.addAddress(address),""));
 
+    }
+
+
+    @PutMapping("/update/{id}")
+    private ResponseEntity<?> pageUpdate(@RequestBody TAddress address,@PathVariable Long id){
+        address.setId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok", addressServices.updateAddress(address),""));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<?> pageDelete(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok", addressServices.deleteAddressById(id),""));
     }
 }

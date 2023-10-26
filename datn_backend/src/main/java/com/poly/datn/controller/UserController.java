@@ -1,12 +1,10 @@
 package com.poly.datn.controller;
 
 import com.poly.datn.dto.ResponseObject;
-import com.poly.datn.model.TUser;
+import com.poly.datn.dto.UserDTO;
 import com.poly.datn.repository.IUserRepository;
 import com.poly.datn.service.impl.UserServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +36,14 @@ public class UserController {
 
 
     @PostMapping("/add")
-    private ResponseEntity<?> pageAddUser(@RequestBody TUser user){
+    private ResponseEntity<?> pageAddUser(@RequestBody UserDTO user){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("", userServices.saveUser(user),"")
         );
     }
 
     @PutMapping("/update")
-    private ResponseEntity<?> pageUpdateUser(@RequestBody TUser user){
+    private ResponseEntity<?> pageUpdateUser(@RequestBody UserDTO user){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("", userServices.saveUser(user),"")
         );

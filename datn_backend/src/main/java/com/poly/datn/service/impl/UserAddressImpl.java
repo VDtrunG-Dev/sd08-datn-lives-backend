@@ -8,11 +8,18 @@ import com.poly.datn.service.IUserAddressServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserAddressImpl implements IUserAddressServices {
 
     @Autowired
     private IUserAddressRepository userAddressRepository;
+
+    @Override
+    public List<TAddress> findAddressByUser(Long idUser) {
+        return userAddressRepository.findAllByUser(idUser);
+    }
 
     @Override
     public String saveUserAddress(TUser user, TAddress address) {
@@ -34,7 +41,8 @@ public class UserAddressImpl implements IUserAddressServices {
             return "Không tồn tại";
         }
         try{
-            userAddressRepository.delete(userAddress);
+            userAddress.setStatus(0);
+            userAddressRepository.save(userAddress);
         }catch (Exception e){
             return "Xoá Thất Bại";
         }

@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.UserDTO;
 import com.poly.datn.model.TUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,5 +20,5 @@ public interface IUserServices {
 
     String deleteUserByEmail(String email);
 
-    String saveUser(TUser user);
+    String saveUser(UserDTO userDTO);
 }

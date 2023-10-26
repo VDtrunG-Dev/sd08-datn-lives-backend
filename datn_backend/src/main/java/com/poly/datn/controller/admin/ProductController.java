@@ -29,8 +29,10 @@ public class ProductController {
 
 
     @GetMapping("")
-    public List<TProduct> getAllProduct() {
-        return productService.getAllProducts();
+    public ResponseEntity<?> getAllProduct(@PathVariable(name = "page") int page) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công",productService.getAllProducts(page))
+        );
     }
 
     @GetMapping("/{id}")
@@ -58,19 +60,11 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateProduct(@RequestBody TProduct newProduct, @PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc cập nhật sản phẩm.
-        try {
-            TProduct productUpdate = productService.updateProduct(id, newProduct);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Update product successfully", productUpdate)
-            );
-        } catch (IllegalArgumentException e){
-            // Xử lý lỗi nếu sản phẩm không tồn tại hoặc không thể update.
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject("failed", "Can't find product to update4", "")
             );
-        }
+
 
     }
 
