@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/datn_backend/datn.iml" filepath="$PROJECT_DIR$/datn_backend/datn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sd08-datn-lives-backend.iml" filepath="$PROJECT_DIR$/.idea/sd08-datn-lives-backend.iml" />
+    </modules>
+  </component>
+</project>
