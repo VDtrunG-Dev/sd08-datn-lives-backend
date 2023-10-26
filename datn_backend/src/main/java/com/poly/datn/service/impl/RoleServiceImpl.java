@@ -71,8 +71,8 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public List<TRole> searchAll(String nameRole, String description) {
         return roleRepository.findAll().stream()
-                .filter(roleByName -> roleByName.getName().contains(nameRole))
-                .filter(roleByName -> roleByName.getDescription().contains(description))
+                .filter(role -> role.getName().contains(nameRole))
+                .filter(role -> role.getDescription().contains(description))
                 .collect(Collectors.toList());
     }
 
