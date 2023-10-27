@@ -5,6 +5,7 @@ import com.poly.datn.model.TVoucher;
 import org.springframework.data.domain.Page;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +24,6 @@ public interface IVoucherService {
     boolean deleteVoucher(Long id);
 
     List<TVoucher> getAllVouchersByStatus(int status);
+
+
 }

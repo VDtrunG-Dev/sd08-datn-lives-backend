@@ -20,7 +20,7 @@ public interface IPointTransactionService {
 
     TPointTransactions savePointTransaction(TPointTransactions pointTransaction);
 
-    TPointTransactions updatePointTransaction(TPointTransactions pointTransaction);
+    TPointTransactions updatePointTransaction(Long id, TPointTransactions pointTransaction);
 
     boolean deletePointTransactionById(Long id);
 

@@ -2,6 +2,7 @@ package com.poly.datn.service;
 
 import com.poly.datn.model.TRank;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,14 @@ public interface IRankService {
     Page<TRank> getAllPaged(int page, int size);
 
     List<TRank> getAllRanksByStatus(int status);
+
+
+    List<TRank> searchAll(String rankName, Integer minimumPoints, Integer status);
+
+
+    Page<TRank> getActiveRank(Integer status, Integer page);
+
+    Page<TRank> getInactiveRank(Integer status, Integer page);
 
 
 }

@@ -40,7 +40,7 @@ public class PointTransactionServiceImpl implements IPointTransactionService {
     }
 
     @Override
-    public TPointTransactions updatePointTransaction(TPointTransactions pointTransaction) {
+    public TPointTransactions updatePointTransaction(Long id, TPointTransactions pointTransaction) {
         if (pointTransactionRepository.existsById(pointTransaction.getTransactionId())) {
             return pointTransactionRepository.save(pointTransaction);
         }

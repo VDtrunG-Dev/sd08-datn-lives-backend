@@ -75,7 +75,7 @@ public class PointTransactionController {
     public ResponseEntity<ResponseObject> updateTransaction(@PathVariable Long id, @RequestBody TPointTransactions pointTransaction) {
         if (pointTransactionService.existsById(id)) {
             pointTransaction.setTransactionId(id);
-            TPointTransactions updatedTransaction = pointTransactionService.updatePointTransaction(pointTransaction);
+            TPointTransactions updatedTransaction = pointTransactionService.updatePointTransaction(id, pointTransaction);
             return ResponseEntity.ok(new ResponseObject("ok", "Cập nhật pointtransaction thành công!", updatedTransaction));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -105,4 +105,51 @@ public class PointTransactionController {
         return ResponseEntity.ok(transactions);
 
     }
+
+
+    // Xóa ảo
+    @PutMapping("/markAsDeleted/{id}")
+    public ResponseEntity<ResponseObject> markPointTransactionAsDeleted(@PathVariable Long id) {
+        Optional<TPointTransactions> pointTransactionOptional = pointTransactionService.getPointTransactionsById(id);
+        if (pointTransactionOptional.isPresent()) {
+            TPointTransactions pointTransaction = pointTransactionOptional.get();
+            pointTransaction.setStatus(0);
+
+            TPointTransactions updatedPointTransaction = pointTransactionService.updatePointTransaction(id, pointTransaction);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Đánh dấu xóa point transaction thành công", updatedPointTransaction)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Không tồn tại point transaction này", null)
+            );
+        }
+    }
+
+    // Khôi phục xóa ảo
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<ResponseObject> restorePointTransaction(@PathVariable Long id) {
+        Optional<TPointTransactions> pointTransactionOptional = pointTransactionService.getPointTransactionsById(id);
+        if (pointTransactionOptional.isPresent()) {
+            TPointTransactions pointTransaction = pointTransactionOptional.get();
+
+            if (pointTransaction.getStatus() == 0) {
+                pointTransaction.setStatus(1);
+                TPointTransactions restoredPointTransaction = pointTransactionService.updatePointTransaction(id, pointTransaction);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Khôi phục point transaction thành công", restoredPointTransaction)
+                );
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new ResponseObject("failed", "Point transaction này chưa bị xóa", null)
+                );
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Không tồn tại point transaction này", null)
+            );
+        }
+    }
+
+
 }
