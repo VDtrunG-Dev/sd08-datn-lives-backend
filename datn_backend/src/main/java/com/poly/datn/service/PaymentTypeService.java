@@ -2,8 +2,10 @@ package com.poly.datn.service;
 
 import com.poly.datn.dto.PaymentTypeRequest;
 import com.poly.datn.model.TPaymentType;
+import com.poly.datn.model.TRole;
 import org.springframework.data.domain.Page;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +28,8 @@ public interface PaymentTypeService {
     TPaymentType updatePaymentTypeActive(Long id);
 
     void deletePaymentType(Long id);
+
+    List<TPaymentType> searchAll(String namePayment);
+
+    List<TPaymentType> searchByKeyword(String keyword);
 }
