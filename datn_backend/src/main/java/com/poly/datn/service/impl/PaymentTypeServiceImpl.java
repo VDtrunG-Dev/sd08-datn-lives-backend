@@ -111,6 +111,8 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 
     @Override
     public List<TPaymentType> searchByKeyword(String keyword) {
-        return null;
+        return paymentTypeRepository.findAll().stream()
+                .filter(paymentType -> paymentType.getName().contains(keyword))
+                .collect(Collectors.toList());
     }
 }

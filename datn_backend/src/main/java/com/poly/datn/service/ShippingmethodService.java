@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface ShippingmethodService {
     List<TShippingMethod> getAllActice();
+
     List<TShippingMethod> getAllDeleted();
 
 //    List<TShippingMethod> getAll();
@@ -18,12 +19,16 @@ public interface ShippingmethodService {
     Page<TShippingMethod> PageGetAllTShippingMethods(Integer pageNo, Integer pageSize);
 
     Page<TShippingMethod> PageGetAllDeletedSmethods(Integer pageNo, Integer pageSize);
+
     Optional<TShippingMethod> getTShippingMethodById(Long id);
 
     TShippingMethod createTShippingMethod(ShippingMethodRequest request);
 
     TShippingMethod updateTShippingMethod(Long id, ShippingMethodRequest request);
+
     TShippingMethod updateTShippingMethodActive(Long id);
 
     void deleteTShippingMethod(Long id);
+
+    List<TShippingMethod> searchAllKeyWord(String keyWord);
 }

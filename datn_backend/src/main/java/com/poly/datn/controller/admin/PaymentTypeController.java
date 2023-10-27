@@ -47,12 +47,12 @@ public class PaymentTypeController {
         );
     }
 
-    @GetMapping("/pageDeleted")
+    @GetMapping("/page-deleted")
     public ResponseEntity<ResponseObject> getPageDeleted(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Pagination Successfully"
-                        , paymentTypeService.PageGetAllPaymenttypesDeleted(pageNo,pageSize))
+                        , paymentTypeService.PageGetAllPaymenttypesDeleted(pageNo, pageSize))
         );
     }
 
@@ -71,7 +71,7 @@ public class PaymentTypeController {
         }
     }
 
-    @PostMapping("/addnew")
+    @PostMapping("/add-new")
     public ResponseEntity<ResponseObject> insertPaymenttype(@RequestBody PaymentTypeRequest request) {
         // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
         // PaymenttypeService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
@@ -97,7 +97,7 @@ public class PaymentTypeController {
         }
     }
 
-    @PutMapping("/updateActive/{id}")
+    @PutMapping("/update-active/{id}")
     public ResponseEntity<ResponseObject> updatePaymenttypeActive(@PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
         // PaymenttypeService sẽ xử lý việc cập nhật sản phẩm.
@@ -129,5 +129,10 @@ public class PaymentTypeController {
                     new ResponseObject("failed", "Can't find any to delete", "")
             );
         }
+    }
+
+    @GetMapping("/search-name")
+    public List<TPaymentType> searchAll(@RequestParam(name = "searchInput") String namePayment) {
+        return paymentTypeService.searchAll(namePayment);
     }
 }
