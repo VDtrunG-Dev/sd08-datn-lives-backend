@@ -2,6 +2,7 @@ package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.dto.ShippingMethodRequest;
+import com.poly.datn.model.TPaymentType;
 import com.poly.datn.model.TShippingMethod;
 import com.poly.datn.service.ShippingmethodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class ShippingmethodController {
         );
     }
 
-    @GetMapping("/pageDeleted")
+    @GetMapping("/page-deleted")
     public ResponseEntity<ResponseObject> getPageDeleted(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize) {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -70,7 +71,7 @@ public class ShippingmethodController {
         }
     }
 
-    @PostMapping("/addnew")
+    @PostMapping("/add-new")
     public ResponseEntity<ResponseObject> insertShippingmethod(@RequestBody ShippingMethodRequest request) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
         // ShippingmethodService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
@@ -96,12 +97,12 @@ public class ShippingmethodController {
         }
     }
 
-    @PutMapping("/updateActive/{id}")
-    public ResponseEntity<ResponseObject> updateShippingmethodActive(@RequestBody ShippingMethodRequest request, @PathVariable Long id) {
+    @PutMapping("/update-active/{id}")
+    public ResponseEntity<ResponseObject> updateShippingmethodActive( @PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
         // ShippingmethodService sẽ xử lý việc cập nhật sản phẩm.
         try {
-            TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethod(id, request);
+            TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethodActive(id);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
             );
@@ -128,5 +129,10 @@ public class ShippingmethodController {
                     new ResponseObject("failed", "Can't find any to delete", "")
             );
         }
+    }
+
+    @GetMapping("/search-keyword")
+    public List<TShippingMethod> searchAll(@RequestParam(name = "searchInput") String keyWord) {
+        return shippingmethodService.searchAllKeyWord(keyWord);
     }
 }

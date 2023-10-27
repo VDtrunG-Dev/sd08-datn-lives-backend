@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentTypeServiceImpl implements PaymentTypeService {
@@ -79,11 +81,10 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     }
 
     @Override
-    public TPaymentType updatePaymentTypeActive(Long id, PaymentTypeRequest request) {
+    public TPaymentType updatePaymentTypeActive(Long id) {
         Optional<TPaymentType> paymentTypeOptional = paymentTypeRepository.findById(id);
         if (paymentTypeOptional.isPresent()) {
             TPaymentType paymentType = paymentTypeOptional.get();
-            paymentType = request.dto(paymentType);
             paymentType.setStatus(1);
             return paymentTypeRepository.save(paymentType);
         } else {
@@ -99,5 +100,19 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
             paymentType.setStatus(0);
             paymentTypeRepository.save(paymentType);
         }
+    }
+
+    @Override
+    public List<TPaymentType> searchAll(String namePayment) {
+        return paymentTypeRepository.findAll().stream()
+                .filter(paymentType -> paymentType.getName().contains(namePayment))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TPaymentType> searchByKeyword(String keyword) {
+        return paymentTypeRepository.findAll().stream()
+                .filter(paymentType -> paymentType.getName().contains(keyword))
+                .collect(Collectors.toList());
     }
 }

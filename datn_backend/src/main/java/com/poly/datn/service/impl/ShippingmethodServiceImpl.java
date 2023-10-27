@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShippingmethodServiceImpl implements ShippingmethodService {
@@ -75,11 +76,10 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     }
 
     @Override
-    public TShippingMethod updateTShippingMethodActive(Long id, ShippingMethodRequest request) {
+    public TShippingMethod updateTShippingMethodActive(Long id) {
         Optional<TShippingMethod> sMethodOptional = shippingmethodRepository.findById(id);
         if (sMethodOptional.isPresent()) {
             TShippingMethod sMethod = sMethodOptional.get();
-            sMethod = request.dto(sMethod);
             sMethod.setStatus(1);
             return shippingmethodRepository.save(sMethod);
         } else {
@@ -96,5 +96,16 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
             sMethod.setStatus(0);
             shippingmethodRepository.save(sMethod);
         }
+    }
+
+    @Override
+    public List<TShippingMethod> searchAllKeyWord(String keyWord) {
+        return shippingmethodRepository.findAll().stream()
+                .filter(tShippingMethod -> tShippingMethod.getName().contains(keyWord)
+                || tShippingMethod.getDescription().contains(keyWord)
+//                        || tShippingMethod.getCreatedBy().contains(keyWord)
+//                        ||tShippingMethod.getUpdatedBy().contains(keyWord)
+                        )
+                .collect(Collectors.toList());
     }
 }
