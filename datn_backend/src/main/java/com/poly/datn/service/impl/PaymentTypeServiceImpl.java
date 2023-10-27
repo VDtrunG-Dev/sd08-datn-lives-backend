@@ -79,11 +79,10 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
     }
 
     @Override
-    public TPaymentType updatePaymentTypeActive(Long id, PaymentTypeRequest request) {
+    public TPaymentType updatePaymentTypeActive(Long id) {
         Optional<TPaymentType> paymentTypeOptional = paymentTypeRepository.findById(id);
         if (paymentTypeOptional.isPresent()) {
             TPaymentType paymentType = paymentTypeOptional.get();
-            paymentType = request.dto(paymentType);
             paymentType.setStatus(1);
             return paymentTypeRepository.save(paymentType);
         } else {

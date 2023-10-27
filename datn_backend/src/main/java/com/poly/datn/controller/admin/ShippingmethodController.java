@@ -97,11 +97,11 @@ public class ShippingmethodController {
     }
 
     @PutMapping("/updateActive/{id}")
-    public ResponseEntity<ResponseObject> updateShippingmethodActive(@RequestBody ShippingMethodRequest request, @PathVariable Long id) {
+    public ResponseEntity<ResponseObject> updateShippingmethodActive( @PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
         // ShippingmethodService sẽ xử lý việc cập nhật sản phẩm.
         try {
-            TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethod(id, request);
+            TShippingMethod paymentTypeUpdate = shippingmethodService.updateTShippingMethodActive(id);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
             );

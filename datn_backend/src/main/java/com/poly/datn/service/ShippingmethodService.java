@@ -23,7 +23,7 @@ public interface ShippingmethodService {
     TShippingMethod createTShippingMethod(ShippingMethodRequest request);
 
     TShippingMethod updateTShippingMethod(Long id, ShippingMethodRequest request);
-    TShippingMethod updateTShippingMethodActive(Long id, ShippingMethodRequest request);
+    TShippingMethod updateTShippingMethodActive(Long id);
 
     void deleteTShippingMethod(Long id);
 }

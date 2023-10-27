@@ -75,11 +75,10 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     }
 
     @Override
-    public TShippingMethod updateTShippingMethodActive(Long id, ShippingMethodRequest request) {
+    public TShippingMethod updateTShippingMethodActive(Long id) {
         Optional<TShippingMethod> sMethodOptional = shippingmethodRepository.findById(id);
         if (sMethodOptional.isPresent()) {
             TShippingMethod sMethod = sMethodOptional.get();
-            sMethod = request.dto(sMethod);
             sMethod.setStatus(1);
             return shippingmethodRepository.save(sMethod);
         } else {

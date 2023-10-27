@@ -23,7 +23,7 @@ public interface PaymentTypeService {
 
     TPaymentType updatePaymentType(Long id, PaymentTypeRequest request);
 
-    TPaymentType updatePaymentTypeActive(Long id, PaymentTypeRequest request);
+    TPaymentType updatePaymentTypeActive(Long id);
 
     void deletePaymentType(Long id);
 }

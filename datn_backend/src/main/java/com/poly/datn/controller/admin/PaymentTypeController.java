@@ -98,11 +98,11 @@ public class PaymentTypeController {
     }
 
     @PutMapping("/updateActive/{id}")
-    public ResponseEntity<ResponseObject> updatePaymenttypeActive(@RequestBody PaymentTypeRequest request, @PathVariable Long id) {
+    public ResponseEntity<ResponseObject> updatePaymenttypeActive(@PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong PaymenttypeService
         // PaymenttypeService sẽ xử lý việc cập nhật sản phẩm.
         try {
-            TPaymentType paymentTypeUpdate = paymentTypeService.updatePaymentType(id, request);
+            TPaymentType paymentTypeUpdate = paymentTypeService.updatePaymentTypeActive(id);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Update successfully", paymentTypeUpdate)
             );
