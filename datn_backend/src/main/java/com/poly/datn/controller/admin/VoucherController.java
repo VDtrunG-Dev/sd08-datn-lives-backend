@@ -48,9 +48,9 @@ public class VoucherController {
         boolean result = voucherService.deleteVoucher(id);
 
         if (result) {
-            return ResponseEntity.ok("Voucher deleted successfully.");
+            return ResponseEntity.ok("Xoá thành công .");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found with the provided ID.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
         }
     }
 
@@ -60,9 +60,9 @@ public class VoucherController {
         TVoucher createdVoucher = voucherService.addVoucher(voucher);
 
         if (createdVoucher != null) {
-            return ResponseEntity.ok("Voucher added successfully.");
+            return ResponseEntity.ok("Thêm thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add the voucher.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Thêm thất bại.");
         }
     }
 
@@ -72,9 +72,9 @@ public class VoucherController {
         TVoucher updatedVoucher = voucherService.updateVoucher(id, voucher);
 
         if (updatedVoucher != null) {
-            return ResponseEntity.ok("Voucher updated successfully.");
+            return ResponseEntity.ok("Cập nhật thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found with the provided ID.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
         }
     }
 

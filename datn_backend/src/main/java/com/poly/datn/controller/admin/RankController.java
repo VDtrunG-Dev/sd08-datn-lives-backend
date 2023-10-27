@@ -51,9 +51,9 @@ public class RankController {
         boolean isDeleted = rankService.deleteRank(id);
 
         if (isDeleted) {
-            return ResponseEntity.ok("Rank deleted successfully.");
+            return ResponseEntity.ok("Xóa thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rank not found with the provided ID.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy  với ID được cung cấp.");
         }
     }
 
@@ -61,7 +61,7 @@ public class RankController {
     public ResponseEntity<String> addRank(@RequestBody TRank rank) {
         TRank savedRank = rankService.createRank(rank);
         if (savedRank != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Rank added successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Thêm thành công .");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while saving the rank.");
         }
@@ -74,9 +74,9 @@ public class RankController {
 
 
         if (updatedRank != null) {
-            return ResponseEntity.ok("Rank updated successfully.");
+            return ResponseEntity.ok("Cập nhật thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rank not found with the provided ID.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy  với ID được cung cấp.");
         }
 
 
@@ -99,7 +99,7 @@ public class RankController {
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<String> handleDBExceptions(DataAccessException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database error occurred.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi cơ sở dữ liệu.");
     }
 
     @GetMapping("/bystatus")
