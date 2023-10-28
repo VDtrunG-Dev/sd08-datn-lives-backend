@@ -146,6 +146,15 @@ public class VoucherController {
     }
 
 
+    @GetMapping("/search-all/")
+    public List<TVoucher> searchVouchers(
+            @RequestParam(required = false) String voucherName,
+            @RequestParam(required = false) String voucherCode,
+            @RequestParam(required = false) Integer status) {
+        return voucherService.searchAll(voucherName, voucherCode, status);
+    }
+
+
     // khôi phục dữ liệu bị xóa
     @PutMapping("restoreVoucher/{id}")
     public ResponseEntity<ResponseObject> restoreVoucher(@PathVariable Long id) {
@@ -170,6 +179,9 @@ public class VoucherController {
                     new ResponseObject("failed", "Không tồn tại voucher này", null)
             );
         }
+
+
+
     }
 
 

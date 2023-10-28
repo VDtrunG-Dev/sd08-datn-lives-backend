@@ -25,4 +25,6 @@ public interface IVoucherService {
 
     Page<TVoucher> getAllByStatusPaged(int status, int page, int size);
 
+    List<TVoucher> searchAll(String voucherName, String voucherCode, Integer status);
+
 }
