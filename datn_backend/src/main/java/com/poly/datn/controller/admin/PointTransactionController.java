@@ -2,7 +2,6 @@ package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TPointTransactions;
-import com.poly.datn.model.TVoucher;
 import com.poly.datn.service.IPointTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -151,5 +150,27 @@ public class PointTransactionController {
         }
     }
 
+
+    @GetMapping("/byStatus/1/paged")
+    public ResponseEntity<Page<TPointTransactions>> getAllByStatus1Paged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<TPointTransactions> transactions = pointTransactionService.getAllByStatusPaged(1, page, size);
+
+        if (transactions.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(transactions);
+    }
+
+    @GetMapping("/search-all/")
+    public List<TPointTransactions> searchPointTransactions(
+            @RequestParam(required = false) String transactionName,
+            @RequestParam(required = false) Integer minimumPoints,
+            @RequestParam(required = false) Integer status) {
+        return pointTransactionService.searchAll(transactionName, minimumPoints, status);
+    }
 
 }

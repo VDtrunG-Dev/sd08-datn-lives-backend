@@ -7,7 +7,7 @@ import com.poly.datn.service.IRankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,7 +69,8 @@ public class RankServiceImpl implements IRankService {
     @Override
     public List<TRank> searchAll(String rankName, Integer minimumPoints, Integer status) {
         return rankRepository.findAll().stream()
-                .filter(rank -> (rankName == null || (rank.getRankName() != null && rank.getRankName().contains(rankName))))
+                .filter(rank -> (rankName == null || (rank.getRankName() != null && rank.getRankName().
+                        contains(rankName))))
 
                 .filter(rank -> minimumPoints == null || rank.getMinimumPoints() >= minimumPoints)
                 .filter(rank -> status == null || rank.getStatus().equals(status))
@@ -84,6 +85,12 @@ public class RankServiceImpl implements IRankService {
     @Override
     public Page<TRank> getInactiveRank(Integer status, Integer page) {
         return rankRepository.findRanksByStatus(status, PageRequest.of(page, 5));
+    }
+
+    @Override
+    public Page<TRank> getAllByStatusPaged(int status, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return rankRepository.findRanksByStatus(status, pageable);
     }
 
 

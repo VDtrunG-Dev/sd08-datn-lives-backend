@@ -1,7 +1,6 @@
 package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
-import com.poly.datn.model.TRank;
 import com.poly.datn.model.TVoucher;
 import com.poly.datn.service.impl.VoucherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class VoucherController {
         return voucherService.getAllVoucher();
     }
 
-   // phân trang
+    // phân trang
     @GetMapping("/paged")
     public ResponseEntity<Page<TVoucher>> getAllPaged(
             @RequestParam(defaultValue = "0") int page,
@@ -72,7 +71,6 @@ public class VoucherController {
     }
 
 
-
     // cập nhật voucher
     @PutMapping("/{id}")
     public ResponseEntity<String> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
@@ -84,7 +82,6 @@ public class VoucherController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
         }
     }
-
 
 
     // tìm kiếm theo id
@@ -114,6 +111,20 @@ public class VoucherController {
     }
 
 
+    // getALl by status = 1 kèm phân trang
+
+    @GetMapping("/byStatus/1/paged")
+    public ResponseEntity<Page<TVoucher>> getAllByStatus1Paged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<TVoucher> vouchers = voucherService.getAllByStatusPaged(1, page, size);
+        if (vouchers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(vouchers);
+    }
+
+
     // xóa ảo
 
     @PutMapping("deleteFakeVoucher/{id}")
@@ -135,8 +146,7 @@ public class VoucherController {
     }
 
 
-
-// khôi phục dữ liệu bị xóa
+    // khôi phục dữ liệu bị xóa
     @PutMapping("restoreVoucher/{id}")
     public ResponseEntity<ResponseObject> restoreVoucher(@PathVariable Long id) {
         Optional<TVoucher> voucherOptional = voucherService.getVoucherById(id);

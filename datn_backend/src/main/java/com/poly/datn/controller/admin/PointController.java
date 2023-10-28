@@ -137,4 +137,25 @@ public class PointController {
     }
 
 
+
+    @GetMapping("/byStatus/1/paged")
+    public ResponseEntity<Page<TPoints>> getAllByStatus1Paged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<TPoints> points = pointService.getAllByStatusPaged(1, page, size);
+
+        if (points.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(points);
+    }
+
+    @GetMapping("/search-all/")
+    public List<TPoints> searchPoints(@RequestParam(required = false) String pointName,
+                                     @RequestParam(required = false) Integer minimumPoints,
+                                     @RequestParam(required = false) Integer status) {
+        return pointService.searchAll(pointName, minimumPoints, status);
+    }
+
 }

@@ -183,6 +183,20 @@ public class RankController {
         }
     }
 
+
+    @GetMapping("/byStatus/1/paged")
+    public ResponseEntity<Page<TRank>> getAllByStatus1Paged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<TRank> ranks = rankService.getAllByStatusPaged(1, page, size);
+
+        if (ranks.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(ranks);
+    }
+
     @GetMapping("/active")
     public Page<TRank> getActiveRanks(@RequestParam Integer status, @RequestParam Integer page) {
         return rankService.getActiveRank(status, page);
