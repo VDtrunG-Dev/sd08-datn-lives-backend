@@ -3,6 +3,7 @@ package com.poly.datn.service;
 import com.poly.datn.model.TPointTransactions;
 import com.poly.datn.model.TRank;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public interface IPointTransactionService {
 
     TPointTransactions savePointTransaction(TPointTransactions pointTransaction);
 
-    TPointTransactions updatePointTransaction(TPointTransactions pointTransaction);
+    TPointTransactions updatePointTransaction(Long id, TPointTransactions pointTransaction);
 
     boolean deletePointTransactionById(Long id);
 
@@ -28,4 +29,8 @@ public interface IPointTransactionService {
 
 
     List<TPointTransactions> getAllByStatus(int status);
+
+    Page<TPointTransactions> getAllByStatusPaged(int status, int page, int size);
+
+    List<TPointTransactions> searchAll(String transactionName, Integer minimumPoints, Integer status);
 }

@@ -1,7 +1,6 @@
 package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
-import com.poly.datn.model.TPointTransactions;
 import com.poly.datn.model.TPoints;
 import com.poly.datn.service.impl.PointServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +83,6 @@ public class PointController {
     }
 
 
-
     @GetMapping("/bystatus")
     public ResponseEntity<List<TPoints>> getAllByStatus() {
         List<TPoints> points = pointService.getAllByStatus(0);
@@ -93,4 +91,71 @@ public class PointController {
         }
         return ResponseEntity.ok(points);
     }
+
+    // Xóa ảo
+    @PutMapping("markAsDeleted/{id}")
+    public ResponseEntity<ResponseObject> markPointAsDeleted(@PathVariable Long id) {
+        Optional<TPoints> pointOptional = pointService.getPointsById(id);
+        if (pointOptional.isPresent()) {
+            TPoints point = pointOptional.get();
+            point.setStatus(0);
+
+            TPoints updatedPoint = pointService.update(id, point);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Đánh dấu xóa điểm thành công", updatedPoint)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Không tồn tại điểm này", null)
+            );
+        }
+    }
+
+    // Khôi phục xóa ảo
+    @PutMapping("restore/{id}")
+    public ResponseEntity<ResponseObject> restorePoint(@PathVariable Long id) {
+        Optional<TPoints> pointOptional = pointService.getPointsById(id);
+        if (pointOptional.isPresent()) {
+            TPoints point = pointOptional.get();
+
+            if (point.getStatus() == 0) {
+                point.setStatus(1);
+                TPoints restoredPoint = pointService.update(id, point);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Khôi phục điểm thành công", restoredPoint)
+                );
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new ResponseObject("failed", "Điểm này chưa bị xóa", null)
+                );
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Không tồn tại điểm này", null)
+            );
+        }
+    }
+
+
+
+    @GetMapping("/byStatus/1/paged")
+    public ResponseEntity<Page<TPoints>> getAllByStatus1Paged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<TPoints> points = pointService.getAllByStatusPaged(1, page, size);
+
+        if (points.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(points);
+    }
+
+    @GetMapping("/search-all/")
+    public List<TPoints> searchPoints(@RequestParam(required = false) String pointName,
+                                     @RequestParam(required = false) Integer minimumPoints,
+                                     @RequestParam(required = false) Integer status) {
+        return pointService.searchAll(pointName, minimumPoints, status);
+    }
+
 }
