@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AddressServicesImpl implements IAddressServices {
@@ -17,10 +18,15 @@ public class AddressServicesImpl implements IAddressServices {
     private IAddressRepository addressRepository;
 
     @Override
-    public Page<TAddress> findAll(int pageNumber) {
+    public Page<TAddress> findAllPage(int pageNumber) {
         return addressRepository.findAll(PageRequest.of(pageNumber,5));
     }
 
+
+    @Override
+    public List<TAddress> findAll(){
+        return addressRepository.findAll();
+    }
     @Override
     public String addAddress(TAddress address) {
         try {
@@ -54,11 +60,26 @@ public class AddressServicesImpl implements IAddressServices {
     }
 
     @Override
-    public String active(Long id) {
-        TAddress address = addressRepository.findByIdAddress(id);
-        address.setStatus(1);
-        addressRepository.save(address);
-        return "Cập Nhập Thành Công";
+    public List<TAddress> findByKeywork(String keyword) {
+        List<TAddress> addressfindAll = addressRepository.findAll();
+
+        return addressfindAll
+                .stream().filter(
+                        address -> address.getProvince().contains(keyword) ||
+                                address.getDistrict().contains(keyword) ||
+                                address.getWard().contains(keyword) ||
+                                address.getDetailAddress().contains(keyword)
+                ).collect(Collectors.toList());
+    }
+
+    @Override
+    public TAddress findById(Long id) {
+        return addressRepository.findByIdAddress(id);
+    }
+
+    @Override
+    public List<TAddress> findByStatus0() {
+        return addressRepository.findByStatus0();
     }
 
 }

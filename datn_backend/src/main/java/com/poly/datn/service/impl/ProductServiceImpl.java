@@ -63,11 +63,4 @@ public class ProductServiceImpl implements IProductService {
         }
         return "Xoá Thành Công";
     }
-
-    @Override
-    public String active(Long id) {
-        TProduct product = productRepository.findByIdProduct(id);
-        product .setStatus(1);
-        return "Cập Nhật Thành Công";
-    }
 }

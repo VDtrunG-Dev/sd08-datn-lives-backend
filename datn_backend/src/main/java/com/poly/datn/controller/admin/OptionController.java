@@ -64,4 +64,11 @@ public class OptionController {
                 new ResponseObject("Ok",optionServices.delete(id),"")
         );
     }
+
+    @DeleteMapping("/findBystatus")
+    private ResponseEntity<?> pageFindByStatus(@RequestBody int status){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("Ok","Thanh Công",optionServices.findByStatus(status))
+        );
+    }
 }

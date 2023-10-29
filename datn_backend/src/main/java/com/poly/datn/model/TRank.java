@@ -38,4 +38,8 @@ public class TRank {
     @Column(name = "status")
     private Integer status;
 
+    public String getStatusDescription() {
+        return this.status == 1 ? "Hoạt động" : "Không hoạt động";
+    }
+
 }
