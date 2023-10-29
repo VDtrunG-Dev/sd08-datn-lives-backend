@@ -17,4 +17,6 @@ public interface IProductService {
     String updateProduct(Long id, TProduct updatedProduct);
 
     String deleteProduct(Long id);
+
+    String active(Long id);
 }

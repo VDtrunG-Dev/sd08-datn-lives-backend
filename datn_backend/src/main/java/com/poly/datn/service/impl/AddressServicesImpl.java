@@ -53,4 +53,12 @@ public class AddressServicesImpl implements IAddressServices {
         return "Cập Nhập Thành Công";
     }
 
+    @Override
+    public String active(Long id) {
+        TAddress address = addressRepository.findByIdAddress(id);
+        address.setStatus(1);
+        addressRepository.save(address);
+        return "Cập Nhập Thành Công";
+    }
+
 }

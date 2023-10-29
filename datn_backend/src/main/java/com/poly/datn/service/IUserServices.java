@@ -21,4 +21,6 @@ public interface IUserServices {
     String deleteUserByEmail(String email);
 
     String saveUser(UserDTO userDTO);
+
+    String active(Long id);
 }

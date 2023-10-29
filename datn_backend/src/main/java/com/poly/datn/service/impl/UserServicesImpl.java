@@ -33,7 +33,7 @@ public class UserServicesImpl implements IUserServices {
 
     @Override
     public TUser findById(Long id) {
-        return userRepository.findByIdUser(id);
+        return userRepository.findByIdUserAndStatus(id);
     }
 
     @Override
@@ -104,6 +104,13 @@ public class UserServicesImpl implements IUserServices {
         return validate;
     }
 
+    @Override
+    public String active(Long id) {
+        TUser user = userRepository.findByIdUser(id);
+        user.setStatus(1);
+        userRepository.save(user);
+        return "Cập Nhập Thành Công";
+    }
 
 
     private String validateUser(UserDTO user){

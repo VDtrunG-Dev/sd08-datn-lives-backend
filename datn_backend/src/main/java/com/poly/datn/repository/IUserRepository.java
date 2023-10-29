@@ -14,6 +14,9 @@ public interface IUserRepository extends JpaRepository<TUser,Long> {
     Page<TUser> findAll(Pageable pageable);
 
     @Query("SELECT u FROM TUser u WHERE u.id = :id AND u.status = 1")
+    TUser findByIdUserAndStatus(Long id);
+
+    @Query("SELECT u FROM TUser u WHERE u.id = :id ")
     TUser findByIdUser(Long id);
 
     @Query("SELECT u FROM TUser u WHERE u.email = :email AND u.status = 1")

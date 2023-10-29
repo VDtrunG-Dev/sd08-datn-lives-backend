@@ -15,4 +15,6 @@ public interface IAddressServices {
     String deleteAddressById(Long id);
 
     String updateAddress(TAddress address);
+
+    String active(Long id);
 }
