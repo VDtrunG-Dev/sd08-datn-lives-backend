@@ -1,6 +1,7 @@
 package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
+import com.poly.datn.model.TRank;
 import com.poly.datn.model.TVoucher;
 import com.poly.datn.service.impl.VoucherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,12 @@ public class VoucherController {
     private VoucherServiceImpl voucherService;
 
 
-    //hiển thị list voucher
     @GetMapping("/view")
     public List<TVoucher> getALl() {
         return voucherService.getAllVoucher();
     }
 
-    // phân trang
+
     @GetMapping("/paged")
     public ResponseEntity<Page<TVoucher>> getAllPaged(
             @RequestParam(defaultValue = "0") int page,
@@ -43,48 +43,42 @@ public class VoucherController {
         return ResponseEntity.ok(voucherService.getAllPaged(page, size));
     }
 
-
-    // xóa theo id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteVoucher(@PathVariable Long id) {
         boolean result = voucherService.deleteVoucher(id);
 
         if (result) {
-            return ResponseEntity.ok("Xoá thành công .");
+            return ResponseEntity.ok("Voucher deleted successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found with the provided ID.");
         }
     }
 
-
-    // thêm voucher
 
     @PostMapping("/add")
     public ResponseEntity<String> addVoucher(@RequestBody TVoucher voucher) {
         TVoucher createdVoucher = voucherService.addVoucher(voucher);
 
         if (createdVoucher != null) {
-            return ResponseEntity.ok("Thêm thành công.");
+            return ResponseEntity.ok("Voucher added successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Thêm thất bại.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add the voucher.");
         }
     }
 
 
-    // cập nhật voucher
     @PutMapping("/{id}")
     public ResponseEntity<String> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
         TVoucher updatedVoucher = voucherService.updateVoucher(id, voucher);
 
         if (updatedVoucher != null) {
-            return ResponseEntity.ok("Cập nhật thành công.");
+            return ResponseEntity.ok("Voucher updated successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found with the provided ID.");
         }
     }
 
 
-    // tìm kiếm theo id
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
         Optional<TVoucher> foundVoucher = voucherService.getVoucherById(id);
@@ -99,8 +93,6 @@ public class VoucherController {
         }
     }
 
-
-    // hiển thị tất cả trạng thái
     @GetMapping("/bystatus")
     public ResponseEntity<List<TVoucher>> getAllByStatus() {
         List<TVoucher> vouchers = voucherService.getAllVouchersByStatus(0);
@@ -109,80 +101,5 @@ public class VoucherController {
         }
         return ResponseEntity.ok(vouchers);
     }
-
-
-    // getALl by status = 1 kèm phân trang
-
-    @GetMapping("/byStatus/1/paged")
-    public ResponseEntity<Page<TVoucher>> getAllByStatus1Paged(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<TVoucher> vouchers = voucherService.getAllByStatusPaged(1, page, size);
-        if (vouchers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return ResponseEntity.ok(vouchers);
-    }
-
-
-    // xóa ảo
-
-    @PutMapping("deleteFakeVoucher/{id}")
-    public ResponseEntity<ResponseObject> deleteFakeVoucher(@PathVariable Long id) {
-        Optional<TVoucher> voucherOptional = voucherService.getVoucherById(id);
-        if (voucherOptional.isPresent()) {
-            TVoucher voucher = voucherOptional.get();
-            voucher.setStatus(0);
-
-            TVoucher updatedVoucher = voucherService.updateVoucher(id, voucher);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Đánh dấu xóa voucher thành công", updatedVoucher)
-            );
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Không tồn tại voucher này", null)
-            );
-        }
-    }
-
-
-    @GetMapping("/search-all/")
-    public List<TVoucher> searchVouchers(
-            @RequestParam(required = false) String voucherName,
-            @RequestParam(required = false) String voucherCode,
-            @RequestParam(required = false) Integer status) {
-        return voucherService.searchAll(voucherName, voucherCode, status);
-    }
-
-
-    // khôi phục dữ liệu bị xóa
-    @PutMapping("restoreVoucher/{id}")
-    public ResponseEntity<ResponseObject> restoreVoucher(@PathVariable Long id) {
-        Optional<TVoucher> voucherOptional = voucherService.getVoucherById(id);
-        if (voucherOptional.isPresent()) {
-            TVoucher voucher = voucherOptional.get();
-
-
-            if (voucher.getStatus() == 0) {
-                voucher.setStatus(1);
-                TVoucher restoredVoucher = voucherService.updateVoucher(id, voucher);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("ok", "Khôi phục voucher thành công", restoredVoucher)
-                );
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ResponseObject("failed", "Voucher này chưa bị xóa", null)
-                );
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Không tồn tại voucher này", null)
-            );
-        }
-
-
-
-    }
-
 
 }

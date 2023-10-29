@@ -42,6 +42,4 @@ public class TRank {
         return this.status == 1 ? "Hoạt động" : "Không hoạt động";
     }
 
-
-
 }

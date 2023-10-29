@@ -27,9 +27,4 @@ public interface IPointService {
     List<TPoints> getAllByStatus(int status);
 
 
-    Page<TPoints> getAllByStatusPaged(int status, int page, int size);
-
-    List<TPoints> searchAll(String pointName, Integer minimumPoints, Integer status);
-
-
 }
