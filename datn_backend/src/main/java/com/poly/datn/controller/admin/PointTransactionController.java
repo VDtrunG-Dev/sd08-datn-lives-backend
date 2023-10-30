@@ -49,10 +49,21 @@ public class PointTransactionController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<TPointTransactions>> getAllTransactionsPaginated(
+    public ResponseEntity<ResponseObject> getAllTransactionsPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok(pointTransactionService.getAllTransactionsPaginated(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+
+
+        int tongPointTransaction = pointTransactionService.getAllTransactions().size();
+        int soTrang = tongPointTransaction/ size;
+        if(page > soTrang){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                    "ok", "Không có dữ liệu", ""));
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                "ok", "Phân trang thành công.", pointTransactionService.getAllTransactionsPaginated(page, size)
+        ));
     }
 
 

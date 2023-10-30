@@ -39,10 +39,18 @@ public class PointController {
         return ResponseEntity.ok(pointService.save(tPoints));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        pointService.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseObject> delete(@PathVariable Long id) {
+      try {
+          pointService.delete(id);
+          return ResponseEntity.status(HttpStatus.OK).body(
+                  new ResponseObject("ok", "Xóa thành công ", "")
+          );
+      }catch (IllegalArgumentException e){
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                  new ResponseObject("Xóa thất bại", "Không thể tìm thấy point để xóa", "")
+          );
+      }
     }
 
     @GetMapping("/get/{id}")
@@ -61,10 +69,19 @@ public class PointController {
 
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<TPoints>> getAllPaginated(
+    public ResponseEntity<ResponseObject> getAllPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok(pointService.getAllPaginated(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+
+        int tongPoint = pointService.getAll().size();
+        int soTrang = tongPoint / size;
+        if (page > soTrang){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                    "ok", "Không có dữ liệu", ""));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                "ok", "Phân trang thành công.", pointService.getAllPaginated(page, size)));
     }
 
 

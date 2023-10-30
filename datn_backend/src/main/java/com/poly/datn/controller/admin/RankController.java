@@ -42,23 +42,34 @@ public class RankController {
 
     // phân trang
     @GetMapping("/paged")
-    public ResponseEntity<Page<TRank>> getAllRanksPaged(
+    public ResponseEntity<ResponseObject> getAllRanksPaged(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok(rankService.getAllPaged(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+
+        int tongRank = rankService.getAllRank().size();
+        int soTrang = tongRank / size;
+        if (page > soTrang){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                    "ok", "Không có dữ liệu", ""));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                "ok", "Phân trang thành công.", rankService.getAllPaged(page, size)));
     }
 
 
     // xóa theo id
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRank(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> deleteRank(@PathVariable Long id) {
         boolean isDeleted = rankService.deleteRank(id);
 
         if (isDeleted) {
-            return ResponseEntity.ok("Xóa thành công.");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Xóa thành công ", ""));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy  với ID được cung cấp.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("Thất bại", "Không thể xóa", rankService.deleteRank(id)));
         }
     }
 

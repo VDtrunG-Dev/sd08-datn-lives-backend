@@ -28,7 +28,6 @@ public class VoucherController {
     @Autowired
     private VoucherServiceImpl voucherService;
 
-
     //hiển thị list voucher
     @GetMapping("/view")
     public List<TVoucher> getALl() {
@@ -37,49 +36,73 @@ public class VoucherController {
 
     // phân trang
     @GetMapping("/paged")
-    public ResponseEntity<Page<TVoucher>> getAllPaged(
+    public ResponseEntity<ResponseObject> getAllPaged(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
-        return ResponseEntity.ok(voucherService.getAllPaged(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+
+        int tongVoucher = voucherService.getAllVoucher().size();
+        int soTrang = tongVoucher / size;
+        if (page > soTrang) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                    "ok", "Không có dữ liệu", ""));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                "ok", "Phân trang thành công.", voucherService.getAllPaged(page, size)));
+
     }
 
 
     // xóa theo id
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteVoucher(@PathVariable Long id) {
-        boolean result = voucherService.deleteVoucher(id);
+    public ResponseEntity<ResponseObject> deleteVoucher(@PathVariable Long id) {
 
-        if (result) {
-            return ResponseEntity.ok("Xoá thành công .");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
+        try {
+            voucherService.deleteVoucher(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Xóa thành công ", "")
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("Xóa thất bại", "Không thể tìm thấy voucher để xóa", "")
+            );
+
         }
+
     }
 
 
     // thêm voucher
 
     @PostMapping("/add")
-    public ResponseEntity<String> addVoucher(@RequestBody TVoucher voucher) {
+    public ResponseEntity<ResponseObject> addVoucher(@RequestBody TVoucher voucher) {
         TVoucher createdVoucher = voucherService.addVoucher(voucher);
 
         if (createdVoucher != null) {
-            return ResponseEntity.ok("Thêm thành công.");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Thêm thành công", "")
+            );
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Thêm thất bại.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject("Thất bại", "Không thể thêm", voucherService.addVoucher(voucher))
+            );
         }
     }
 
 
     // cập nhật voucher
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
+    public ResponseEntity<ResponseObject> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
         TVoucher updatedVoucher = voucherService.updateVoucher(id, voucher);
 
         if (updatedVoucher != null) {
-            return ResponseEntity.ok("Cập nhật thành công.");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Cập nhật thành công", "")
+            );
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("Thất bại", "Không thể tìm thấy voucher  có id  = " + id, "")
+            );
         }
     }
 
@@ -140,7 +163,7 @@ public class VoucherController {
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Không tồn tại voucher này", null)
+                    new ResponseObject("Thất bại", "Không tồn tại voucher này", null)
             );
         }
     }
@@ -171,18 +194,16 @@ public class VoucherController {
                 );
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ResponseObject("failed", "Voucher này chưa bị xóa", null)
+                        new ResponseObject("Thất bại", "Voucher này chưa bị xóa", null)
                 );
             }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Không tồn tại voucher này", null)
+                    new ResponseObject("Thất bại", "Không tồn tại voucher này", null)
             );
         }
 
 
-
     }
-
 
 }
