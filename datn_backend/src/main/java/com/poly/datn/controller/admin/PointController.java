@@ -150,7 +150,7 @@ public class PointController {
         }
         return ResponseEntity.ok(points);
     }
-
+// tìmkiem
     @GetMapping("/search-all/")
     public List<TPoints> searchPoints(@RequestParam(required = false) String pointName,
                                      @RequestParam(required = false) Integer minimumPoints,
