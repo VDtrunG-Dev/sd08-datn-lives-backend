@@ -21,5 +21,4 @@ public interface IVoucherRepository extends JpaRepository<TVoucher, Long> {
 
     Page<TVoucher> findByStatus(int status, Pageable pageable);
 
-
 }
