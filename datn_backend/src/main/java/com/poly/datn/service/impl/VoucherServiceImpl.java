@@ -3,16 +3,13 @@ package com.poly.datn.service.impl;
 import com.poly.datn.model.TVoucher;
 import com.poly.datn.repository.IVoucherRepository;
 import com.poly.datn.service.IVoucherService;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,6 +61,7 @@ public class VoucherServiceImpl implements IVoucherService {
     public List<TVoucher> getAllVouchersByStatus(int status) {
         return voucherRepository.findByStatus(status);
     }
+
 
     @Override
     public Page<TVoucher> getAllByStatusPaged(int status, int page, int size) {
