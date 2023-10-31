@@ -121,7 +121,7 @@ public class PointController {
     }
 
     // Xóa ảo
-    @PutMapping("markAsDeleted/{id}")
+    @PutMapping("deleted/{id}")
     public ResponseEntity<ResponseObject> markPointAsDeleted(@PathVariable Long id) {
         Optional<TPoints> pointOptional = pointService.getPointsById(id);
         if (pointOptional.isPresent()) {
