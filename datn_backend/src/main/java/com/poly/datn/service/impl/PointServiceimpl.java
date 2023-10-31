@@ -3,13 +3,16 @@ package com.poly.datn.service.impl;
 import com.poly.datn.model.TPoints;
 import com.poly.datn.repository.IPointRepository;
 import com.poly.datn.service.IPointService;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +64,6 @@ public class PointServiceimpl implements IPointService {
     public List<TPoints> getAllByStatus(int status) {
         return pointRepository.findByStatus(status);
     }
-
 
     @Override
     public Page<TPoints> getAllByStatusPaged(int status, int page, int size) {
