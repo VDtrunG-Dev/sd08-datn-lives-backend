@@ -51,8 +51,6 @@ public class ProductController {
 
     @PostMapping("/insert")
     public ResponseEntity<ResponseObject> insertProduct(@RequestBody TProduct product) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Insert product successfully", productService.createProduct(product))
         );
@@ -60,7 +58,6 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateProduct(@RequestBody TProduct newProduct, @PathVariable Long id) {
-
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject("failed", "Can't find product to update4", "")
             );
@@ -70,8 +67,6 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
-        // Các logic kiểm tra và xử lý nên thực hiện trong ProductService
-        // ProductService sẽ xử lý việc xóa sản phẩm.
         try {
             productService.deleteProduct(id);
             return ResponseEntity.status(HttpStatus.OK).body(
