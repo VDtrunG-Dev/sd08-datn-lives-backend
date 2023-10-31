@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -168,16 +169,19 @@ public class VoucherController {
         }
     }
 
-
-    @GetMapping("/search-all/")
+    @GetMapping("/search")
     public List<TVoucher> searchVouchers(
-            @RequestParam(required = false) String voucherName,
-            @RequestParam(required = false) String voucherCode,
-            @RequestParam(required = false) Integer status) {
-        return voucherService.searchAll(voucherName, voucherCode, status);
+            @RequestParam(value = "voucherCode", required = false) String voucherCode,
+            @RequestParam(value = "quantity", required = false) Integer quantity,
+            @RequestParam(value = "maximumCostReduction", required = false) BigDecimal maximumCostReduction) {
+        return voucherService.searchAll(voucherCode, quantity, maximumCostReduction);
     }
 
-
+    // Endpoint for searching vouchers by keyword
+    @GetMapping("/searchByKeyword")
+    public List<TVoucher> searchVouchersByKeyword(@RequestParam("keyword") String keyword) {
+        return voucherService.searchByKeyword(keyword);
+    }
     // khôi phục dữ liệu bị xóa
     @PutMapping("restoreVoucher/{id}")
     public ResponseEntity<ResponseObject> restoreVoucher(@PathVariable Long id) {

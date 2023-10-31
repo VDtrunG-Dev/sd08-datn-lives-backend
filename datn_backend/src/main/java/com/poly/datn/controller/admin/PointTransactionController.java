@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +57,8 @@ public class PointTransactionController {
 
 
         int tongPointTransaction = pointTransactionService.getAllTransactions().size();
-        int soTrang = tongPointTransaction/ size;
-        if(page > soTrang){
+        int soTrang = tongPointTransaction / size;
+        if (page > soTrang) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                     "ok", "Không có dữ liệu", ""));
 
@@ -67,7 +69,7 @@ public class PointTransactionController {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public ResponseEntity<ResponseObject> addTransaction(@RequestBody TPointTransactions pointTransaction) {
         TPointTransactions savedTransaction = pointTransactionService.savePointTransaction(pointTransaction);
         if (savedTransaction != null) {
@@ -81,7 +83,7 @@ public class PointTransactionController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateTransaction(@PathVariable Long id, @RequestBody TPointTransactions pointTransaction) {
         if (pointTransactionService.existsById(id)) {
             pointTransaction.setTransactionId(id);
@@ -176,12 +178,19 @@ public class PointTransactionController {
         return ResponseEntity.ok(transactions);
     }
 
-    @GetMapping("/search-all/")
+    @GetMapping("/search")
     public List<TPointTransactions> searchPointTransactions(
-            @RequestParam(required = false) String transactionName,
-            @RequestParam(required = false) Integer minimumPoints,
-            @RequestParam(required = false) Integer status) {
-        return pointTransactionService.searchAll(transactionName, minimumPoints, status);
+            @RequestParam(value = "customerId", required = false) Long customerId,
+            @RequestParam(value = "transactionType", required = false) Integer transactionType,
+            @RequestParam(value = "transactionDate", required = false) Date transactionDate,
+            @RequestParam(value = "transactionAmount", required = false) BigDecimal transactionAmount) {
+        return pointTransactionService.searchAll(customerId, transactionType, transactionDate, transactionAmount);
+    }
+
+
+    @GetMapping("/searchByKeyword")
+    public List<TPointTransactions> searchPointTransactionsByKeyword(@RequestParam("keyword") String keyword) {
+        return pointTransactionService.searchByKeyword(keyword);
     }
 
 }

@@ -5,6 +5,8 @@ import com.poly.datn.model.TRank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +14,6 @@ public interface IPointTransactionService {
 
 
     List<TPointTransactions> getAllTransactions();
-
 
 
     Page<TPointTransactions> getAllTransactionsPaginated(int page, int size);
@@ -32,5 +33,8 @@ public interface IPointTransactionService {
 
     Page<TPointTransactions> getAllByStatusPaged(int status, int page, int size);
 
-    List<TPointTransactions> searchAll(String transactionName, Integer minimumPoints, Integer status);
+
+    List<TPointTransactions> searchAll(Long customerId, Integer transactionType, Date transactionDate, BigDecimal transactionAmount);
+
+    List<TPointTransactions> searchByKeyword(String keyword);
 }
