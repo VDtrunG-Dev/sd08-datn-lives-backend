@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IPointTransactionRepository extends JpaRepository<TPointTransactions, Long> {
+public interface IPointTransactionRepository extends JpaRepository<TPointTransactions , Long> {
+
 
     Page<TPointTransactions> findAll(Pageable pageable);
 
@@ -21,4 +22,5 @@ public interface IPointTransactionRepository extends JpaRepository<TPointTransac
 
 
     List<TPointTransactions> findAll(Specification<TPointTransactions> tPointTransactionsSpecification);
+
 }

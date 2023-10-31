@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IPointRepository extends JpaRepository<TPoints, Long> {
+public interface IPointRepository  extends JpaRepository<TPoints, Long> {
 
     List<TPoints> findByStatus(int status);
 
