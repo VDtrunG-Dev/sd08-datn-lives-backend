@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IUserRepository extends JpaRepository<TUser,Long> {
 
@@ -19,5 +21,7 @@ public interface IUserRepository extends JpaRepository<TUser,Long> {
     @Query("SELECT u FROM TUser u WHERE u.email = :email AND u.status = 1")
     TUser findByEmailUser(String email);
 
+    @Query("SELECT u FROM TUser u WHERE u.status = :status")
+    List<TUser> findByStatus(int status);
 
 }

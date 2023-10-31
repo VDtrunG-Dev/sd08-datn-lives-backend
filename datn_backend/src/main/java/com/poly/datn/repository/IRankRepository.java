@@ -13,5 +13,4 @@ public interface IRankRepository  extends JpaRepository<TRank, Long> {
 
     List<TRank> findByStatus(int status);
 
-    List<TRank> findByIsDeletedFalse();
 }

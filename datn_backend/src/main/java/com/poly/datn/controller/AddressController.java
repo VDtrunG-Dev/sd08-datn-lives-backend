@@ -11,17 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/api/address")
 public class AddressController {
 
     @Autowired
     private AddressServicesImpl addressServices = new AddressServicesImpl();
 
-
     @GetMapping("")
-    private ResponseEntity<?> findAll(@RequestParam(name = "page") int pageNumber){
+    private ResponseEntity<?> findAll(){
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber)));
+                ResponseObject("ok", "Thành công",addressServices.findAll()));
+    }
+
+    @GetMapping("/findall")
+    private ResponseEntity<?> findAllPage(@RequestParam(name = "page") int pageNumber){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok", "Thành công",addressServices.findAllPage(pageNumber)));
     }
 
     @PostMapping("/add")
@@ -31,6 +36,11 @@ public class AddressController {
 
     }
 
+    @GetMapping("/findById/{id}")
+    private ResponseEntity<?> pageFindById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok","Thành Công",addressServices.findById(id)));
+    }
 
     @PutMapping("/update/{id}")
     private ResponseEntity<?> pageUpdate(@RequestBody TAddress address,@PathVariable Long id){
@@ -43,5 +53,18 @@ public class AddressController {
     private ResponseEntity<?> pageDelete(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", addressServices.deleteAddressById(id),""));
+    }
+
+    @PostMapping("/findByKeyWord")
+    private ResponseEntity<?> pageFindBYKeyWord(@RequestBody String keyword){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Tìm Thành Công",addressServices.findByKeywork(keyword))
+        );
+    }
+
+    @GetMapping("/findbystatus0")
+    private ResponseEntity<?> pageFindStatus(){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok", "Thành Công",addressServices.findByStatus0()));
     }
 }

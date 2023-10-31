@@ -23,4 +23,9 @@ public interface IVoucherService {
     boolean deleteVoucher(Long id);
 
     List<TVoucher> getAllVouchersByStatus(int status);
+
+
+
+    Page<TVoucher> getAllByStatusPaged(int status, int page, int size);
+
 }

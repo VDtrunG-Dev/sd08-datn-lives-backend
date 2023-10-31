@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class UserServicesImpl implements IUserServices {
@@ -27,8 +30,13 @@ public class UserServicesImpl implements IUserServices {
     private IUserAddressRepository userAddressRepository;
 
     @Override
-    public Page<TUser> findAll(int pageNumber) {
-        return userRepository.findAll(PageRequest.of(pageNumber,2));
+    public Page<TUser> findAllPage(int pageNumber) {
+        return userRepository.findAll(PageRequest.of(pageNumber,5));
+    }
+
+    @Override
+    public List<TUser> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -104,6 +112,40 @@ public class UserServicesImpl implements IUserServices {
         return validate;
     }
 
+    @Override
+    public String updateUser(TUser user) {
+        String validate = validate(user);
+        if (validate == null){
+            userRepository.save(user);
+            return "Cập Nhập Thành Công";
+        }
+        return validate;
+    }
+
+    @Override
+    public String active(Long id) {
+        TUser user = userRepository.findByIdUser(id);
+        user.setStatus(1);
+        userRepository.save(user);
+        return "Cập Nhập Thành Công";
+    }
+
+    @Override
+    public List<TUser> findByKeyword(String keyword) {
+        List<TUser> allUser = userRepository.findAll();
+
+        return allUser.stream().filter(
+                user -> user.getFirstName().contains(keyword) ||
+                        user.getLastName().contains(keyword) ||
+                        user.getEmail().contains(keyword) ||
+                        user.getPhoneNumber().contains(keyword)
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TUser> findByStatus(int status) {
+        return userRepository.findByStatus(status);
+    }
 
 
     private String validateUser(UserDTO user){
@@ -128,4 +170,28 @@ public class UserServicesImpl implements IUserServices {
         }
         return null;
     }
+
+    private String validate(TUser user){
+        if (user.getEmail().isEmpty()){
+            return "Chưa Nhập Email";
+        }
+
+        if(user.getPhoneNumber().isEmpty()){
+            return "Chưa Nhập Số Điện Thoại";
+        }
+
+        if(user.getFirstName().isEmpty()){
+            return "Chưa Nhập Họ";
+        }
+
+        if(user.getLastName().isEmpty()){
+            return "Chưa nhập tên";
+        }
+
+        if(user.getPassword().isEmpty()){
+            return "Chưa nhập mật khẩu";
+        }
+        return null;
+    }
 }
+

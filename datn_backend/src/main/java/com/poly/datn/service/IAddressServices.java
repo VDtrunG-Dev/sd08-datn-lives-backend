@@ -8,11 +8,19 @@ import java.util.List;
 public interface IAddressServices {
 
 
-    Page<TAddress> findAll(int pageNumber);
+    Page<TAddress> findAllPage(int pageNumber);
+
+    List<TAddress> findAll();
 
     String addAddress(TAddress address);
 
     String deleteAddressById(Long id);
 
     String updateAddress(TAddress address);
+
+    List<TAddress> findByKeywork(String keyword);
+
+    TAddress findById(Long id);
+
+    List<TAddress> findByStatus0();
 }

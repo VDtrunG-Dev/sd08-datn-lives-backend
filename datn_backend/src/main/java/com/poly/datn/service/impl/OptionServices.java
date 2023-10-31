@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OptionServices implements IOptionServices {
 
@@ -80,6 +82,12 @@ public class OptionServices implements IOptionServices {
         TOption option = optionRepository.findTOptionsById(id);
         option.setStatus(1);
         return "Cập Nhập Thành Công";
+    }
+
+    @Override
+    public List<TOption> findByStatus(int status) {
+
+        return optionRepository.findByStatus(status);
     }
 
 
