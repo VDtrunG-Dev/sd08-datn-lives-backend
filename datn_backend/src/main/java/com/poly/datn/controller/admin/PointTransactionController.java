@@ -30,7 +30,7 @@ public class PointTransactionController {
     private IPointTransactionService pointTransactionService;
 
 
-    @GetMapping("/view")
+    @GetMapping("/read")
     public ResponseEntity<List<TPointTransactions>> getAllTransactions() {
         return ResponseEntity.ok(pointTransactionService.getAllTransactions());
     }
@@ -96,7 +96,7 @@ public class PointTransactionController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteTransaction(@PathVariable Long id) {
         if (pointTransactionService.deletePointTransactionById(id)) {
             return ResponseEntity.ok(new ResponseObject("ok", "Xóa pointtransaction thành công!", null));
