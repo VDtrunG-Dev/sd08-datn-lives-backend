@@ -4,8 +4,6 @@ import com.poly.datn.model.TAddress;
 import com.poly.datn.repository.IAddressRepository;
 import com.poly.datn.service.IAddressServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +16,18 @@ public class AddressServicesImpl implements IAddressServices {
     private IAddressRepository addressRepository;
 
     @Override
-    public Page<TAddress> findAllPage(int pageNumber) {
-        return addressRepository.findAll(PageRequest.of(pageNumber,5));
+    public List<TAddress> findAll(int pageNumber,String keyword) {
+        List<TAddress> addresses = addressRepository.findAll();
+        int page = (pageNumber - 1) * 2;
+        int endPage = Math.min(page + 2, addresses.size());
+        return addresses.subList(page,endPage).stream().filter(
+                address -> address.getDistrict().contains(keyword) ||
+                        address.getProvince().contains(keyword) ||
+                        address.getWard().contains(keyword) ||
+                        address.getDetailAddress().contains(keyword)
+        ).collect(Collectors.toList());
     }
 
-
-    @Override
-    public List<TAddress> findAll(){
-        return addressRepository.findAll();
-    }
     @Override
     public String addAddress(TAddress address) {
         try {
@@ -46,7 +47,8 @@ public class AddressServicesImpl implements IAddressServices {
             return "Địa chỉ không tồn tại";
         }
         try{
-            addressRepository.delete(address);
+            address.setStatus(0);
+            addressRepository.save(address);
         }catch (Exception e){
             return "Xoá Thất Bại";
         }
@@ -55,21 +57,17 @@ public class AddressServicesImpl implements IAddressServices {
 
     @Override
     public String updateAddress(TAddress address) {
+        TAddress addressfindById = addressRepository.findByIdAddress(address.getId());
+        if(addressfindById == null){
+            return "Địa chỉ không tồn tại";
+        }
+        addressfindById.setStatus(addressfindById.getStatus());
+        addressfindById.setProvince(address.getProvince());
+        addressfindById.setDistrict(address.getDistrict());
+        addressfindById.setWard(address.getWard());
+        addressfindById.setDetailAddress(address.getDetailAddress());
         addressRepository.save(address);
         return "Cập Nhập Thành Công";
-    }
-
-    @Override
-    public List<TAddress> findByKeywork(String keyword) {
-        List<TAddress> addressfindAll = addressRepository.findAll();
-
-        return addressfindAll
-                .stream().filter(
-                        address -> address.getProvince().contains(keyword) ||
-                                address.getDistrict().contains(keyword) ||
-                                address.getWard().contains(keyword) ||
-                                address.getDetailAddress().contains(keyword)
-                ).collect(Collectors.toList());
     }
 
     @Override
@@ -78,8 +76,14 @@ public class AddressServicesImpl implements IAddressServices {
     }
 
     @Override
-    public List<TAddress> findByStatus0() {
-        return addressRepository.findByStatus0();
+    public List<TAddress> search(String keyword) {
+
+        return addressRepository.findAll().stream().filter(
+                address -> address.getDetailAddress().contains(keyword) ||
+                        address.getProvince().contains(keyword) ||
+                        address.getDistrict().contains(keyword) ||
+                        address.getWard().contains(keyword)
+        ).collect(Collectors.toList());
     }
 
 }

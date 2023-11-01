@@ -21,5 +21,6 @@ public interface IOptionServices {
 
     String active(Long id);
 
-    List<TOption> findByStatus(int status);
+    List<TOption> searchOption(String keyword);
+
 }

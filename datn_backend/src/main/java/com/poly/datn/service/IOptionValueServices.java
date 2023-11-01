@@ -4,10 +4,12 @@ import com.poly.datn.model.TOptionValue;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 public interface IOptionValueServices {
 
-    Page<TOptionValue> findAll(int pageNumber);
+    List<TOptionValue> findAll(int pageNumber);
 
     TOptionValue findById(Long id);
 

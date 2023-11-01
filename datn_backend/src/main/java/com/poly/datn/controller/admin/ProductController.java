@@ -6,22 +6,14 @@ import com.poly.datn.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
-@RequestMapping("/api/admin/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
@@ -29,7 +21,7 @@ public class ProductController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getAllProduct(@PathVariable(name = "page") int page) {
+    public ResponseEntity<?> getAllProduct(@RequestParam(name = "page",defaultValue = "1") int page) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công",productService.getAllProducts(page))
         );
@@ -49,34 +41,46 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/add")
     public ResponseEntity<ResponseObject> insertProduct(@RequestBody TProduct product) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Insert product successfully", productService.createProduct(product))
+                new ResponseObject("ok", productService.createProduct(product),product )
         );
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody TProduct newProduct, @PathVariable Long id) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Can't find product to update4", "")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseObject> updateProduct(@RequestBody TProduct product, @PathVariable Long id) {
+            product.setId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", productService.updateProduct(id,product), product)
             );
-
-
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Delete product successfully", "")
+                    new ResponseObject("ok", "Xoá Sản Phẩm Thành Công", "")
             );
         } catch (IllegalArgumentException e) {
-            // Xử lý lỗi nếu sản phẩm không tồn tại hoặc không thể xóa.
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Can't find product to delete", "")
+                    new ResponseObject("failed", "Xoá Sản Phẩm Thất Bại", "")
             );
         }
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<ResponseObject> updateProduct(@RequestParam(name = "search", required = false) String search) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công", productService.findByKeyword(search))
+        );
+    }
+
+    @PostMapping("/active/{id}")
+    public ResponseEntity<ResponseObject> acctiveProduct(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công", productService.activeProduct(id))
+        );
     }
 }

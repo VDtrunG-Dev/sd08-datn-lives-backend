@@ -2,9 +2,11 @@ package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.UserDTO;
 import com.poly.datn.model.TAddress;
+import com.poly.datn.model.TRank;
 import com.poly.datn.model.TUser;
 import com.poly.datn.model.TUserAddress;
 import com.poly.datn.repository.IAddressRepository;
+import com.poly.datn.repository.IRankRepository;
 import com.poly.datn.repository.IUserAddressRepository;
 import com.poly.datn.repository.IUserRepository;
 import com.poly.datn.service.IUserServices;
@@ -29,14 +31,20 @@ public class UserServicesImpl implements IUserServices {
     @Autowired
     private IUserAddressRepository userAddressRepository;
 
+    @Autowired
+    private IRankRepository rankRepository;
     @Override
-    public Page<TUser> findAllPage(int pageNumber) {
-        return userRepository.findAll(PageRequest.of(pageNumber,5));
-    }
-
-    @Override
-    public List<TUser> findAll() {
-        return userRepository.findAll();
+    public List<TUser> findAll(int pageNumber,String keyword) {
+        List<TUser> users = userRepository.findAll();
+        int page = (pageNumber - 1) * 5;
+        int endPage = Math.min(page + 5, users.size());
+        return userRepository.findAllUser().subList(page,endPage)
+                .stream().filter(
+                user -> user.getFirstName().contains(keyword) ||
+                        user.getLastName().contains(keyword) ||
+                        user.getEmail().contains(keyword) ||
+                        user.getPhoneNumber().contains(keyword)
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -46,7 +54,8 @@ public class UserServicesImpl implements IUserServices {
 
     @Override
     public TUser findByEmail(String email) {
-        return userRepository.findByEmailUser(email);
+//        return userRepository.findByEmailUser(email);
+        return null;
     }
 
     @Override
@@ -71,7 +80,6 @@ public class UserServicesImpl implements IUserServices {
             user.setStatus(0);
             userRepository.save(user);
         }
-
         return "Xoá Thành Công";
     }
 
@@ -79,15 +87,17 @@ public class UserServicesImpl implements IUserServices {
     public String saveUser(UserDTO userDto) {
         String validate = validateUser(userDto);
         if (validate == null){
-            //Set User
             TUser user = new TUser();
+            Long idRank = (long) 1;
+            TRank rank = rankRepository.findByIdRank(idRank);
+            //Set User
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
             user.setPhoneNumber(userDto.getPhoneNumber());
             user.setEmail(userDto.getEmail());
             user.setCccd(userDto.getCccd());
-            user.setDateOfBirth(userDto.getDateOfBirth());
             user.setPassword(userDto.getPassword());
+            user.setRank(rank);
             user.setStatus(1);
             userRepository.save(user);
 
@@ -114,37 +124,37 @@ public class UserServicesImpl implements IUserServices {
 
     @Override
     public String updateUser(TUser user) {
-        String validate = validate(user);
-        if (validate == null){
-            userRepository.save(user);
-            return "Cập Nhập Thành Công";
-        }
-        return validate;
-    }
+        TUser userfindbyemail = userRepository.findByEmail(user.getEmail());
 
-    @Override
-    public String active(Long id) {
-        TUser user = userRepository.findByIdUser(id);
-        user.setStatus(1);
-        userRepository.save(user);
+        if(userfindbyemail == null){
+            return "Người dùng không tồn tại";
+        }
+        userfindbyemail.setFirstName(user.getFirstName());
+        userfindbyemail.setLastName(user.getLastName());
+        userfindbyemail.setEmail(user.getEmail());
+        userfindbyemail.setCccd(user.getCccd());
+        userfindbyemail.setPhoneNumber(user.getPhoneNumber());
+        userfindbyemail.setImage(user.getImage());
+
+        userRepository.save(userfindbyemail);
         return "Cập Nhập Thành Công";
     }
 
     @Override
-    public List<TUser> findByKeyword(String keyword) {
-        List<TUser> allUser = userRepository.findAll();
-
-        return allUser.stream().filter(
-                user -> user.getFirstName().contains(keyword) ||
-                        user.getLastName().contains(keyword) ||
-                        user.getEmail().contains(keyword) ||
-                        user.getPhoneNumber().contains(keyword)
-        ).collect(Collectors.toList());
+    public String activeUser(Long id) {
+        TUser user = userRepository.findByIdUserDelete(id);
+        if (user == null){
+            return "Tài Khoản Không Tồn Tại";
+        }else {
+            user.setStatus(1);
+            userRepository.save(user);
+        }
+        return "Cập Nhật Thành Công";
     }
 
     @Override
-    public List<TUser> findByStatus(int status) {
-        return userRepository.findByStatus(status);
+    public List<TUser> searchUser(String keyword) {
+        return userRepository.findAll();
     }
 
 
@@ -170,28 +180,4 @@ public class UserServicesImpl implements IUserServices {
         }
         return null;
     }
-
-    private String validate(TUser user){
-        if (user.getEmail().isEmpty()){
-            return "Chưa Nhập Email";
-        }
-
-        if(user.getPhoneNumber().isEmpty()){
-            return "Chưa Nhập Số Điện Thoại";
-        }
-
-        if(user.getFirstName().isEmpty()){
-            return "Chưa Nhập Họ";
-        }
-
-        if(user.getLastName().isEmpty()){
-            return "Chưa nhập tên";
-        }
-
-        if(user.getPassword().isEmpty()){
-            return "Chưa nhập mật khẩu";
-        }
-        return null;
-    }
 }
-

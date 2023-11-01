@@ -42,34 +42,23 @@ public class RankController {
 
     // phân trang
     @GetMapping("/paged")
-    public ResponseEntity<ResponseObject> getAllRanksPaged(
+    public ResponseEntity<Page<TRank>> getAllRanksPaged(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        int tongRank = rankService.getAllRank().size();
-        int soTrang = tongRank / size;
-        if (page > soTrang){
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    "ok", "Không có dữ liệu", ""));
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                "ok", "Phân trang thành công.", rankService.getAllPaged(page, size)));
+            @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok(rankService.getAllPaged(page, size));
     }
 
 
     // xóa theo id
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject> deleteRank(@PathVariable Long id) {
+    public ResponseEntity<String> deleteRank(@PathVariable Long id) {
         boolean isDeleted = rankService.deleteRank(id);
 
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Xóa thành công ", ""));
+            return ResponseEntity.ok("Xóa thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Thất bại", "Không thể xóa", rankService.deleteRank(id)));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy  với ID được cung cấp.");
         }
     }
 
@@ -77,36 +66,27 @@ public class RankController {
     // thêm mới
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseObject> addRank(@RequestBody TRank rank) {
+    public ResponseEntity<String> addRank(@RequestBody TRank rank) {
         TRank savedRank = rankService.createRank(rank);
         if (savedRank != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Thêm thành công", "")
-            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("Thêm thành công .");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject("Thất bại", "Không thể thêm", rankService.createRank(rank))
-            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while saving the rank.");
         }
     }
 
 
     // cập nhật
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateRank(@PathVariable Long id, @RequestBody TRank rank) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateRank(@PathVariable Long id, @RequestBody TRank rank) {
 
         TRank updatedRank = rankService.updateRank(id, rank);
 
 
-
         if (updatedRank != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Cập nhật thành công", "")
-            );
+            return ResponseEntity.ok("Cập nhật thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Thất bại", "Không thể tìm thấy voucher  có id  = " + id, "")
-            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy  với ID được cung cấp.");
         }
 
 
@@ -148,18 +128,13 @@ public class RankController {
 
 
     // tìm kiếm tất cả
-    @GetMapping("/search-all")
-    public List<TRank> searchRanks(
-            @RequestParam(value = "rankName", required = false) String rankName,
-            @RequestParam(value = "minimumPoints", required = false) Integer minimumPoints) {
-        return rankService.searchAll(rankName, minimumPoints);
+    @GetMapping("/search-all/")
+    public List<TRank> searchRanks(@RequestParam(required = false) String rankName,
+                                   @RequestParam(required = false) Integer minimumPoints,
+                                   @RequestParam(required = false) Integer status) {
+        return rankService.searchAll(rankName, minimumPoints, status);
     }
 
-    // Endpoint for searching ranks by keyword
-    @GetMapping("/searchByKeyword")
-    public List<TRank> searchRanksByKeyword(@RequestParam("keyword") String keyword) {
-        return rankService.searchByKeyword(keyword);
-    }
 
     // xóa ảo
 

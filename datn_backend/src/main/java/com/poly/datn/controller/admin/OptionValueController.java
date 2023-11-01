@@ -16,17 +16,17 @@ public class OptionValueController {
     @Autowired
     private OptionValueServices optionValueServices;
 
-    @GetMapping("/findall")
-    private ResponseEntity<?> pageFindAll(@RequestParam(name = "page") int pageNumber){
+    @GetMapping("")
+    private ResponseEntity<?> pageFindAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công",optionValueServices.findAll(pageNumber))
         );
     }
 
-    @PostMapping("/save")
+    @PostMapping("/add")
     private ResponseEntity<?> pageSave(@RequestBody TOptionValue optionValue,@RequestBody Long optionId){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok",optionValueServices.save(optionValue,optionId),"")
+                new ResponseObject("ok",optionValueServices.save(optionValue,optionId),optionValue)
         );
     }
 
@@ -34,7 +34,7 @@ public class OptionValueController {
     private ResponseEntity<?> pageUpdate(@RequestBody TOptionValue optionValue,@PathVariable Long id,@RequestBody String optionId){
         optionValue.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok",optionValueServices.update(optionValue),"")
+                new ResponseObject("ok",optionValueServices.update(optionValue),optionValue)
         );
     }
 
@@ -42,6 +42,13 @@ public class OptionValueController {
     private ResponseEntity<?> pageDelete(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok",optionValueServices.deleteById(id),"")
+        );
+    }
+
+    @GetMapping("/active/{id}")
+    private ResponseEntity<?> pageActive(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok",optionValueServices.active(id),"")
         );
     }
 }

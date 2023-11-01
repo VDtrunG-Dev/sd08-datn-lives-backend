@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class PointTransactionController {
     private IPointTransactionService pointTransactionService;
 
 
-    @GetMapping("/read")
+    @GetMapping("/view")
     public ResponseEntity<List<TPointTransactions>> getAllTransactions() {
         return ResponseEntity.ok(pointTransactionService.getAllTransactions());
     }
@@ -51,25 +49,14 @@ public class PointTransactionController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<ResponseObject> getAllTransactionsPaginated(
+    public ResponseEntity<Page<TPointTransactions>> getAllTransactionsPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-
-        int tongPointTransaction = pointTransactionService.getAllTransactions().size();
-        int soTrang = tongPointTransaction / size;
-        if (page > soTrang) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    "ok", "Không có dữ liệu", ""));
-
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                "ok", "Phân trang thành công.", pointTransactionService.getAllTransactionsPaginated(page, size)
-        ));
+            @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok(pointTransactionService.getAllTransactionsPaginated(page, size));
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<ResponseObject> addTransaction(@RequestBody TPointTransactions pointTransaction) {
         TPointTransactions savedTransaction = pointTransactionService.savePointTransaction(pointTransaction);
         if (savedTransaction != null) {
@@ -83,7 +70,7 @@ public class PointTransactionController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseObject> updateTransaction(@PathVariable Long id, @RequestBody TPointTransactions pointTransaction) {
         if (pointTransactionService.existsById(id)) {
             pointTransaction.setTransactionId(id);
@@ -96,7 +83,7 @@ public class PointTransactionController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteTransaction(@PathVariable Long id) {
         if (pointTransactionService.deletePointTransactionById(id)) {
             return ResponseEntity.ok(new ResponseObject("ok", "Xóa pointtransaction thành công!", null));
@@ -178,19 +165,12 @@ public class PointTransactionController {
         return ResponseEntity.ok(transactions);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search-all/")
     public List<TPointTransactions> searchPointTransactions(
-            @RequestParam(value = "customerId", required = false) Long customerId,
-            @RequestParam(value = "transactionType", required = false) Integer transactionType,
-            @RequestParam(value = "transactionDate", required = false) Date transactionDate,
-            @RequestParam(value = "transactionAmount", required = false) BigDecimal transactionAmount) {
-        return pointTransactionService.searchAll(customerId, transactionType, transactionDate, transactionAmount);
-    }
-
-
-    @GetMapping("/searchByKeyword")
-    public List<TPointTransactions> searchPointTransactionsByKeyword(@RequestParam("keyword") String keyword) {
-        return pointTransactionService.searchByKeyword(keyword);
+            @RequestParam(required = false) String transactionName,
+            @RequestParam(required = false) Integer minimumPoints,
+            @RequestParam(required = false) Integer status) {
+        return pointTransactionService.searchAll(transactionName, minimumPoints, status);
     }
 
 }

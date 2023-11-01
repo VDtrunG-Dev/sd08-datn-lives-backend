@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +28,7 @@ public class VoucherController {
     @Autowired
     private VoucherServiceImpl voucherService;
 
+
     //hiển thị list voucher
     @GetMapping("/view")
     public List<TVoucher> getALl() {
@@ -37,73 +37,49 @@ public class VoucherController {
 
     // phân trang
     @GetMapping("/paged")
-    public ResponseEntity<ResponseObject> getAllPaged(
+    public ResponseEntity<Page<TVoucher>> getAllPaged(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        int tongVoucher = voucherService.getAllVoucher().size();
-        int soTrang = tongVoucher / size;
-        if (page > soTrang) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    "ok", "Không có dữ liệu", ""));
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                "ok", "Phân trang thành công.", voucherService.getAllPaged(page, size)));
-
+            @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok(voucherService.getAllPaged(page, size));
     }
 
 
     // xóa theo id
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> deleteVoucher(@PathVariable Long id) {
+    public ResponseEntity<String> deleteVoucher(@PathVariable Long id) {
+        boolean result = voucherService.deleteVoucher(id);
 
-        try {
-            voucherService.deleteVoucher(id);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Xóa thành công ", "")
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Xóa thất bại", "Không thể tìm thấy voucher để xóa", "")
-            );
-
+        if (result) {
+            return ResponseEntity.ok("Xoá thành công .");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
         }
-
     }
 
 
     // thêm voucher
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseObject> addVoucher(@RequestBody TVoucher voucher) {
+    public ResponseEntity<String> addVoucher(@RequestBody TVoucher voucher) {
         TVoucher createdVoucher = voucherService.addVoucher(voucher);
 
         if (createdVoucher != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Thêm thành công", "")
-            );
+            return ResponseEntity.ok("Thêm thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject("Thất bại", "Không thể thêm", voucherService.addVoucher(voucher))
-            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Thêm thất bại.");
         }
     }
 
 
     // cập nhật voucher
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
+    public ResponseEntity<String> updateVoucher(@PathVariable Long id, @RequestBody TVoucher voucher) {
         TVoucher updatedVoucher = voucherService.updateVoucher(id, voucher);
 
         if (updatedVoucher != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Cập nhật thành công", "")
-            );
+            return ResponseEntity.ok("Cập nhật thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Thất bại", "Không thể tìm thấy voucher  có id  = " + id, "")
-            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy voucher với ID được cung cấp.");
         }
     }
 
@@ -164,24 +140,21 @@ public class VoucherController {
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Thất bại", "Không tồn tại voucher này", null)
+                    new ResponseObject("failed", "Không tồn tại voucher này", null)
             );
         }
     }
 
-    @GetMapping("/search")
+
+    @GetMapping("/search-all/")
     public List<TVoucher> searchVouchers(
-            @RequestParam(value = "voucherCode", required = false) String voucherCode,
-            @RequestParam(value = "quantity", required = false) Integer quantity,
-            @RequestParam(value = "maximumCostReduction", required = false) BigDecimal maximumCostReduction) {
-        return voucherService.searchAll(voucherCode, quantity, maximumCostReduction);
+            @RequestParam(required = false) String voucherName,
+            @RequestParam(required = false) String voucherCode,
+            @RequestParam(required = false) Integer status) {
+        return voucherService.searchAll(voucherName, voucherCode, status);
     }
 
-    // Endpoint for searching vouchers by keyword
-    @GetMapping("/searchByKeyword")
-    public List<TVoucher> searchVouchersByKeyword(@RequestParam("keyword") String keyword) {
-        return voucherService.searchByKeyword(keyword);
-    }
+
     // khôi phục dữ liệu bị xóa
     @PutMapping("restoreVoucher/{id}")
     public ResponseEntity<ResponseObject> restoreVoucher(@PathVariable Long id) {
@@ -198,16 +171,18 @@ public class VoucherController {
                 );
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ResponseObject("Thất bại", "Voucher này chưa bị xóa", null)
+                        new ResponseObject("failed", "Voucher này chưa bị xóa", null)
                 );
             }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Thất bại", "Không tồn tại voucher này", null)
+                    new ResponseObject("failed", "Không tồn tại voucher này", null)
             );
         }
 
 
+
     }
+
 
 }

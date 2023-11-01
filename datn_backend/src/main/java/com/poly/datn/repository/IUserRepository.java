@@ -18,10 +18,14 @@ public interface IUserRepository extends JpaRepository<TUser,Long> {
     @Query("SELECT u FROM TUser u WHERE u.id = :id AND u.status = 1")
     TUser findByIdUser(Long id);
 
-    @Query("SELECT u FROM TUser u WHERE u.email = :email AND u.status = 1")
-    TUser findByEmailUser(String email);
+    @Query("SELECT u FROM TUser u WHERE u.id = :id AND u.status = 0")
+    TUser findByIdUserDelete(Long id);
 
-    @Query("SELECT u FROM TUser u WHERE u.status = :status")
-    List<TUser> findByStatus(int status);
+
+    @Query("SELECT u FROM TUser u WHERE u.status = 1")
+    List<TUser> findAllUser();
+
+    @Query("SELECT u FROM TUser u WHERE u.status = 1 AND u.email =:email")
+    TUser findByEmail(String email);
 
 }

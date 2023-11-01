@@ -55,8 +55,8 @@ public class TUser {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name = "gender")
-    private Integer gender;
+    @Column(name = "sex")
+    private Integer sex;
 
     @Column(name = "email")
     private String email;
@@ -89,7 +89,6 @@ public class TUser {
     private Date updatedAt;
 
     @Column(name = "status")
-    private Integer status;
-
+    private int status;
 
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IProductService {
     
-    Page<TProduct> getAllProducts(int page);
+    List<TProduct> getAllProducts(int page);
 
     Optional<TProduct> getProductById(Long id);
 
@@ -17,4 +17,8 @@ public interface IProductService {
     String updateProduct(Long id, TProduct updatedProduct);
 
     String deleteProduct(Long id);
+
+    List<TProduct> findByKeyword(String keyword);
+
+    String activeProduct(Long id);
 }

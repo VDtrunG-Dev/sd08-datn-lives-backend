@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,37 +29,20 @@ public class PointController {
     private PointServiceimpl pointService;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<ResponseObject> add(@RequestBody TPoints tPoints) {
-        TPoints savedPoint = pointService.save(tPoints);
-        if (savedPoint != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseObject("ok", "Thêm mới point thành công!", savedPoint)
-            );
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseObject("false", "Thêm mới point thất bại!", null)
-            );
-        }
+    @PostMapping("/add")
+    public ResponseEntity<TPoints> add(@RequestBody TPoints tPoints) {
+        return ResponseEntity.ok(pointService.save(tPoints));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TPoints> update(@RequestBody TPoints tPoints) {
         return ResponseEntity.ok(pointService.save(tPoints));
     }
 
-    @DeleteMapping("/delete{id}")
-    public ResponseEntity<ResponseObject> delete(@PathVariable Long id) {
-        try {
-            pointService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Xóa thành công ", "")
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("Xóa thất bại", "Không thể tìm thấy point để xóa", "")
-            );
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        pointService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/get/{id}")
@@ -73,30 +54,21 @@ public class PointController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/read")
+    @GetMapping("/view")
     public ResponseEntity<List<TPoints>> getAll() {
         return ResponseEntity.ok(pointService.getAll());
     }
 
 
     @GetMapping("/paginated")
-    public ResponseEntity<ResponseObject> getAllPaginated(
+    public ResponseEntity<Page<TPoints>> getAllPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        int tongPoint = pointService.getAll().size();
-        int soTrang = tongPoint / size;
-        if (page > soTrang) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    "ok", "Không có dữ liệu", ""));
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                "ok", "Phân trang thành công.", pointService.getAllPaginated(page, size)));
+            @RequestParam(defaultValue = "3") int size) {
+        return ResponseEntity.ok(pointService.getAllPaginated(page, size));
     }
 
 
-    @GetMapping("search/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
         Optional<TPoints> foundPoints = pointService.getPointsById(id);
         if (foundPoints.isPresent()) {
@@ -121,7 +93,7 @@ public class PointController {
     }
 
     // Xóa ảo
-    @PutMapping("deleted/{id}")
+    @PutMapping("markAsDeleted/{id}")
     public ResponseEntity<ResponseObject> markPointAsDeleted(@PathVariable Long id) {
         Optional<TPoints> pointOptional = pointService.getPointsById(id);
         if (pointOptional.isPresent()) {
@@ -165,8 +137,9 @@ public class PointController {
     }
 
 
+
     @GetMapping("/byStatus/1/paged")
-    public ResponseEntity<ResponseObject> getAllByStatus1Paged(
+    public ResponseEntity<Page<TPoints>> getAllByStatus1Paged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
@@ -175,25 +148,14 @@ public class PointController {
         if (points.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                "ok", "Thành công", pointService.getAllByStatusPaged(1, page, size)));
-
+        return ResponseEntity.ok(points);
     }
 
-    // tìmkiem
-    @GetMapping("/search-all")
-    public List<TPoints> searchPoints(
-            @RequestParam(value = "customerId", required = false) Long customerId,
-            @RequestParam(value = "transactionDate", required = false) Date transactionDate,
-            @RequestParam(value = "transactionAmount", required = false) BigDecimal transactionAmount,
-            @RequestParam(value = "pointsEarned", required = false) Integer pointsEarned) {
-        return pointService.searchAll(customerId, transactionDate, transactionAmount, pointsEarned);
-    }
-
-
-    @GetMapping("/searchByKeyword")
-    public List<TPoints> searchPointsByKeyword(@RequestParam("keyword") String keyword) {
-        return pointService.searchByKeyword(keyword);
+    @GetMapping("/search-all/")
+    public List<TPoints> searchPoints(@RequestParam(required = false) String pointName,
+                                     @RequestParam(required = false) Integer minimumPoints,
+                                     @RequestParam(required = false) Integer status) {
+        return pointService.searchAll(pointName, minimumPoints, status);
     }
 
 }

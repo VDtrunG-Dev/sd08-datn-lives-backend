@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -22,26 +20,18 @@ public class UserController {
     @Autowired
     private IUserRepository userRepository;
 
-    @GetMapping("/findall")
-    private ResponseEntity<?> pageAllUserPage(@RequestParam(name = "page") int pageNumber){
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công",userServices.findAllPage(pageNumber))
-        );
-    }
-
     @GetMapping("")
-    private ResponseEntity<?> pageAllUser(@RequestParam(name = "page") int pageNumber){
-
+    private ResponseEntity<?> pageAllUser(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
+                                          @RequestParam(name = "search",defaultValue = "") String search){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công",userServices.findAll())
+                new ResponseObject("ok","Thành Công",userServices.findAll(pageNumber,search))
         );
     }
 
-    @GetMapping("/findbyemail/{email}")
-    private ResponseEntity<?> pageFindByEmailUser(@PathVariable(name = "email") String email){
+    @GetMapping("/{id}")
+    private ResponseEntity<?> pageFindByEmailUser(@PathVariable(name = "id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công",userServices.findByEmail(email))
+                new ResponseObject("ok","Thành Công",userServices.findById(id))
         );
     }
 
@@ -54,44 +44,23 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    private ResponseEntity<?> pageUpdateUser(@RequestBody TUser user, @PathVariable Long id){
-        user.setId(id);
-        TUser userFindById = userServices.findById(id);
+    private ResponseEntity<?> pageUpdateUser(@RequestBody TUser user, @PathVariable(name = "id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("", userServices.updateUser(user),userFindById)
-        );
-    }
-
-
-    @PutMapping("/active/{id}")
-    private ResponseEntity<?> pageActive(@PathVariable Long id){
-        TUser user = userServices.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("", userServices.active(id),user)
+                new ResponseObject("", userServices.updateUser(user),user)
         );
     }
 
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<?> pageDeleteUser(@PathVariable(name = "id") Long id){
-        TUser user = userServices.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("", userServices.deleteUserById(id),user)
+                new ResponseObject("Delete", userServices.deleteUserById(id),"")
         );
     }
 
-    @PostMapping("/findbystatus")
-    private ResponseEntity<?> findByStatus(@RequestBody int status){
-        List<TUser> user = userServices.findByStatus(status);
+    @GetMapping("/active/{id}")
+    private ResponseEntity<?> pageSearch(@PathVariable(name = "id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("OK", "Thành Công",user)
-        );
-    }
-
-    @PostMapping("findBykeyword")
-    private ResponseEntity<?> pageFindByKeyword(@RequestBody String keyword){
-        List<TUser> users = userServices.findByKeyword(keyword);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("OK", "Thành Công",users)
+                new ResponseObject("ok","Thành Công",userServices.activeUser(id))
         );
     }
 }
