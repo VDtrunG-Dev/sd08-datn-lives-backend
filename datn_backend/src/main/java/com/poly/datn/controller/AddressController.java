@@ -4,6 +4,7 @@ import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TAddress;
 import com.poly.datn.service.impl.AddressServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,42 +12,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/address")
+    @RequestMapping("/api/address")
 public class AddressController {
 
     @Autowired
     private AddressServicesImpl addressServices = new AddressServicesImpl();
 
-    @GetMapping("")
-    private ResponseEntity<?> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", "Thành công",addressServices.findAll()));
-    }
 
-    @GetMapping("/findall")
-    private ResponseEntity<?> findAllPage(@RequestParam(name = "page") int pageNumber){
+    @GetMapping("")
+    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
+                                      @RequestParam(name = "search", defaultValue = "") String search){
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", "Thành công",addressServices.findAllPage(pageNumber)));
+                ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber,search)));
     }
 
     @PostMapping("/add")
     private ResponseEntity<?> pageAdd(@RequestBody TAddress address ){
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", addressServices.addAddress(address),""));
+                ResponseObject("ok", addressServices.addAddress(address),address));
 
     }
 
-    @GetMapping("/findById/{id}")
-    private ResponseEntity<?> pageFindById(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok","Thành Công",addressServices.findById(id)));
-    }
 
     @PutMapping("/update/{id}")
     private ResponseEntity<?> pageUpdate(@RequestBody TAddress address,@PathVariable Long id){
         address.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", addressServices.updateAddress(address),""));
+                ResponseObject("ok", addressServices.updateAddress(address),address));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -55,16 +47,16 @@ public class AddressController {
                 ResponseObject("ok", addressServices.deleteAddressById(id),""));
     }
 
-    @PostMapping("/findByKeyWord")
-    private ResponseEntity<?> pageFindBYKeyWord(@RequestBody String keyword){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Tìm Thành Công",addressServices.findByKeywork(keyword))
-        );
+    @GetMapping("/{id}")
+    private ResponseEntity<?> pageFindById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(new
+                ResponseObject("ok","" ,addressServices.findById(id)));
     }
 
-    @GetMapping("/findbystatus0")
-    private ResponseEntity<?> pageFindStatus(){
+    @GetMapping("search")
+    private ResponseEntity<?> findSearch(@RequestParam(name = "search",required = false) String search){
         return ResponseEntity.status(HttpStatus.OK).body(new
-                ResponseObject("ok", "Thành Công",addressServices.findByStatus0()));
+                ResponseObject("ok", "Thành công",addressServices.search(search)));
     }
+
 }

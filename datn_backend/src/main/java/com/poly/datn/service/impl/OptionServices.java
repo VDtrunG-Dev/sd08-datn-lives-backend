@@ -80,14 +80,15 @@ public class OptionServices implements IOptionServices {
     @Override
     public String active(Long id) {
         TOption option = optionRepository.findTOptionsById(id);
+        System.out.println(option);
         option.setStatus(1);
+        optionRepository.save(option);
         return "Cập Nhập Thành Công";
     }
 
     @Override
-    public List<TOption> findByStatus(int status) {
-
-        return optionRepository.findByStatus(status);
+    public List<TOption> searchOption(String keyword) {
+        return optionRepository.findByNameContaining(keyword);
     }
 
 

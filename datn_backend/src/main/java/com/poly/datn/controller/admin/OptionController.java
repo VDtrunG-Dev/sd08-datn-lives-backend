@@ -15,8 +15,8 @@ public class OptionController {
     @Autowired
     private IOptionServices optionServices;
 
-    @GetMapping("/findall")
-    private ResponseEntity<?> pageOption(@RequestParam(name = "page") int page){
+    @GetMapping("")
+    private ResponseEntity<?> pageOption(@RequestParam(name = "page",defaultValue = "1") int page){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công",optionServices.findAll(page)
         ));
@@ -39,7 +39,7 @@ public class OptionController {
     @PostMapping("/add")
     private ResponseEntity<?> pageAdd(@RequestBody TOption option){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("",optionServices.save(option),"")
+                new ResponseObject("",optionServices.save(option),option)
         );
     }
 
@@ -47,14 +47,22 @@ public class OptionController {
     private ResponseEntity<?> pageUpdate(@RequestBody TOption option,@PathVariable Long id){
         option.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("Ok",optionServices.update(option),"")
+                new ResponseObject("Ok",optionServices.update(option),option)
         );
     }
 
-    @PutMapping("/active/{id}")
+    @GetMapping("/active/{id}")
     private ResponseEntity<?> pageActive(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("Ok",optionServices.active(id),"")
+        );
+    }
+
+    @GetMapping("/search")
+    private ResponseEntity<?> pageSearch(@RequestParam(name = "search",required = false) String search){
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("Ok","Thành Công",optionServices.searchOption(search))
         );
     }
 
@@ -62,13 +70,6 @@ public class OptionController {
     private ResponseEntity<?> pageDelete(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("Ok",optionServices.delete(id),"")
-        );
-    }
-
-    @DeleteMapping("/findBystatus")
-    private ResponseEntity<?> pageFindByStatus(@RequestBody int status){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("Ok","Thanh Công",optionServices.findByStatus(status))
         );
     }
 }

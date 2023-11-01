@@ -11,11 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -56,8 +54,13 @@ public class VoucherServiceImpl implements IVoucherService {
     }
 
     @Override
-    public void deleteVoucher(Long id) {
-        voucherRepository.findById(id).ifPresent(voucher -> voucherRepository.delete(voucher));
+    public boolean deleteVoucher(Long id) {
+        if (voucherRepository.existsById(id)) {
+            voucherRepository.deleteById(id);
+            return true;
+        }
+        return false;
+
     }
 
     @Override
@@ -72,21 +75,24 @@ public class VoucherServiceImpl implements IVoucherService {
     }
 
     @Override
-    public List<TVoucher> searchAll(String voucherCode, Integer quantity, BigDecimal maximumCostReduction) {
-        return voucherRepository.findAll().stream()
-                .filter(voucher -> voucher.getVoucherCode().contains(voucherCode))
-                .filter(voucher -> voucher.getQuantity().equals(quantity))
-                .filter(voucher -> voucher.getMaximumCostReduction().equals(maximumCostReduction))
-                .collect(Collectors.toList());
-    }
+    public List<TVoucher> searchAll(String voucherName, String voucherCode, Integer status) {
+        return voucherRepository.findAll((Specification<TVoucher>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-    @Override
-    public List<TVoucher> searchByKeyword(String keyword) {
-        return voucherRepository.findAll().stream()
-                .filter(voucher -> voucher.getVoucherCode().contains(keyword)
-                        || voucher.getQuantity().toString().contains(keyword)
-                        || voucher.getMaximumCostReduction().toString().contains(keyword))
-                .collect(Collectors.toList());
+            if (voucherName != null && !voucherName.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("voucherName"), "%" + voucherName + "%"));
+            }
+
+            if (voucherCode != null && !voucherCode.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("voucherCode"), "%" + voucherCode + "%"));
+            }
+
+            if (status != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), status));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
     }
 
 
