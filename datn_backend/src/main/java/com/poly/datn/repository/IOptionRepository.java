@@ -21,6 +21,5 @@ public interface IOptionRepository extends JpaRepository<TOption,Long> {
     @Query("SELECT o FROM TOption o WHERE o.id = :id")
     TOption findTOptionsById(Long id);
 
-    @Query("SELECT o FROM TOption o WHERE o.status = :status")
-    List<TOption> findByStatus(int status);
+    List<TOption> findByNameContaining(String keyword);
 }

@@ -9,10 +9,10 @@ import java.sql.Date;
 @Setter
 public class UserDTO {
     private String firstName;
+//    private String role;
     private String lastName;
     private String cccd;
     private String email;
-    private Date dateOfBirth;
     private String phoneNumber;
     private String password;
     private String province;

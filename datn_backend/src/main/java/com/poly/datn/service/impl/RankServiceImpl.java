@@ -67,24 +67,15 @@ public class RankServiceImpl implements IRankService {
     }
 
     @Override
-    public List<TRank> searchAll(String rankName, Integer minimumPoints) {
+    public List<TRank> searchAll(String rankName, Integer minimumPoints, Integer status) {
         return rankRepository.findAll().stream()
-                .filter(rank -> rank.getRankName().contains(rankName))
-                .filter(rank -> rank.getMinimumPoints().equals(minimumPoints))
+                .filter(rank -> (rankName == null || (rank.getRankName() != null && rank.getRankName().
+                        contains(rankName))))
+
+                .filter(rank -> minimumPoints == null || rank.getMinimumPoints() >= minimumPoints)
+                .filter(rank -> status == null || rank.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
-
-
-
-    @Override
-    public List<TRank> searchByKeyword(String keyword) {
-        return rankRepository.findAll().stream()
-                .filter(rank -> rank.getRankName().contains(keyword)
-                        || rank.getMinimumPoints().toString().contains(keyword))
-                .collect(Collectors.toList());
-    }
-
-
 
     @Override
     public Page<TRank> getActiveRank(Integer status, Integer page) {

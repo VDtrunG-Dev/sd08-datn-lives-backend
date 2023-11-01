@@ -1,5 +1,7 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.model.TOption;
+import com.poly.datn.model.TPoints;
 import com.poly.datn.model.TProduct;
 import com.poly.datn.repository.IProductRepository;
 import com.poly.datn.service.IProductService;
@@ -12,6 +14,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -20,8 +23,11 @@ public class ProductServiceImpl implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Page<TProduct> getAllProducts(int pageNumber) {
-        return productRepository.findAll(PageRequest.of(pageNumber,5));
+    public List<TProduct> getAllProducts(int pageNumber) {
+        List<TProduct> products = productRepository.findAll();
+        int page = (pageNumber - 1) * 2;
+        int endPage = Math.min(page + 2, products.size());
+        return products.subList(page,endPage);
     }
 
     @Override
@@ -33,8 +39,7 @@ public class ProductServiceImpl implements IProductService {
     public String createProduct(TProduct product) {
         List<TProduct> foundProducts = productRepository.findByName(product.getName().trim());
         if (foundProducts.size() > 0) {
-            // Xử lý lỗi, ví dụ:
-            throw new IllegalArgumentException("Product name already taken");
+            return "Sản Phẩm Đã Tồn Tại";
         }
         productRepository.save(product);
 
@@ -45,16 +50,18 @@ public class ProductServiceImpl implements IProductService {
     public String updateProduct(Long id,TProduct updatedProduct) {
         TProduct product = productRepository.findByIdProduct(id);
 
+        if(product == null){
+            return "Sản Phẩm Không Tồn Tại";
+        }
         product.setName(updatedProduct.getName());
         productRepository.save(product);
 
-        return "Thêm thành công";
+        return "Cập Nhật thành công";
     }
 
     @Override
     public String deleteProduct(Long id) {
         TProduct product = productRepository.findByIdProduct(id);
-
         try {
             product.setStatus(0);
             productRepository.save(product);
@@ -62,5 +69,21 @@ public class ProductServiceImpl implements IProductService {
             return "Xoá Thất Bại";
         }
         return "Xoá Thành Công";
+    }
+
+    @Override
+    public List<TProduct> findByKeyword(String keyword) {
+        return productRepository.findByNameContaining(keyword);
+    }
+
+    @Override
+    public String activeProduct(Long id) {
+        TProduct product = productRepository.findByIdProduct(id);
+        if(product == null){
+            return "Sản Phẩm Không Tồn Tại";
+        }
+        product.setStatus(1);
+        productRepository.save(product);
+        return "Cập Nhập Thành Công";
     }
 }

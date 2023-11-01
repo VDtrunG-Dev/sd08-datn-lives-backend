@@ -8,9 +8,7 @@ import java.util.List;
 public interface IAddressServices {
 
 
-    Page<TAddress> findAllPage(int pageNumber);
-
-    List<TAddress> findAll();
+    List<TAddress> findAll(int pageNumber,String keyword);
 
     String addAddress(TAddress address);
 
@@ -18,9 +16,7 @@ public interface IAddressServices {
 
     String updateAddress(TAddress address);
 
-    List<TAddress> findByKeywork(String keyword);
-
     TAddress findById(Long id);
 
-    List<TAddress> findByStatus0();
+    List<TAddress> search(String keyword);
 }

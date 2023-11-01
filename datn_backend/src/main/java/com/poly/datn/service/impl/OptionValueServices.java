@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OptionValueServices implements IOptionValueServices {
 
@@ -20,8 +22,11 @@ public class OptionValueServices implements IOptionValueServices {
     private IOptionRepository optionRepository;
 
     @Override
-    public Page<TOptionValue> findAll(int pageNumber) {
-        return optionValueRepository.findAll(PageRequest.of(pageNumber,5));
+    public List<TOptionValue> findAll(int pageNumber) {
+        List<TOptionValue> optionValues = optionValueRepository.findAll();
+        int startPage = (pageNumber - 1) * 5;
+        int endPage = Math.min(startPage + 5, optionValues.size());
+        return optionValueRepository.findAll().subList(startPage,endPage);
     }
 
     @Override

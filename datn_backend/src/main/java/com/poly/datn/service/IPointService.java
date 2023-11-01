@@ -4,8 +4,6 @@ import com.poly.datn.model.TPoints;
 import com.poly.datn.model.TRank;
 import org.springframework.data.domain.Page;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +29,7 @@ public interface IPointService {
 
     Page<TPoints> getAllByStatusPaged(int status, int page, int size);
 
-    List<TPoints> searchAll(Long customerId, Date transactionDate, BigDecimal transactionAmount, Integer pointsEarned);
-
-    List<TPoints> searchByKeyword(String keyword);
+    List<TPoints> searchAll(String pointName, Integer minimumPoints, Integer status);
 
 
 }
