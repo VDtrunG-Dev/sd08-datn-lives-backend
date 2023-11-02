@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Calendar;
 
 @Service
-public class OptionServices implements IOptionServices {
+public class OptionServicesImpl implements IOptionServices {
 
     @Autowired
     private IOptionRepository optionRepository;

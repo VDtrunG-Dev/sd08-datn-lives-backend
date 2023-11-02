@@ -4,7 +4,7 @@ package com.poly.datn.controller.admin;
 import com.poly.datn.dto.OptionValueDTO;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TOptionValue;
-import com.poly.datn.service.impl.OptionValueServices;
+import com.poly.datn.service.impl.OptionValueServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class OptionValueController {
 
     @Autowired
-    private OptionValueServices optionValueServices;
+    private OptionValueServicesImpl optionValueServices;
 
     @GetMapping("")
     private ResponseEntity<?> pageFindAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber){

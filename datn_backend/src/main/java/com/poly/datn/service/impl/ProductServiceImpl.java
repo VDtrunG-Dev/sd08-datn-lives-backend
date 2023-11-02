@@ -23,6 +23,11 @@ public class ProductServiceImpl implements IProductService {
     private IProductRepository productRepository;
 
     @Override
+    public TProduct findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    @Override
     public List<TProduct> getAllProducts(int pageNumber) {
         List<TProduct> products = productRepository.findAll();
         int page = (pageNumber - 1) * 2;
@@ -35,10 +40,11 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findById(id);
     }
 
+
     @Override
     public String createProduct(TProduct product) {
-        List<TProduct> foundProducts = productRepository.findByName(product.getName().trim());
-        if (foundProducts.size() > 0) {
+        TProduct foundProducts = productRepository.findByName(product.getName().trim());
+        if (foundProducts == null) {
             return "Sản Phẩm Đã Tồn Tại";
         }
         productRepository.save(product);

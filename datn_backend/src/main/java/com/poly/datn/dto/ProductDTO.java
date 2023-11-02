@@ -15,10 +15,10 @@ import java.util.List;
 public class ProductDTO {
 
     private String productName;
-    private List<String> optionName;
-    private List<String> optionValueName;
+    private List<OptionDTO> option;
     private Integer quantity;
     private BigDecimal priceNow;
-    private BigDecimal prive;
-
+    private BigDecimal price;
+    private String avatar;
+    private String description;
 }

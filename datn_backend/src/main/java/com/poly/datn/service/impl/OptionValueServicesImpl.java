@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OptionValueServices implements IOptionValueServices {
+public class OptionValueServicesImpl implements IOptionValueServices {
 
     @Autowired
     private IOptionValueRepository optionValueRepository;

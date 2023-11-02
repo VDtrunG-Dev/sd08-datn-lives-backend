@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductService {
-    
+
+    TProduct findByName(String name);
+
     List<TProduct> getAllProducts(int page);
 
     Optional<TProduct> getProductById(Long id);
