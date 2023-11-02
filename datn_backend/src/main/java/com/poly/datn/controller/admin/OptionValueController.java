@@ -1,6 +1,7 @@
 package com.poly.datn.controller.admin;
 
 
+import com.poly.datn.dto.OptionValueDTO;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TOptionValue;
 import com.poly.datn.service.impl.OptionValueServices;
@@ -24,9 +25,9 @@ public class OptionValueController {
     }
 
     @PostMapping("/add")
-    private ResponseEntity<?> pageSave(@RequestBody TOptionValue optionValue,@RequestBody Long optionId){
+    private ResponseEntity<?> pageSave(@RequestBody OptionValueDTO optionValue){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok",optionValueServices.save(optionValue,optionId),optionValue)
+                new ResponseObject("ok",optionValueServices.save(optionValue),optionValue)
         );
     }
 
@@ -43,6 +44,23 @@ public class OptionValueController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok",optionValueServices.deleteById(id),"")
         );
+    }
+
+    @GetMapping("/findbyname/{name}")
+    private ResponseEntity<?> pageFindByName(@PathVariable(name = "name") String optionValueName){
+
+        TOptionValue optionValue = optionValueServices.findByName(optionValueName);
+        if(optionValue == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("fail","OptionValue Không Tồn Tại","")
+            );
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok","Thành Công",optionValueServices.findByName(optionValueName))
+            );
+        }
+
     }
 
     @GetMapping("/active/{id}")

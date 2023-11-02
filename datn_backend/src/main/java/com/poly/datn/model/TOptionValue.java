@@ -1,13 +1,7 @@
 package com.poly.datn.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +10,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +29,7 @@ public class TOptionValue {
 
     @ManyToOne
     @JoinColumn(name = "option_id")
+    @JsonBackReference
     private TOption option;
 
     @Column(name = "value_name")
@@ -53,5 +49,6 @@ public class TOptionValue {
 
     @Column(name = "status")
     private Integer status;
+
 
 }

@@ -1,5 +1,6 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.OptionDTO;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TOption;
 import com.poly.datn.service.IOptionServices;
@@ -37,9 +38,9 @@ public class OptionController {
     }
 
     @PostMapping("/add")
-    private ResponseEntity<?> pageAdd(@RequestBody TOption option){
+    private ResponseEntity<?> pageAdd(@RequestBody OptionDTO optionDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("",optionServices.save(option),option)
+                new ResponseObject("",optionServices.save(optionDto),optionDto)
         );
     }
 

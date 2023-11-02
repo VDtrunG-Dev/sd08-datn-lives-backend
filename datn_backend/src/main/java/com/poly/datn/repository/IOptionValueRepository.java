@@ -18,4 +18,5 @@ public interface IOptionValueRepository extends JpaRepository<TOptionValue,Long>
 
     @Query("SELECT o FROM TOptionValue o WHERE o.valueName = :name")
     TOptionValue findByName(String name);
+
 }

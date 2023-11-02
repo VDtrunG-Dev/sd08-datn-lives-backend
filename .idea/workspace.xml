@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
+    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <disabled>
+      <disabled_changelists>
+        <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
+      </disabled_changelists>
+      <disabled_trackers />
+    </disabled>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +61,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/datn_backend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -70,7 +92,17 @@
       <workItem from="1698117082660" duration="2157000" />
       <workItem from="1698216387063" duration="3499000" />
       <workItem from="1698228809383" duration="29000" />
+      <workItem from="1698852949786" duration="3988000" />
+      <workItem from="1698887662033" duration="5838000" />
     </task>
+    <task id="LOCAL-00001" summary="Update Add của option">
+      <created>1698893430989</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698893430989</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,6 +119,23 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java</url>
+          <line>16</line>
+          <properties class="com.poly.datn.service.IOptionServices" method="save">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/datn$DatnApplication.ic" NAME="DatnApplication Coverage Results" MODIFIED="1698228749874" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

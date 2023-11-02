@@ -8,7 +8,7 @@ import java.util.List;
 public interface IAddressServices {
 
 
-    List<TAddress> findAll(int pageNumber,String keyword);
+    Page<TAddress> findAll(int pageNumber,String keyword);
 
     String addAddress(TAddress address);
 

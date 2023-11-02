@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.OptionDTO;
 import com.poly.datn.model.TOption;
 import org.springframework.data.domain.Page;
 
@@ -13,7 +14,7 @@ public interface IOptionServices {
 
     TOption findByName(String name);
 
-    String save(TOption option);
+    String save(OptionDTO optionDto);
 
     String delete(Long id);
 

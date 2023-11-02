@@ -1,0 +1,682 @@
+Index: datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java b/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java
+new file mode 100644
+--- /dev/null	(date 1698888010882)
++++ b/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java	(date 1698888010882)
+@@ -0,0 +1,13 @@
++package com.poly.datn.dto;
++
++import lombok.Getter;
++import lombok.Setter;
++
++import java.util.List;
++
++@Getter
++@Setter
++public class OptionDTO {
++    private String optionName;
++    private List<String> optionValueName;
++}
+Index: datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service;\r\n\r\nimport com.poly.datn.model.TAddress;\r\nimport org.springframework.data.domain.Page;\r\n\r\nimport java.util.List;\r\n\r\npublic interface IAddressServices {\r\n\r\n\r\n    List<TAddress> findAll(int pageNumber,String keyword);\r\n\r\n    String addAddress(TAddress address);\r\n\r\n    String deleteAddressById(Long id);\r\n\r\n    String updateAddress(TAddress address);\r\n\r\n    TAddress findById(Long id);\r\n\r\n    List<TAddress> search(String keyword);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java b/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java	(date 1698853867724)
+@@ -8,7 +8,7 @@
+ public interface IAddressServices {
+ 
+ 
+-    List<TAddress> findAll(int pageNumber,String keyword);
++    Page<TAddress> findAll(int pageNumber,String keyword);
+ 
+     String addAddress(TAddress address);
+ 
+Index: datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java b/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java
+new file mode 100644
+--- /dev/null	(date 1698856976035)
++++ b/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java	(date 1698856976035)
+@@ -0,0 +1,24 @@
++package com.poly.datn.dto;
++
++import lombok.AllArgsConstructor;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++
++import java.math.BigDecimal;
++import java.util.List;
++
++@Getter
++@Setter
++@NoArgsConstructor
++@AllArgsConstructor
++public class ProductDTO {
++
++    private String productName;
++    private List<String> optionName;
++    private List<String> optionValueName;
++    private Integer quantity;
++    private BigDecimal priceNow;
++    private BigDecimal prive;
++
++}
+Index: datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.repository;\r\n\r\nimport com.poly.datn.model.TAddress;\r\nimport com.poly.datn.model.TUser;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.Pageable;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.data.jpa.repository.Query;\r\nimport org.springframework.stereotype.Repository;\r\n\r\n@Repository\r\npublic interface IAddressRepository extends JpaRepository<TAddress,Long> {\r\n\r\n    @Query(\"SELECT a FROM TAddress a WHERE a.status = 1\")\r\n    Page<TAddress> findAll(Pageable pageable);\r\n\r\n    @Query(\"SELECT a FROM TAddress a WHERE a.id = :id AND a.status = 1\")\r\n    TAddress findByIdAddress(Long id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java b/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java
+--- a/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java	(date 1698855829613)
+@@ -6,13 +6,19 @@
+ import org.springframework.data.domain.Pageable;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.data.jpa.repository.Query;
++import org.springframework.data.repository.query.Param;
+ import org.springframework.stereotype.Repository;
+ 
+ @Repository
+ public interface IAddressRepository extends JpaRepository<TAddress,Long> {
+ 
+-    @Query("SELECT a FROM TAddress a WHERE a.status = 1")
+-    Page<TAddress> findAll(Pageable pageable);
++    @Query("SELECT a FROM TAddress a WHERE a.status = 1 " +
++            "AND (a.province LIKE %:search% " +
++            "OR a.district LIKE %:search% " +
++            "OR a.ward LIKE %:search% " +
++            "OR a.detailAddress LIKE %:search%)" +
++            "ORDER BY a.province ASC")
++    Page<TAddress> findAll(Pageable pageable, @Param("search") String search);
+ 
+     @Query("SELECT a FROM TAddress a WHERE a.id = :id AND a.status = 1")
+     TAddress findByIdAddress(Long id);
+Index: datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service;\r\n\r\nimport com.poly.datn.model.TOptionValue;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n\r\npublic interface IOptionValueServices {\r\n\r\n    List<TOptionValue> findAll(int pageNumber);\r\n\r\n    TOptionValue findById(Long id);\r\n\r\n    String save(TOptionValue optionValue,Long idOption);\r\n\r\n    String deleteById(Long id);\r\n\r\n    String update(TOptionValue optionValue);\r\n\r\n    String active(Long id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java b/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java	(date 1698891631107)
+@@ -1,5 +1,6 @@
+ package com.poly.datn.service;
+ 
++import com.poly.datn.dto.OptionValueDTO;
+ import com.poly.datn.model.TOptionValue;
+ import org.springframework.data.domain.Page;
+ import org.springframework.stereotype.Service;
+@@ -13,11 +14,13 @@
+ 
+     TOptionValue findById(Long id);
+ 
+-    String save(TOptionValue optionValue,Long idOption);
++    String save(OptionValueDTO optionValueDto);
+ 
+     String deleteById(Long id);
+ 
+     String update(TOptionValue optionValue);
+ 
+     String active(Long id);
++
++    TOptionValue findByName(String name);
+ }
+Index: datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.repository;\r\n\r\nimport com.poly.datn.model.TOptionValue;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.Pageable;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.data.jpa.repository.Query;\r\nimport org.springframework.stereotype.Repository;\r\n\r\n@Repository\r\npublic interface IOptionValueRepository extends JpaRepository<TOptionValue,Long> {\r\n\r\n    @Query(\"SELECT o FROM TOptionValue o WHERE o.status = 1\")\r\n    Page<TOptionValue> findAll(Pageable pageable);\r\n\r\n    @Query(\"SELECT o FROM TOptionValue o WHERE o.id = :id\")\r\n    TOptionValue findByIdOptionValue(Long id);\r\n\r\n    @Query(\"SELECT o FROM TOptionValue o WHERE o.valueName = :name\")\r\n    TOptionValue findByName(String name);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java b/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java
+--- a/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java	(date 1698891878540)
+@@ -18,4 +18,5 @@
+ 
+     @Query("SELECT o FROM TOptionValue o WHERE o.valueName = :name")
+     TOptionValue findByName(String name);
++
+ }
+Index: datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.model;\r\n\r\nimport jakarta.persistence.Column;\r\nimport jakarta.persistence.Entity;\r\nimport jakarta.persistence.GeneratedValue;\r\nimport jakarta.persistence.GenerationType;\r\nimport jakarta.persistence.Id;\r\nimport jakarta.persistence.JoinColumn;\r\nimport jakarta.persistence.ManyToOne;\r\nimport jakarta.persistence.Table;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Builder;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\nimport lombok.ToString;\r\n\r\nimport java.math.BigDecimal;\r\nimport java.sql.Date;\r\n\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@Getter\r\n@Setter\r\n@ToString\r\n@Builder\r\n@Entity\r\n@Table(name = \"t_option_value\")\r\npublic class TOptionValue {\r\n    @Id\r\n    @Column(name = \"id\")\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private Long id;\r\n\r\n    @ManyToOne\r\n    @JoinColumn(name = \"option_id\")\r\n    private TOption option;\r\n\r\n    @Column(name = \"value_name\")\r\n    private String valueName;\r\n\r\n    @Column(name = \"created_by\")\r\n    private String createdBy;\r\n\r\n    @Column(name = \"updated_by\")\r\n    private String updatedBy;\r\n\r\n    @Column(name = \"created_at\", insertable = false, updatable = false)\r\n    private Date createdAt;\r\n\r\n    @Column(name = \"updated_at\", insertable = false)\r\n    private Date updatedAt;\r\n\r\n    @Column(name = \"status\")\r\n    private Integer status;\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java b/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java
+--- a/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java	(date 1698891062115)
+@@ -1,13 +1,7 @@
+ package com.poly.datn.model;
+ 
+-import jakarta.persistence.Column;
+-import jakarta.persistence.Entity;
+-import jakarta.persistence.GeneratedValue;
+-import jakarta.persistence.GenerationType;
+-import jakarta.persistence.Id;
+-import jakarta.persistence.JoinColumn;
+-import jakarta.persistence.ManyToOne;
+-import jakarta.persistence.Table;
++import com.fasterxml.jackson.annotation.JsonBackReference;
++import jakarta.persistence.*;
+ import lombok.AllArgsConstructor;
+ import lombok.Builder;
+ import lombok.Getter;
+@@ -16,7 +10,8 @@
+ import lombok.ToString;
+ 
+ import java.math.BigDecimal;
+-import java.sql.Date;
++import java.util.Date;
++import java.util.List;
+ 
+ @NoArgsConstructor
+ @AllArgsConstructor
+@@ -34,6 +29,7 @@
+ 
+     @ManyToOne
+     @JoinColumn(name = "option_id")
++    @JsonBackReference
+     private TOption option;
+ 
+     @Column(name = "value_name")
+@@ -54,4 +50,5 @@
+     @Column(name = "status")
+     private Integer status;
+ 
++
+ }
+Index: datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service.impl;\r\n\r\nimport com.poly.datn.model.TOption;\r\nimport com.poly.datn.repository.IOptionRepository;\r\nimport com.poly.datn.service.IOptionServices;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.PageRequest;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class OptionServices implements IOptionServices {\r\n\r\n    @Autowired\r\n    private IOptionRepository optionRepository;\r\n\r\n    @Override\r\n    public Page<TOption> findAll(int page) {\r\n        return optionRepository.findAll(PageRequest.of(page,5));\r\n    }\r\n\r\n    @Override\r\n    public TOption findById(Long id) {\r\n        return optionRepository.findTOptionsById(id);\r\n    }\r\n\r\n    @Override\r\n    public TOption findByName(String name) {\r\n        return optionRepository.findTOptionsByName(name);\r\n    }\r\n\r\n    @Override\r\n    public String save(TOption option) {\r\n\r\n        String validate = validate(option);\r\n\r\n        if (validate == null){\r\n           try{\r\n               option.setStatus(1);\r\n               optionRepository.save(option);\r\n           }catch (Exception e){\r\n               return \"Thêm Thất Bại\";\r\n           }\r\n        }\r\n        return \"Thêm Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String delete(Long id) {\r\n\r\n        TOption option = optionRepository.findTOptionsById(id);\r\n\r\n        if(option == null){\r\n            return \"Option Không Tồn Tại\";\r\n        }\r\n        try{\r\n            option.setStatus(0);\r\n            optionRepository.save(option);\r\n        }catch (Exception e){\r\n            return \"Xoá Thất Bại\";\r\n        }\r\n\r\n        return \"Xoá Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String update(TOption option) {\r\n        TOption optionById = optionRepository.findTOptionsById(option.getId());\r\n\r\n        if (optionById == null){\r\n            return \"Option Không Tồn Tại\";\r\n        }\r\n        optionById.setName(option.getName());\r\n        optionById.setStatus(option.getStatus());\r\n        return \"Thêm Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String active(Long id) {\r\n        TOption option = optionRepository.findTOptionsById(id);\r\n        System.out.println(option);\r\n        option.setStatus(1);\r\n        optionRepository.save(option);\r\n        return \"Cập Nhập Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public List<TOption> searchOption(String keyword) {\r\n        return optionRepository.findByNameContaining(keyword);\r\n    }\r\n\r\n\r\n    private String validate(TOption option){\r\n        TOption optionById = optionRepository.findTOptionsByName(option.getName());\r\n        if(option.getName().isEmpty()){\r\n            return \"Chưa Nhập Tên\";\r\n        }\r\n        if(optionById != null){\r\n            return \"Option Đã Tồn Tại\";\r\n        }\r\n        return null;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java b/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java	(date 1698891229228)
+@@ -1,14 +1,20 @@
+ package com.poly.datn.service.impl;
+ 
++import com.poly.datn.dto.OptionDTO;
+ import com.poly.datn.model.TOption;
++import com.poly.datn.model.TOptionValue;
+ import com.poly.datn.repository.IOptionRepository;
++import com.poly.datn.repository.IOptionValueRepository;
+ import com.poly.datn.service.IOptionServices;
++import com.poly.datn.service.IOptionValueServices;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.data.domain.Page;
+ import org.springframework.data.domain.PageRequest;
+ import org.springframework.stereotype.Service;
+ 
++import java.util.Date;
+ import java.util.List;
++import java.util.Calendar;
+ 
+ @Service
+ public class OptionServices implements IOptionServices {
+@@ -16,6 +22,9 @@
+     @Autowired
+     private IOptionRepository optionRepository;
+ 
++    @Autowired
++    private IOptionValueRepository optionValueRepository;
++
+     @Override
+     public Page<TOption> findAll(int page) {
+         return optionRepository.findAll(PageRequest.of(page,5));
+@@ -32,17 +41,26 @@
+     }
+ 
+     @Override
+-    public String save(TOption option) {
+-
+-        String validate = validate(option);
+-
++    public String save(OptionDTO optionDTO) {
++        TOption option = new TOption();
++        String validate = validate(optionDTO);
+         if (validate == null){
+            try{
+                option.setStatus(1);
++               option.setName(optionDTO.getOptionName());
+                optionRepository.save(option);
++               for(String o : optionDTO.getOptionValueName()){
++                   TOptionValue optionValue = new TOptionValue();
++                   optionValue.setStatus(1);
++                   optionValue.setValueName(o);
++                   optionValue.setOption(option);
++                   optionValueRepository.save(optionValue);
++               }
+            }catch (Exception e){
+                return "Thêm Thất Bại";
+            }
++        }else {
++            return validate;
+         }
+         return "Thêm Thành Công";
+     }
+@@ -92,9 +110,9 @@
+     }
+ 
+ 
+-    private String validate(TOption option){
+-        TOption optionById = optionRepository.findTOptionsByName(option.getName());
+-        if(option.getName().isEmpty()){
++    private String validate(OptionDTO optionDto){
++        TOption optionById = optionRepository.findTOptionsByName(optionDto.getOptionName());
++        if(optionDto.getOptionName().isEmpty()){
+             return "Chưa Nhập Tên";
+         }
+         if(optionById != null){
+Index: datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service;\r\n\r\nimport com.poly.datn.model.TOption;\r\nimport org.springframework.data.domain.Page;\r\n\r\nimport java.util.List;\r\n\r\npublic interface IOptionServices {\r\n\r\n    Page<TOption> findAll(int page);\r\n\r\n    TOption findById(Long id);\r\n\r\n    TOption findByName(String name);\r\n\r\n    String save(TOption option);\r\n\r\n    String delete(Long id);\r\n\r\n    String update(TOption option);\r\n\r\n    String active(Long id);\r\n\r\n    List<TOption> searchOption(String keyword);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java b/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java	(date 1698888241302)
+@@ -1,5 +1,6 @@
+ package com.poly.datn.service;
+ 
++import com.poly.datn.dto.OptionDTO;
+ import com.poly.datn.model.TOption;
+ import org.springframework.data.domain.Page;
+ 
+@@ -13,7 +14,7 @@
+ 
+     TOption findByName(String name);
+ 
+-    String save(TOption option);
++    String save(OptionDTO optionDto);
+ 
+     String delete(Long id);
+ 
+Index: datn_backend/src/main/java/com/poly/datn/controller/AddressController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.controller;\r\n\r\nimport com.poly.datn.dto.ResponseObject;\r\nimport com.poly.datn.model.TAddress;\r\nimport com.poly.datn.service.impl.AddressServicesImpl;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.boot.context.properties.bind.DefaultValue;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Date;\r\n\r\n@RestController\r\n    @RequestMapping(\"/api/address\")\r\npublic class AddressController {\r\n\r\n    @Autowired\r\n    private AddressServicesImpl addressServices = new AddressServicesImpl();\r\n\r\n\r\n    @GetMapping(\"\")\r\n    private ResponseEntity<?> findAll(@RequestParam(name = \"page\",defaultValue = \"1\") int pageNumber,\r\n                                      @RequestParam(name = \"search\", defaultValue = \"\") String search){\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\", \"Thành công\",addressServices.findAll(pageNumber,search)));\r\n    }\r\n\r\n    @PostMapping(\"/add\")\r\n    private ResponseEntity<?> pageAdd(@RequestBody TAddress address ){\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\", addressServices.addAddress(address),address));\r\n\r\n    }\r\n\r\n\r\n    @PutMapping(\"/update/{id}\")\r\n    private ResponseEntity<?> pageUpdate(@RequestBody TAddress address,@PathVariable Long id){\r\n        address.setId(id);\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\", addressServices.updateAddress(address),address));\r\n    }\r\n\r\n    @DeleteMapping(\"/delete/{id}\")\r\n    private ResponseEntity<?> pageDelete(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\", addressServices.deleteAddressById(id),\"\"));\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    private ResponseEntity<?> pageFindById(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\",\"\" ,addressServices.findById(id)));\r\n    }\r\n\r\n    @GetMapping(\"search\")\r\n    private ResponseEntity<?> findSearch(@RequestParam(name = \"search\",required = false) String search){\r\n        return ResponseEntity.status(HttpStatus.OK).body(new\r\n                ResponseObject(\"ok\", \"Thành công\",addressServices.search(search)));\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java b/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java
+--- a/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java	(date 1698854400202)
+@@ -20,7 +20,7 @@
+ 
+ 
+     @GetMapping("")
+-    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
++    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber,
+                                       @RequestParam(name = "search", defaultValue = "") String search){
+         return ResponseEntity.status(HttpStatus.OK).body(new
+                 ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber,search)));
+Index: datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.controller.admin;\r\n\r\n\r\nimport com.poly.datn.dto.ResponseObject;\r\nimport com.poly.datn.model.TOptionValue;\r\nimport com.poly.datn.service.impl.OptionValueServices;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/optionvalue\")\r\npublic class OptionValueController {\r\n\r\n    @Autowired\r\n    private OptionValueServices optionValueServices;\r\n\r\n    @GetMapping(\"\")\r\n    private ResponseEntity<?> pageFindAll(@RequestParam(name = \"page\",defaultValue = \"0\") int pageNumber){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",\"Thành Công\",optionValueServices.findAll(pageNumber))\r\n        );\r\n    }\r\n\r\n    @PostMapping(\"/add\")\r\n    private ResponseEntity<?> pageSave(@RequestBody TOptionValue optionValue,@RequestBody Long optionId){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",optionValueServices.save(optionValue,optionId),optionValue)\r\n        );\r\n    }\r\n\r\n    @PutMapping(\"/update/{id}\")\r\n    private ResponseEntity<?> pageUpdate(@RequestBody TOptionValue optionValue,@PathVariable Long id,@RequestBody String optionId){\r\n        optionValue.setId(id);\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",optionValueServices.update(optionValue),optionValue)\r\n        );\r\n    }\r\n\r\n    @DeleteMapping(\"/delete/{id}\")\r\n    private ResponseEntity<?> pageDelete(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",optionValueServices.deleteById(id),\"\")\r\n        );\r\n    }\r\n\r\n    @GetMapping(\"/active/{id}\")\r\n    private ResponseEntity<?> pageActive(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",optionValueServices.active(id),\"\")\r\n        );\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java b/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java
+--- a/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java	(date 1698891878545)
+@@ -1,6 +1,7 @@
+ package com.poly.datn.controller.admin;
+ 
+ 
++import com.poly.datn.dto.OptionValueDTO;
+ import com.poly.datn.dto.ResponseObject;
+ import com.poly.datn.model.TOptionValue;
+ import com.poly.datn.service.impl.OptionValueServices;
+@@ -24,9 +25,9 @@
+     }
+ 
+     @PostMapping("/add")
+-    private ResponseEntity<?> pageSave(@RequestBody TOptionValue optionValue,@RequestBody Long optionId){
++    private ResponseEntity<?> pageSave(@RequestBody OptionValueDTO optionValue){
+         return ResponseEntity.status(HttpStatus.OK).body(
+-                new ResponseObject("ok",optionValueServices.save(optionValue,optionId),optionValue)
++                new ResponseObject("ok",optionValueServices.save(optionValue),optionValue)
+         );
+     }
+ 
+@@ -45,6 +46,23 @@
+         );
+     }
+ 
++    @GetMapping("/findbyname/{name}")
++    private ResponseEntity<?> pageFindByName(@PathVariable(name = "name") String optionValueName){
++
++        TOptionValue optionValue = optionValueServices.findByName(optionValueName);
++        if(optionValue == null){
++            return ResponseEntity.status(HttpStatus.OK).body(
++                    new ResponseObject("fail","OptionValue Không Tồn Tại","")
++            );
++        }
++        else {
++            return ResponseEntity.status(HttpStatus.OK).body(
++                    new ResponseObject("ok","Thành Công",optionValueServices.findByName(optionValueName))
++            );
++        }
++
++    }
++
+     @GetMapping("/active/{id}")
+     private ResponseEntity<?> pageActive(@PathVariable Long id){
+         return ResponseEntity.status(HttpStatus.OK).body(
+Index: datn_backend/src/main/java/com/poly/datn/dto/OptionValueDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/dto/OptionValueDTO.java b/datn_backend/src/main/java/com/poly/datn/dto/OptionValueDTO.java
+new file mode 100644
+--- /dev/null	(date 1698853565797)
++++ b/datn_backend/src/main/java/com/poly/datn/dto/OptionValueDTO.java	(date 1698853565797)
+@@ -0,0 +1,11 @@
++package com.poly.datn.dto;
++
++import lombok.Getter;
++import lombok.Setter;
++
++@Getter
++@Setter
++public class OptionValueDTO {
++    private String optionValueName;
++    private Long optionId;
++}
+Index: datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.controller.admin;\r\n\r\nimport com.poly.datn.dto.ResponseObject;\r\nimport com.poly.datn.model.TOption;\r\nimport com.poly.datn.service.IOptionServices;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/option\")\r\npublic class OptionController {\r\n\r\n    @Autowired\r\n    private IOptionServices optionServices;\r\n\r\n    @GetMapping(\"\")\r\n    private ResponseEntity<?> pageOption(@RequestParam(name = \"page\",defaultValue = \"1\") int page){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"ok\",\"Thành Công\",optionServices.findAll(page)\r\n        ));\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    private ResponseEntity<?> pageFindById(@PathVariable Long id){\r\n        TOption option = optionServices.findById(id);\r\n        if (option != null){\r\n            return ResponseEntity.status(HttpStatus.OK).body(\r\n                    new ResponseObject(\"ok\",\"Thành Công\",option)\r\n            );\r\n        }\r\n        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(\r\n                new ResponseObject(\"fail\",\"Thất Bại\",\"Không tìm thấy\")\r\n        );\r\n\r\n    }\r\n\r\n    @PostMapping(\"/add\")\r\n    private ResponseEntity<?> pageAdd(@RequestBody TOption option){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"\",optionServices.save(option),option)\r\n        );\r\n    }\r\n\r\n    @PutMapping(\"/update/{id}\")\r\n    private ResponseEntity<?> pageUpdate(@RequestBody TOption option,@PathVariable Long id){\r\n        option.setId(id);\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"Ok\",optionServices.update(option),option)\r\n        );\r\n    }\r\n\r\n    @GetMapping(\"/active/{id}\")\r\n    private ResponseEntity<?> pageActive(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"Ok\",optionServices.active(id),\"\")\r\n        );\r\n    }\r\n\r\n    @GetMapping(\"/search\")\r\n    private ResponseEntity<?> pageSearch(@RequestParam(name = \"search\",required = false) String search){\r\n\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"Ok\",\"Thành Công\",optionServices.searchOption(search))\r\n        );\r\n    }\r\n\r\n    @DeleteMapping(\"/delete/{id}\")\r\n    private ResponseEntity<?> pageDelete(@PathVariable Long id){\r\n        return ResponseEntity.status(HttpStatus.OK).body(\r\n                new ResponseObject(\"Ok\",optionServices.delete(id),\"\")\r\n        );\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java b/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java
+--- a/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java	(date 1698888439502)
+@@ -1,5 +1,6 @@
+ package com.poly.datn.controller.admin;
+ 
++import com.poly.datn.dto.OptionDTO;
+ import com.poly.datn.dto.ResponseObject;
+ import com.poly.datn.model.TOption;
+ import com.poly.datn.service.IOptionServices;
+@@ -37,9 +38,9 @@
+     }
+ 
+     @PostMapping("/add")
+-    private ResponseEntity<?> pageAdd(@RequestBody TOption option){
++    private ResponseEntity<?> pageAdd(@RequestBody OptionDTO optionDto){
+         return ResponseEntity.status(HttpStatus.OK).body(
+-                new ResponseObject("",optionServices.save(option),option)
++                new ResponseObject("",optionServices.save(optionDto),optionDto)
+         );
+     }
+ 
+Index: datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service.impl;\r\n\r\nimport com.poly.datn.model.TOption;\r\nimport com.poly.datn.model.TOptionValue;\r\nimport com.poly.datn.repository.IOptionRepository;\r\nimport com.poly.datn.repository.IOptionValueRepository;\r\nimport com.poly.datn.service.IOptionValueServices;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.PageRequest;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class OptionValueServices implements IOptionValueServices {\r\n\r\n    @Autowired\r\n    private IOptionValueRepository optionValueRepository;\r\n\r\n    @Autowired\r\n    private IOptionRepository optionRepository;\r\n\r\n    @Override\r\n    public List<TOptionValue> findAll(int pageNumber) {\r\n        List<TOptionValue> optionValues = optionValueRepository.findAll();\r\n        int startPage = (pageNumber - 1) * 5;\r\n        int endPage = Math.min(startPage + 5, optionValues.size());\r\n        return optionValueRepository.findAll().subList(startPage,endPage);\r\n    }\r\n\r\n    @Override\r\n    public TOptionValue findById(Long id) {\r\n        return optionValueRepository.findByIdOptionValue(id);\r\n    }\r\n\r\n    @Override\r\n    public String save(TOptionValue optionValue,Long idOption) {\r\n        String validate = validate(optionValue);\r\n        TOption option = optionRepository.findTOptionsById(idOption);\r\n        if(validate != null){\r\n            return validate;\r\n        }else {\r\n            try{\r\n                optionValue.setStatus(1);\r\n                optionValue.setOption(option);\r\n                optionValueRepository.save(optionValue);\r\n            }catch (Exception e){\r\n                return \"Thêm thất bại\";\r\n            }\r\n        }\r\n\r\n        return \"Thêm thành công\";\r\n    }\r\n\r\n    @Override\r\n    public String deleteById(Long id) {\r\n        TOptionValue optionValue = optionValueRepository.findByIdOptionValue(id);\r\n        optionValue.setStatus(0);\r\n        optionValueRepository.save(optionValue);\r\n        return \"Xoá Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String update(TOptionValue optionValue) {\r\n        TOptionValue optionV = optionValueRepository.findByIdOptionValue(optionValue.getId());\r\n        optionV.setValueName(optionValue.getValueName());\r\n        optionV.setOption(optionValue.getOption());\r\n        return \"Cập Nhập Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String active(Long id) {\r\n        TOptionValue optionValue = optionValueRepository.findByIdOptionValue(id);\r\n        if(optionValue == null){\r\n            return \"Không tồn tại\";\r\n        }\r\n        optionValue.setStatus(1);\r\n        optionValueRepository.save(optionValue);\r\n        return \"Cập nhật thành công\";\r\n    }\r\n\r\n    private String validate(TOptionValue optionValue){\r\n        TOptionValue optionV = optionValueRepository.findByName(optionValue.getValueName());\r\n\r\n        if(optionV != null){\r\n            return \"Option Value Đã Tồn Tại\";\r\n        }\r\n        if(optionValue.getValueName().isEmpty()){\r\n            return \"Chưa Nhập Option Value\";\r\n        }\r\n\r\n        return null;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java b/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java	(date 1698891631084)
+@@ -1,5 +1,6 @@
+ package com.poly.datn.service.impl;
+ 
++import com.poly.datn.dto.OptionValueDTO;
+ import com.poly.datn.model.TOption;
+ import com.poly.datn.model.TOptionValue;
+ import com.poly.datn.repository.IOptionRepository;
+@@ -35,15 +36,17 @@
+     }
+ 
+     @Override
+-    public String save(TOptionValue optionValue,Long idOption) {
+-        String validate = validate(optionValue);
+-        TOption option = optionRepository.findTOptionsById(idOption);
++    public String save(OptionValueDTO optionValueDto) {
++        String validate = validate(optionValueDto);
++        TOption option = optionRepository.findTOptionsById(optionValueDto.getOptionId());
++        TOptionValue optionValue = new TOptionValue();
+         if(validate != null){
+             return validate;
+         }else {
+             try{
+                 optionValue.setStatus(1);
+                 optionValue.setOption(option);
++                optionValue.setValueName(optionValueDto.getOptionValueName());
+                 optionValueRepository.save(optionValue);
+             }catch (Exception e){
+                 return "Thêm thất bại";
+@@ -80,13 +83,19 @@
+         return "Cập nhật thành công";
+     }
+ 
+-    private String validate(TOptionValue optionValue){
+-        TOptionValue optionV = optionValueRepository.findByName(optionValue.getValueName());
++    @Override
++    public TOptionValue findByName(String optionValueName) {
++
++        return optionValueRepository.findByName(optionValueName);
++    }
++
++    private String validate(OptionValueDTO optionValueDTO){
++        TOptionValue optionV = optionValueRepository.findByName(optionValueDTO.getOptionValueName());
+ 
+         if(optionV != null){
+             return "Option Value Đã Tồn Tại";
+         }
+-        if(optionValue.getValueName().isEmpty()){
++        if(optionValueDTO.getOptionValueName().isEmpty()){
+             return "Chưa Nhập Option Value";
+         }
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"a5e450c2-4c37-4101-b365-75d730ca1e77\" name=\"Default Changelist\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2XBz62fTI6jLHYCcCAQKrLoHMgR\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RequestMappingsPanelOrder0\" value=\"0\" />\r\n    <property name=\"RequestMappingsPanelOrder1\" value=\"1\" />\r\n    <property name=\"RequestMappingsPanelWidth0\" value=\"75\" />\r\n    <property name=\"RequestMappingsPanelWidth1\" value=\"75\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/datn_backend\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Project\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.0\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.0\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.poly.datn.dto.custom\" />\r\n      <recent name=\"com.poly.datn.dto.request\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"DatnApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\">\r\n      <module name=\"datn\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.poly.datn.DatnApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"a5e450c2-4c37-4101-b365-75d730ca1e77\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1698117081386</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1698117081386</updated>\r\n      <workItem from=\"1698117082660\" duration=\"2157000\" />\r\n      <workItem from=\"1698216387063\" duration=\"3499000\" />\r\n      <workItem from=\"1698228809383\" duration=\"29000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/datn$DatnApplication.ic\" NAME=\"DatnApplication Coverage Results\" MODIFIED=\"1698228749874\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"idea\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/.idea/workspace.xml	(date 1698891935871)
+@@ -4,7 +4,31 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
++    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="">
++      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/OptionValueDTO.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/AddressController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IAddressRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IAddressServices.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionValueServices.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java" afterDir="false" />
++    </list>
++    <disabled>
++      <disabled_changelists>
++        <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
++      </disabled_changelists>
++      <disabled_trackers />
++    </disabled>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -39,7 +63,7 @@
+     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+     <property name="WebServerToolWindowFactoryState" value="false" />
+     <property name="aspect.path.notification.shown" value="true" />
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/datn_backend" />
++    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+     <property name="project.structure.last.edited" value="Project" />
+     <property name="project.structure.proportion" value="0.0" />
+     <property name="project.structure.side.proportion" value="0.0" />
+@@ -51,6 +75,19 @@
+     </key>
+   </component>
+   <component name="RunManager">
++    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
++      <option name="arquillianRunConfiguration">
++        <value>
++          <option name="containerStateName" value="" />
++        </value>
++      </option>
++      <option name="TEST_OBJECT" value="CLASS" />
++      <properties />
++      <listeners />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
+     <configuration name="DatnApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+       <module name="datn" />
+       <option name="SPRING_BOOT_MAIN_CLASS" value="com.poly.datn.DatnApplication" />
+@@ -70,6 +107,8 @@
+       <workItem from="1698117082660" duration="2157000" />
+       <workItem from="1698216387063" duration="3499000" />
+       <workItem from="1698228809383" duration="29000" />
++      <workItem from="1698852949786" duration="3988000" />
++      <workItem from="1698887662033" duration="4234000" />
+     </task>
+     <servers />
+   </component>
+@@ -87,6 +126,20 @@
+       </map>
+     </option>
+     <option name="oldMeFiltersMigrated" value="true" />
++  </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" type="java-method">
++          <url>file://$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IOptionServices.java</url>
++          <line>16</line>
++          <properties class="com.poly.datn.service.IOptionServices" method="save">
++            <option name="EMULATED" value="true" />
++          </properties>
++          <option name="timeStamp" value="1" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/datn$DatnApplication.ic" NAME="DatnApplication Coverage Results" MODIFIED="1698228749874" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+Index: datn_backend/src/main/java/com/poly/datn/model/TOption.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.model;\r\n\r\nimport jakarta.persistence.Column;\r\nimport jakarta.persistence.Entity;\r\nimport jakarta.persistence.GeneratedValue;\r\nimport jakarta.persistence.GenerationType;\r\nimport jakarta.persistence.Id;\r\nimport jakarta.persistence.Table;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Builder;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\nimport lombok.ToString;\r\n\r\nimport java.sql.Date;\r\n\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@Getter\r\n@Setter\r\n@ToString\r\n@Builder\r\n@Entity\r\n@Table(name = \"t_option\")\r\npublic class TOption {\r\n    @Id\r\n    @Column(name = \"id\")\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private Long id;\r\n\r\n    @Column(name = \"name\")\r\n    private String name;\r\n\r\n    @Column(name = \"created_by\")\r\n    private String createdBy;\r\n\r\n    @Column(name = \"updated_by\")\r\n    private String updatedBy;\r\n\r\n    @Column(name = \"created_at\", insertable = false, updatable = false)\r\n    private Date createdAt;\r\n\r\n    @Column(name = \"updated_at\", insertable = false)\r\n    private Date updatedAt;\r\n\r\n    @Column(name = \"status\")\r\n    private Integer status;\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/model/TOption.java b/datn_backend/src/main/java/com/poly/datn/model/TOption.java
+--- a/datn_backend/src/main/java/com/poly/datn/model/TOption.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/model/TOption.java	(date 1698890383345)
+@@ -1,11 +1,7 @@
+ package com.poly.datn.model;
+ 
+-import jakarta.persistence.Column;
+-import jakarta.persistence.Entity;
+-import jakarta.persistence.GeneratedValue;
+-import jakarta.persistence.GenerationType;
+-import jakarta.persistence.Id;
+-import jakarta.persistence.Table;
++import com.fasterxml.jackson.annotation.JsonManagedReference;
++import jakarta.persistence.*;
+ import lombok.AllArgsConstructor;
+ import lombok.Builder;
+ import lombok.Getter;
+@@ -14,6 +10,7 @@
+ import lombok.ToString;
+ 
+ import java.sql.Date;
++import java.util.List;
+ 
+ @NoArgsConstructor
+ @AllArgsConstructor
+@@ -47,4 +44,7 @@
+     @Column(name = "status")
+     private Integer status;
+ 
++    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
++    @JsonManagedReference
++    private List<TOptionValue> optinonValue;
+ }
+Index: datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.poly.datn.service.impl;\r\n\r\nimport com.poly.datn.model.TAddress;\r\nimport com.poly.datn.repository.IAddressRepository;\r\nimport com.poly.datn.service.IAddressServices;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\n@Service\r\npublic class AddressServicesImpl implements IAddressServices {\r\n\r\n    @Autowired\r\n    private IAddressRepository addressRepository;\r\n\r\n    @Override\r\n    public List<TAddress> findAll(int pageNumber,String keyword) {\r\n        List<TAddress> addresses = addressRepository.findAll();\r\n        int page = (pageNumber - 1) * 2;\r\n        int endPage = Math.min(page + 2, addresses.size());\r\n        return addresses.subList(page,endPage).stream().filter(\r\n                address -> address.getDistrict().contains(keyword) ||\r\n                        address.getProvince().contains(keyword) ||\r\n                        address.getWard().contains(keyword) ||\r\n                        address.getDetailAddress().contains(keyword)\r\n        ).collect(Collectors.toList());\r\n    }\r\n\r\n    @Override\r\n    public String addAddress(TAddress address) {\r\n        try {\r\n            address.setStatus(1);\r\n            addressRepository.save(address);\r\n        }catch (Exception e){\r\n            return \"Thêm Thất Bại\";\r\n        }\r\n        return \"Thêm Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public String deleteAddressById(Long id) {\r\n        TAddress address = addressRepository.findByIdAddress(id);\r\n\r\n        if(address == null){\r\n            return \"Địa chỉ không tồn tại\";\r\n        }\r\n        try{\r\n            address.setStatus(0);\r\n            addressRepository.save(address);\r\n        }catch (Exception e){\r\n            return \"Xoá Thất Bại\";\r\n        }\r\n        return \"Xoá thành công\";\r\n    }\r\n\r\n    @Override\r\n    public String updateAddress(TAddress address) {\r\n        TAddress addressfindById = addressRepository.findByIdAddress(address.getId());\r\n        if(addressfindById == null){\r\n            return \"Địa chỉ không tồn tại\";\r\n        }\r\n        addressfindById.setStatus(addressfindById.getStatus());\r\n        addressfindById.setProvince(address.getProvince());\r\n        addressfindById.setDistrict(address.getDistrict());\r\n        addressfindById.setWard(address.getWard());\r\n        addressfindById.setDetailAddress(address.getDetailAddress());\r\n        addressRepository.save(address);\r\n        return \"Cập Nhập Thành Công\";\r\n    }\r\n\r\n    @Override\r\n    public TAddress findById(Long id) {\r\n        return addressRepository.findByIdAddress(id);\r\n    }\r\n\r\n    @Override\r\n    public List<TAddress> search(String keyword) {\r\n\r\n        return addressRepository.findAll().stream().filter(\r\n                address -> address.getDetailAddress().contains(keyword) ||\r\n                        address.getProvince().contains(keyword) ||\r\n                        address.getDistrict().contains(keyword) ||\r\n                        address.getWard().contains(keyword)\r\n        ).collect(Collectors.toList());\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java b/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java
+--- a/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java	(revision 7f154eac760d4e400ecf047db7fc3aa6b9ec28bb)
++++ b/datn_backend/src/main/java/com/poly/datn/service/impl/AddressServicesImpl.java	(date 1698855829608)
+@@ -4,6 +4,9 @@
+ import com.poly.datn.repository.IAddressRepository;
+ import com.poly.datn.service.IAddressServices;
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.PageRequest;
++import org.springframework.data.domain.Sort;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+@@ -16,16 +19,8 @@
+     private IAddressRepository addressRepository;
+ 
+     @Override
+-    public List<TAddress> findAll(int pageNumber,String keyword) {
+-        List<TAddress> addresses = addressRepository.findAll();
+-        int page = (pageNumber - 1) * 2;
+-        int endPage = Math.min(page + 2, addresses.size());
+-        return addresses.subList(page,endPage).stream().filter(
+-                address -> address.getDistrict().contains(keyword) ||
+-                        address.getProvince().contains(keyword) ||
+-                        address.getWard().contains(keyword) ||
+-                        address.getDetailAddress().contains(keyword)
+-        ).collect(Collectors.toList());
++    public Page<TAddress> findAll(int pageNumber, String search) {
++        return addressRepository.findAll(PageRequest.of(pageNumber,10),search);
+     }
+ 
+     @Override
