@@ -5,36 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IVariantValueRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductVariantServices.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/ProductDetailServices.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/VariantValueServices.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductVariantServicesImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/VariantValueServicesImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_attoparser_attoparser_2_0_7_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_thymeleaf_3_1_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_1_2_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring6_3_1_2_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/OptionValueController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/OptionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOption.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IOptionValueRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionServicesImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/OptionValueServicesImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductOptionServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductOptionServicesIplm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/ProductDetailServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductDetailServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" afterDir="false" />
     </list>
     <disabled>
       <disabled_changelists>
@@ -88,15 +63,13 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,7 +97,8 @@
       <workItem from="1698887662033" duration="5838000" />
       <workItem from="1698893594540" duration="491000" />
       <workItem from="1698907146422" duration="5902000" />
-      <workItem from="1698913764291" duration="4635000" />
+      <workItem from="1698913764291" duration="6341000" />
+      <workItem from="1698934130768" duration="4335000" />
     </task>
     <task id="LOCAL-00001" summary="Update Add của option">
       <created>1698893430989</created>
@@ -140,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698893995544</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add product">
+      <created>1698918492786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698918492786</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
