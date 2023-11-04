@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
+    <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/ProductDetailServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductDetailServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" afterDir="false" />
+    </list>
+    <disabled>
+      <disabled_changelists>
+        <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="" />
+      </disabled_changelists>
+      <disabled_trackers />
+    </disabled>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +51,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/datn_backend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -51,6 +63,17 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="DatnApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="datn" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.poly.datn.DatnApplication" />
@@ -70,7 +93,35 @@
       <workItem from="1698117082660" duration="2157000" />
       <workItem from="1698216387063" duration="3499000" />
       <workItem from="1698228809383" duration="29000" />
+      <workItem from="1698852949786" duration="3988000" />
+      <workItem from="1698887662033" duration="5838000" />
+      <workItem from="1698893594540" duration="491000" />
+      <workItem from="1698907146422" duration="5902000" />
+      <workItem from="1698913764291" duration="6341000" />
+      <workItem from="1698934130768" duration="4335000" />
     </task>
+    <task id="LOCAL-00001" summary="Update Add của option">
+      <created>1698893430989</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698893430989</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add TOption">
+      <created>1698893995544</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698893995544</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add product">
+      <created>1698918492786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698918492786</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,6 +138,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/datn$DatnApplication.ic" NAME="DatnApplication Coverage Results" MODIFIED="1698228749874" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

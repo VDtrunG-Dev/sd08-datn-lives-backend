@@ -1,5 +1,6 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.dto.OptionValueDTO;
 import com.poly.datn.model.TOption;
 import com.poly.datn.model.TOptionValue;
 import com.poly.datn.repository.IOptionRepository;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OptionValueServices implements IOptionValueServices {
+public class OptionValueServicesImpl implements IOptionValueServices {
 
     @Autowired
     private IOptionValueRepository optionValueRepository;
@@ -35,15 +36,17 @@ public class OptionValueServices implements IOptionValueServices {
     }
 
     @Override
-    public String save(TOptionValue optionValue,Long idOption) {
-        String validate = validate(optionValue);
-        TOption option = optionRepository.findTOptionsById(idOption);
+    public String save(OptionValueDTO optionValueDto) {
+        String validate = validate(optionValueDto);
+        TOption option = optionRepository.findTOptionsById(optionValueDto.getOptionId());
+        TOptionValue optionValue = new TOptionValue();
         if(validate != null){
             return validate;
         }else {
             try{
                 optionValue.setStatus(1);
                 optionValue.setOption(option);
+                optionValue.setValueName(optionValueDto.getOptionValueName());
                 optionValueRepository.save(optionValue);
             }catch (Exception e){
                 return "Thêm thất bại";
@@ -80,13 +83,19 @@ public class OptionValueServices implements IOptionValueServices {
         return "Cập nhật thành công";
     }
 
-    private String validate(TOptionValue optionValue){
-        TOptionValue optionV = optionValueRepository.findByName(optionValue.getValueName());
+    @Override
+    public TOptionValue findByName(String optionValueName) {
+
+        return optionValueRepository.findByName(optionValueName);
+    }
+
+    private String validate(OptionValueDTO optionValueDTO){
+        TOptionValue optionV = optionValueRepository.findByName(optionValueDTO.getOptionValueName());
 
         if(optionV != null){
             return "Option Value Đã Tồn Tại";
         }
-        if(optionValue.getValueName().isEmpty()){
+        if(optionValueDTO.getOptionValueName().isEmpty()){
             return "Chưa Nhập Option Value";
         }
 

@@ -4,6 +4,9 @@ import com.poly.datn.model.TAddress;
 import com.poly.datn.repository.IAddressRepository;
 import com.poly.datn.service.IAddressServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +19,8 @@ public class AddressServicesImpl implements IAddressServices {
     private IAddressRepository addressRepository;
 
     @Override
-    public List<TAddress> findAll(int pageNumber,String keyword) {
-        List<TAddress> addresses = addressRepository.findAll();
-        int page = (pageNumber - 1) * 2;
-        int endPage = Math.min(page + 2, addresses.size());
-        return addresses.subList(page,endPage).stream().filter(
-                address -> address.getDistrict().contains(keyword) ||
-                        address.getProvince().contains(keyword) ||
-                        address.getWard().contains(keyword) ||
-                        address.getDetailAddress().contains(keyword)
-        ).collect(Collectors.toList());
+    public Page<TAddress> findAll(int pageNumber, String search) {
+        return addressRepository.findAll(PageRequest.of(pageNumber,10),search);
     }
 
     @Override

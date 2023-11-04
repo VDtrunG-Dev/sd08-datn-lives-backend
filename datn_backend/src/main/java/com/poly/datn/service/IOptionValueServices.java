@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.OptionValueDTO;
 import com.poly.datn.model.TOptionValue;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,13 @@ public interface IOptionValueServices {
 
     TOptionValue findById(Long id);
 
-    String save(TOptionValue optionValue,Long idOption);
+    String save(OptionValueDTO optionValueDto);
 
     String deleteById(Long id);
 
     String update(TOptionValue optionValue);
 
     String active(Long id);
+
+    TOptionValue findByName(String name);
 }

@@ -1,11 +1,7 @@
 package com.poly.datn.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +10,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 @Entity
 @Table(name = "t_option")
@@ -47,4 +43,7 @@ public class TOption {
     @Column(name = "status")
     private Integer status;
 
+    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<TOptionValue> optinonValue;
 }

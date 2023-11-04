@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IProductRepository extends JpaRepository<TProduct, Long> {
+public interface    IProductRepository extends JpaRepository<TProduct, Long> {
 
     @Query("SELECT p FROM TProduct p WHERE p.status = 1")
     Page<TProduct> findALlPage(Pageable pageable);
@@ -25,7 +25,7 @@ public interface IProductRepository extends JpaRepository<TProduct, Long> {
 
     List<TProduct> findByStatus(int status);
 
-    List<TProduct> findByName(String name);
+    TProduct findByName(String name);
 
 
     List<TProduct> findByNameContaining(String keyword);

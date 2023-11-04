@@ -16,6 +16,9 @@ public interface IOptionValueRepository extends JpaRepository<TOptionValue,Long>
     @Query("SELECT o FROM TOptionValue o WHERE o.id = :id")
     TOptionValue findByIdOptionValue(Long id);
 
-    @Query("SELECT o FROM TOptionValue o WHERE o.valueName = :name")
+    @Query("SELECT o FROM TOptionValue o WHERE o.valueName = :name AND o.status = 1")
     TOptionValue findByName(String name);
+
+    @Query("SELECT o FROM TOptionValue o WHERE o.valueName = :name AND o.option.name = :optionName AND o.status = 1")
+    TOptionValue findByNameAndOptionName(String name, String optionName);
 }

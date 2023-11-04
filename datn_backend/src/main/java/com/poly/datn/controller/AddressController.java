@@ -20,7 +20,7 @@ public class AddressController {
 
 
     @GetMapping("")
-    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
+    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber,
                                       @RequestParam(name = "search", defaultValue = "") String search){
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber,search)));
