@@ -1,5 +1,6 @@
 package com.poly.datn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class TProductOption {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "product_id")
     private TProduct product;
 

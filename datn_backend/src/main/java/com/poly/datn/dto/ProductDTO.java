@@ -1,5 +1,6 @@
 package com.poly.datn.dto;
 
+import com.poly.datn.model.TProductVariation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,5 @@ public class ProductDTO {
     private BigDecimal price;
     private String avatar;
     private String description;
+//    private List<TProductVariation> productDetails;
 }
