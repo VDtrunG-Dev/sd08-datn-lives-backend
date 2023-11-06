@@ -21,6 +21,10 @@ public interface IProductVariantRepository extends JpaRepository<TProductVariati
     @Query("SELECT pv FROM TProductVariation pv WHERE pv.id = :id AND pv.status = 1")
     TProductVariation findByIdProductVariationDelete(Long id);
 
+    @Query("SELECT pv FROM TProductVariation pv WHERE pv.name = :name")
+    TProductVariation findByName(String name);
+
     List<TProductVariation> findAll();
+
     Page<TProductVariation> findByStatus(Integer status, Pageable pageable);
 }

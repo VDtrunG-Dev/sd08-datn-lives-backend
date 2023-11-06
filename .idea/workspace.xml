@@ -5,11 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5e450c2-4c37-4101-b365-75d730ca1e77" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/User/CartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductVariantDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/ICartRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/ICartServices.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/CartServicesImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/controller/admin/ProductDetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/dto/ProductDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TOptionValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProductOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProductOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProductVariation.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TProductVariation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TShoppingCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TShoppingCart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TShoppingCartDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TShoppingCartDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TVariantValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/model/TVariantValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/repository/IProductVariantRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/ProductDetailServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductDetailServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductDetailServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/IProductDetailServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductDetailServicesImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductVariantServicesImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/datn_backend/src/main/java/com/poly/datn/service/impl/ProductVariantServicesImpl.java" afterDir="false" />
     </list>
     <disabled>
       <disabled_changelists>
@@ -51,7 +67,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/datn_backend" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -63,17 +79,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="DatnApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="datn" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.poly.datn.DatnApplication" />
@@ -98,7 +103,18 @@
       <workItem from="1698893594540" duration="491000" />
       <workItem from="1698907146422" duration="5902000" />
       <workItem from="1698913764291" duration="6341000" />
-      <workItem from="1698934130768" duration="4335000" />
+      <workItem from="1698934130768" duration="4961000" />
+      <workItem from="1698978434456" duration="1764000" />
+      <workItem from="1699018281094" duration="6265000" />
+      <workItem from="1699068781229" duration="4990000" />
+      <workItem from="1699080858950" duration="2643000" />
+      <workItem from="1699088084247" duration="13000" />
+      <workItem from="1699165467821" duration="2501000" />
+      <workItem from="1699172194119" duration="4476000" />
+      <workItem from="1699196694434" duration="7955000" />
+      <workItem from="1699232977380" duration="563000" />
+      <workItem from="1699236794152" duration="18000" />
+      <workItem from="1699236853530" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="Update Add của option">
       <created>1698893430989</created>
@@ -121,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698918492786</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="crud productdetail">
+      <created>1698938784939</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698938784939</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

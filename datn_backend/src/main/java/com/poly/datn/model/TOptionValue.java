@@ -1,6 +1,7 @@
 package com.poly.datn.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,4 +50,7 @@ public class TOptionValue {
     @Column(name = "status")
     private Integer status;
 
+    @OneToMany(mappedBy = "optionValue", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<TVariantValue> variantValues;
 }

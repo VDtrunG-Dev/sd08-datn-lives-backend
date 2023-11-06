@@ -2,13 +2,16 @@ package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.OptionDTO;
 import com.poly.datn.dto.ProductDTO;
+import com.poly.datn.dto.ProductVariantDTO;
 import com.poly.datn.model.*;
 import com.poly.datn.repository.*;
 import com.poly.datn.service.IProductDetailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class ProductDetailServicesImpl implements IProductDetailServices {
@@ -43,31 +46,53 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
                 productOption.setOption(option);
                 productOption.setStatus(1);
                 productOptionRepository.save(productOption);
-                System.out.println(o.getOptionName());
                 for(String ov : o.getOptionValueName()){
                     TVariantValue variantValue = new TVariantValue();
                     TOptionValue optionValue = optionValueRepository.findByNameAndOptionName(ov,o.getOptionName());
                     variantValue.setOptionValue(optionValue);
                     variantValue.setProductOption(productOption);
+                    variantValue.setProduct(product);
                     variantValue.setStatus(1);
                     variantValueRepository.save(variantValue);
-                    TProductVariation productVariation = new TProductVariation();
-                    productVariation.setQuantity(productDTO.getQuantity());
-                    productVariation.setProduct(product);
-                    productVariation.setAvatar(productDTO.getAvatar());
-                    productVariation.setPriceNow(productDTO.getPriceNow());
-                    productVariation.setPrice(productDTO.getPrice());
-                    productVariation.setStatus(1);
-                    productVariantRepository.save(productVariation);
                 }
             }
+            List<String> listProductDetailName = new ArrayList<>();
+            generateProductOptions(productDTO.getOption(),product.getName(),0,"",listProductDetailName);
+            for (String p : listProductDetailName){
+                TProductVariation productVariation = new TProductVariation();
+                productVariation.setQuantity(productDTO.getQuantity());
+                productVariation.setProduct(product);
+                productVariation.setAvatar(productDTO.getAvatar());
+                productVariation.setPriceNow(productDTO.getPriceNow());
+                productVariation.setPrice(productDTO.getPrice());
+                productVariation.setName(p);
+                productVariation.setStatus(1);
+                productVariantRepository.save(productVariation);
+            }
         }catch (Exception e){
+            System.out.println(e);
             return "Thêm Thất Bại";
         }
-
         return "Thành Công";
     }
 
+
+    private void generateProductOptions(List<OptionDTO> options, String productName, int currentIndex, String currentOption, List<String> result) {
+        if (currentIndex == options.size()) {
+            result.add(productName + " [" + currentOption + "]");
+            return;
+        }
+
+        OptionDTO option = options.get(currentIndex);
+        if (option.getOptionValueName() != null && !option.getOptionValueName().isEmpty()) {
+            for (String value : option.getOptionValueName()) {
+                String updatedOption = currentOption.isEmpty() ? value : currentOption + " - " + value;
+                generateProductOptions(options, productName, currentIndex + 1, updatedOption, result);
+            }
+        } else {
+            generateProductOptions(options, productName, currentIndex + 1, currentOption, result);
+        }
+    }
     @Override
     public String updateProductDetails(TProductVariation productVariation) {
         TProductVariation pVariation = productVariantRepository.findByIdProductVariation(productVariation.getId());
@@ -110,6 +135,24 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
         pVariation.setStatus(0);
         productVariantRepository.save(pVariation);
         return "Cập Nhật Thành Công";
+    }
+
+    @Override
+    public TProductVariation findByName(ProductVariantDTO productVariantDTO) {
+        StringBuilder result = new StringBuilder(productVariantDTO.getProductName() + " [");
+        for (int i = 0; i < productVariantDTO.getOptions().size(); i++) {
+            result.append(productVariantDTO.getOptions().get(i));
+            if (i < productVariantDTO.getOptions().size() - 1) {
+                result.append(" - ");
+            }
+        }
+        result.append("]");
+        return productVariantRepository.findByName(result.toString());
+    }
+
+    @Override
+    public List<TProductVariation> findAll() {
+        return productVariantRepository.findAll();
     }
 
 

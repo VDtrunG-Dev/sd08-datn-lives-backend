@@ -32,12 +32,12 @@ public class TShoppingCartDetail {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private TShoppingCart cart;
-
-    @ManyToOne
     @JoinColumn(name = "product_variation_id")
     private TProductVariation productVariation;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private TUser user;
 
     @Column(name = "quantity")
     private Integer quantity;

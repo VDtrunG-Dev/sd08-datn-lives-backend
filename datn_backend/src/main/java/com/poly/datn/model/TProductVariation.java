@@ -1,4 +1,5 @@
 package com.poly.datn.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,6 @@ import java.sql.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 @Entity
 @Table(name = "t_product_variation")
@@ -32,12 +32,9 @@ public class TProductVariation {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "product_id")
     private TProduct product;
-
-    @ManyToOne
-    @JoinColumn(name = "variant_value_id")
-    private TVariantValue variantValue;
 
     @Column(name = "sku")
     private String sku;
