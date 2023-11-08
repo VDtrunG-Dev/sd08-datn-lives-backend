@@ -19,7 +19,7 @@ import java.util.Optional;
 public class VariantValueController {
     @Autowired
     private VariantValueServiceImpl variantValueService;
-
+    //dangquangduy
     @GetMapping("view")
     public ResponseEntity<ResponseObject> getAllVariantValues() {
         List<TVariantValue> allVariantValues = variantValueService.getAllVariantValues();
