@@ -16,7 +16,7 @@ import java.util.Optional;
 @CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/variant-value/")
-public class variantValueController {
+public class VariantValueController {
     @Autowired
     private VariantValueServiceImpl variantValueService;
 
