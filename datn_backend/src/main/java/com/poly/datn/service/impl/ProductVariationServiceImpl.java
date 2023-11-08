@@ -38,7 +38,6 @@ public class ProductVariationServiceImpl implements IProductVariationService {
         return productVariationRepository.findById(id)
                 .map(existingProductVariation -> {
                     existingProductVariation.setProduct(updatedProductVariation.getProduct());
-                    existingProductVariation.setVariantValue(updatedProductVariation.getVariantValue());
                     existingProductVariation.setSku(updatedProductVariation.getSku());
                     existingProductVariation.setName(updatedProductVariation.getName());
                     existingProductVariation.setPrice(updatedProductVariation.getPrice());
