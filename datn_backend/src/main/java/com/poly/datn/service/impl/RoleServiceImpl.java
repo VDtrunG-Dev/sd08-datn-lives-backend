@@ -69,10 +69,11 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public List<TRole> searchAll(String nameRole, String description) {
+    public List<TRole> searchAll(String nameRole, String description, String createdBy) {
         return roleRepository.findAll().stream()
-                .filter(role -> role.getName().contains(nameRole))
-                .filter(role -> role.getDescription().contains(description))
+                .filter(roleByName -> roleByName.getName().contains(nameRole))
+                .filter(roleByName -> roleByName.getDescription().contains(description))
+                .filter(roleByName -> roleByName.getCreatedBy().contains(createdBy))
                 .collect(Collectors.toList());
     }
 
@@ -80,8 +81,8 @@ public class RoleServiceImpl implements IRoleService {
     public List<TRole> searchByKeyword(String keyword) {
         return roleRepository.findAll().stream()
                 .filter(role -> role.getName().contains(keyword)
-                        || role.getDescription().contains(keyword))
+                        || role.getDescription().contains(keyword)
+                        || role.getRoleCode().contains(keyword))
                 .collect(Collectors.toList());
     }
-
 }
