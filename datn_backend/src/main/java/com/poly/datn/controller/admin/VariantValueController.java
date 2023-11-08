@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/variant-value/")
-public class variantValueController {
+public class VariantValueController {
     @Autowired
     private VariantValueServiceImpl variantValueService;
-
+    //dangquangduy
     @GetMapping("view")
     public ResponseEntity<ResponseObject> getAllVariantValues() {
         List<TVariantValue> allVariantValues = variantValueService.getAllVariantValues();

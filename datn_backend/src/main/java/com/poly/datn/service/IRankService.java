@@ -28,10 +28,7 @@ public interface IRankService {
     List<TRank> searchAll(String rankName, Integer minimumPoints, Integer status);
 
 
-    Page<TRank> getActiveRank(Integer status, Integer page);
-
-    Page<TRank> getInactiveRank(Integer status, Integer page);
-
+    List<TRank> searchByKeyword(String keyword);
 
     Page<TRank> getAllByStatusPaged(int status, int page, int size);
 
