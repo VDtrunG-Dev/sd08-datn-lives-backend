@@ -3,17 +3,17 @@ package com.poly.datn.service.impl;
 import com.poly.datn.model.TPoints;
 import com.poly.datn.repository.IPointRepository;
 import com.poly.datn.service.IPointService;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PointServiceimpl implements IPointService {
@@ -69,23 +69,23 @@ public class PointServiceimpl implements IPointService {
     }
 
     @Override
-    public List<TPoints> searchAll(String pointName, Integer minimumPoints, Integer status) {
-        return pointRepository.findAll((Specification<TPoints>) (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (pointName != null && !pointName.trim().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("pointName"), "%" + pointName + "%"));
-            }
-
-            if (minimumPoints != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("points"), minimumPoints));
-            }
-
-            if (status != null) {
-                predicates.add(criteriaBuilder.equal(root.get("status"), status));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        });
+    public List<TPoints> searchAll(Long customerId, Date transactionDate, BigDecimal transactionAmount, Integer pointsEarned) {
+        return pointRepository.findAll().stream()
+                .filter(points -> points.getCustomer().getId().equals(customerId))
+                .filter(points -> points.getTransactionDate().equals(transactionDate))
+                .filter(points -> points.getTransactionAmount().equals(transactionAmount))
+                .filter(points -> points.getPointsEarned().equals(pointsEarned))
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TPoints> searchByKeyword(String keyword) {
+        return pointRepository.findAll().stream()
+                .filter(points -> points.getCustomer().getLastName().contains(keyword)
+                        || points.getTransactionAmount().toString().contains(keyword)
+                        || points.getPointsEarned().toString().contains(keyword))
+                .collect(Collectors.toList());
+    }
+
+
 }

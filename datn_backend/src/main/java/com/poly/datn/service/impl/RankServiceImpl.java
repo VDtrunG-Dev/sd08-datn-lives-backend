@@ -78,14 +78,14 @@ public class RankServiceImpl implements IRankService {
     }
 
     @Override
-    public Page<TRank> getActiveRank(Integer status, Integer page) {
-        return rankRepository.findRanksByStatus(status, PageRequest.of(page, 5));
+    public List<TRank> searchByKeyword(String keyword) {
+        return rankRepository.findAll().stream()
+                .filter(rank -> rank.getRankName().contains(keyword)
+                        || rank.getMinimumPoints().toString().contains(keyword))
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public Page<TRank> getInactiveRank(Integer status, Integer page) {
-        return rankRepository.findRanksByStatus(status, PageRequest.of(page, 5));
-    }
+
 
     @Override
     public Page<TRank> getAllByStatusPaged(int status, int page, int size) {
