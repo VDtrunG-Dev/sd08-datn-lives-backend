@@ -37,7 +37,7 @@ public class BillController {
             );
         }
     }
-    @GetMapping("getAll")
+    @GetMapping("get-all")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page){
         return  ResponseEntity.ok(billService.getAll(page));
     }
@@ -54,12 +54,12 @@ public class BillController {
             );
         }
     }
-    @GetMapping("getActiveBills")
+    @GetMapping("get-active-bills")
     public ResponseEntity<?> getActiveBills(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         Page<TBill> activeBills = billService.getActiveBills(1, page);
         return ResponseEntity.ok(activeBills);
     }
-    @GetMapping("getInactiveBills")
+    @GetMapping("get-inactive-bills")
     public ResponseEntity<?> getInactiveBills(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         Page<TBill> inactiveBills = billService.getInactiveBills(0, page); // 0 là trạng thái không hoạt động
         return ResponseEntity.ok(inactiveBills);

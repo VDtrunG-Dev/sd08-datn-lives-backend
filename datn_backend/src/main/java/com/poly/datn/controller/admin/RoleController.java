@@ -24,7 +24,7 @@ public class RoleController {
     public List<TRole> getAllRoles() {
         return roleService.getAllRoles();
     }
-    @GetMapping("getAllStatus")
+    @GetMapping("get-all-status")
     public ResponseEntity<?> getAllStatus(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         Page<TRole> allRoles = roleService.getAllStatus(page);
         return ResponseEntity.ok(allRoles);
@@ -50,7 +50,7 @@ public class RoleController {
                 new ResponseObject("ok", "Tạo vai trò thành công", createdRole)
         );
     }
-    @GetMapping("getActiveRoles")
+    @GetMapping("get-active-roles")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page){
         Page<TRole> activeRoles = roleService.getAll(1, PageRequest.of(page, 5));
         return ResponseEntity.ok(activeRoles);
@@ -68,7 +68,7 @@ public class RoleController {
             );
         }
     }
-    @PutMapping("deleteFake/{id}")
+    @PutMapping("delete-fake/{id}")
     public ResponseEntity<ResponseObject> deleteFake(@PathVariable Long id) {
         Optional<TRole> roleOptional = roleService.getRoleById(id);
         if (roleOptional.isPresent()) {
@@ -85,7 +85,7 @@ public class RoleController {
             );
         }
     }
-    @PutMapping("returnData/{id}")
+    @PutMapping("return-data/{id}")
     public ResponseEntity<ResponseObject> returnData(@PathVariable Long id) {
         Optional<TRole> roleOptional = roleService.getRoleById(id);
         if (roleOptional.isPresent()) {
@@ -109,7 +109,7 @@ public class RoleController {
                 new ResponseObject("ok", "Xóa vai trò thành công", "")
         );
     }
-    @GetMapping("inActiveRoles")
+    @GetMapping("in-active-roles")
     public ResponseEntity<?> getInActiveRoles(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         Page<TRole> inActiveRoles = roleService.getInActiveRoles(0, PageRequest.of(page, 5));
         return ResponseEntity.ok(inActiveRoles);
