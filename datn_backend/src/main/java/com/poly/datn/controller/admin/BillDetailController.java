@@ -114,7 +114,7 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
+    @GetMapping("/da-huy")
     public ResponseEntity<ResponseObject> daHuyPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -123,16 +123,9 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
-    public ResponseEntity<ResponseObject> dangVanChuyenPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
-            , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
-        Pageable pageable= PageRequest.of(pageNo,pageSize);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Page Da thanh toan", billDetailService.PageGetAllBillDetailsDaThanhToan(pageable))
-        );
-    }
 
-    @GetMapping("/da-thanh-toan")
+
+    @GetMapping("/da-van-chuyen")
     public ResponseEntity<ResponseObject> daVanChuyenPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -141,7 +134,7 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
+    @GetMapping("/dang-hoan")
     public ResponseEntity<ResponseObject> dangHoanPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -150,7 +143,7 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
+    @GetMapping("/da-hoan-kiem-tra")
     public ResponseEntity<ResponseObject> daHoanKiemTraPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -159,7 +152,7 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
+    @GetMapping("/da-tra-hoan-tien")
     public ResponseEntity<ResponseObject> daTraHoanTienPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -168,7 +161,7 @@ public class BillDetailController {
         );
     }
 
-    @GetMapping("/da-thanh-toan")
+    @GetMapping("/da-doi-tra")
     public ResponseEntity<ResponseObject> daDoiTraPage(@RequestParam(defaultValue = "0", name = "pageNo") Integer pageNo
             , @RequestParam(defaultValue = "10", name = "pageSize") Integer pageSize){
         Pageable pageable= PageRequest.of(pageNo,pageSize);
