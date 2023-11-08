@@ -11,9 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PointTransactionServiceImpl implements IPointTransactionService {
@@ -77,25 +80,23 @@ public class PointTransactionServiceImpl implements IPointTransactionService {
     }
 
     @Override
-    public List<TPointTransactions> searchAll(String transactionName, Integer minimumPoints, Integer status) {
-        return pointTransactionRepository.findAll((Specification<TPointTransactions>) (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (transactionName != null && !transactionName.trim().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("transactionName"), "%" + transactionName + "%"));
-            }
-
-            if (minimumPoints != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("points"), minimumPoints));
-            }
-
-            if (status != null) {
-                predicates.add(criteriaBuilder.equal(root.get("status"), status));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        });
+    public List<TPointTransactions> searchAll(Long customerId, Integer transactionType, Date transactionDate, BigDecimal transactionAmount) {
+        return pointTransactionRepository.findAll().stream()
+                .filter(pointTransaction -> pointTransaction.getCustomer().getId().equals(customerId))
+                .filter(pointTransaction -> pointTransaction.getTransactionType().equals(transactionType))
+                .filter(pointTransaction -> pointTransaction.getTransactionDate().equals(transactionDate))
+                .filter(pointTransaction -> pointTransaction.getTransactionAmount().equals(transactionAmount))
+                .collect(Collectors.toList());
     }
 
+    @Override
+    public List<TPointTransactions> searchByKeyword(String keyword) {
+        return pointTransactionRepository.findAll().stream()
+                .filter(pointTransaction -> pointTransaction.getCustomer().getLastName().contains(keyword)
+                        || pointTransaction.getDescription().contains(keyword)
+                        || pointTransaction.getTransactionAmount().toString().contains(keyword))
+                .collect(Collectors.toList());
+    }
+    
 
 }
