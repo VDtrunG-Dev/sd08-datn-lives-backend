@@ -31,4 +31,9 @@ public interface ShippingmethodService {
     void deleteTShippingMethod(Long id);
 
     List<TShippingMethod> searchAllKeyWord(String keyWord);
+
+    Boolean checkEmpty(ShippingMethodRequest request);
+    String messageValidate(ShippingMethodRequest request);
+    Boolean checkExist(ShippingMethodRequest request);
+
 }

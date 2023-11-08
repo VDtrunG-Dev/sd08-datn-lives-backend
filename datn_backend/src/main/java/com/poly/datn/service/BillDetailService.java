@@ -4,6 +4,8 @@ import com.poly.datn.dto.BillDetailRequest;
 import com.poly.datn.model.TBillDetail;
 import com.poly.datn.model.TBillDetail;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +24,21 @@ public interface BillDetailService {
     TBillDetail updateBillDetail(Long id, BillDetailRequest request);
 
     void deleteBillDetail(Long id);
+
+
+
+
+    Page<TBillDetail> PageGetAllBillDetailsDaThanhToan(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsDaHuy(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsVanChuyen(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsDangHoan(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsDaHoanKiemTra(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsDaTraHoanTien(Pageable pageable);
+
+    Page<TBillDetail> PageGetAllBillDetailsDoiTra(Pageable pageable);
 }

@@ -26,4 +26,19 @@ public interface BillDetailRepository extends JpaRepository<TBillDetail,Long> {
     @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =2",nativeQuery = true)
     Page<TBillDetail> PageGetAllBillDetailsDaHuy(Pageable pageable);
 
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =3",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsVanChuyen(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =4",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDangHoan(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =5",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDaHoanKiemTra(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =6",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDaTraHoanTien(Pageable pageable);
+
+    @Query(value = "select id,bill_id,product_variation_id,quantity,price,discount,tax,unit_price,subtotal_price,status from t_bill_detail where status =7",nativeQuery = true)
+    Page<TBillDetail> PageGetAllBillDetailsDoiTra(Pageable pageable);
+
 }

@@ -77,4 +77,39 @@ public class BillDetailServiceImpl implements BillDetailService {
             billDetailRepository.save(paymentType);
         }
     }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDaThanhToan(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDaThanhToan(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDaHuy(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDaHuy(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsVanChuyen(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsVanChuyen(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDangHoan(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDangHoan(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDaHoanKiemTra(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDaHoanKiemTra(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDaTraHoanTien(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDaTraHoanTien(pageable);
+    }
+
+    @Override
+    public Page<TBillDetail> PageGetAllBillDetailsDoiTra(Pageable pageable) {
+        return billDetailRepository.PageGetAllBillDetailsDoiTra(pageable);
+    }
 }

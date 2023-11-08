@@ -75,9 +75,17 @@ public class ShippingmethodController {
     public ResponseEntity<ResponseObject> insertShippingmethod(@RequestBody ShippingMethodRequest request) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
         // ShippingmethodService sẽ xử lý việc kiểm tra trùng tên sản phẩm và thêm sản phẩm mới.
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Create new successfully", shippingmethodService.createTShippingMethod(request))
-        );
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", shippingmethodService.messageValidate(request), shippingmethodService.createTShippingMethod(request))
+            );
+        }catch (IllegalArgumentException e) {
+            // Xử lý lỗi nếu sản phẩm không tồn tại hoặc không thể update.
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", shippingmethodService.messageValidate(request), "")
+            );
+        }
+
     }
 
     @PutMapping("/update/{id}")

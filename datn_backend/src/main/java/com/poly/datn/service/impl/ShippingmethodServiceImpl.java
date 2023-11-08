@@ -31,13 +31,13 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
 
     @Override
     public Page<TShippingMethod> PageGetAllTShippingMethods(Integer pageNo, Integer pageSize) {
-        Pageable pageable= PageRequest.of(pageNo,pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
         return shippingmethodRepository.PageGetAllSmethods(pageable);
     }
 
     @Override
     public Page<TShippingMethod> PageGetAllDeletedSmethods(Integer pageNo, Integer pageSize) {
-        Pageable pageable= PageRequest.of(pageNo,pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
         return shippingmethodRepository.PageGetAllDeletedSmethods(pageable);
     }
 
@@ -51,13 +51,14 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         //kiem tra co ten san pham chua
         TShippingMethod smethod;
         List<TShippingMethod> foundSmethod = shippingmethodRepository.findByName(request.getName().trim());
-        if (foundSmethod.size() > 0) {
+        if (!checkEmpty(request)) {
             // Da co Xử lý lỗi, ví dụ:
-            throw new IllegalArgumentException("This name already taken");
+            throw new IllegalArgumentException(messageValidate(request));
+        } else if (!checkExist(request)) {
+            throw new IllegalArgumentException(messageValidate(request));
         } else {
             smethod = request.dto(new TShippingMethod());
         }
-
         // Chua co Tiến hành thêm sản phẩm
         return shippingmethodRepository.save(smethod);
     }
@@ -65,20 +66,19 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     @Override
     public TShippingMethod updateTShippingMethod(Long id, ShippingMethodRequest request) {
         Optional<TShippingMethod> sMethodOptional = shippingmethodRepository.findById(id);
-        if (sMethodOptional.isPresent()) {
+        if (sMethodOptional.isPresent() && checkEmpty(request) ) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod = request.dto(sMethod);
             return shippingmethodRepository.save(sMethod);
         } else {
             return null;
-
         }
     }
 
     @Override
     public TShippingMethod updateTShippingMethodActive(Long id) {
         Optional<TShippingMethod> sMethodOptional = shippingmethodRepository.findById(id);
-        if (sMethodOptional.isPresent()) {
+        if (sMethodOptional.isPresent() ) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod.setStatus(1);
             return shippingmethodRepository.save(sMethod);
@@ -102,10 +102,37 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     public List<TShippingMethod> searchAllKeyWord(String keyWord) {
         return shippingmethodRepository.findAll().stream()
                 .filter(tShippingMethod -> tShippingMethod.getName().contains(keyWord)
-                || tShippingMethod.getDescription().contains(keyWord)
+                                || tShippingMethod.getDescription().contains(keyWord)
 //                        || tShippingMethod.getCreatedBy().contains(keyWord)
 //                        ||tShippingMethod.getUpdatedBy().contains(keyWord)
-                        )
+                )
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Boolean checkEmpty(ShippingMethodRequest request) {
+        if (request.getName().length() <= 0 || request.getPrice().toString().length() <= 0
+                || request.getDescription().length() <= 0) {
+            return false;
+        } else
+            return true;
+    }
+
+    @Override
+    public Boolean checkExist(ShippingMethodRequest request) {
+        if (!searchAllKeyWord(request.getName()).isEmpty()) {
+            return false;
+        } else return true;
+    }
+
+    @Override
+    public String messageValidate(ShippingMethodRequest request) {
+        if (!checkEmpty(request)) {
+            return "Không bỏ trống dữ liệu";
+        } else if (!checkExist(request)) {
+            return "Đã có phương thức vận chuyển này vui lòng đổi tên khác";
+        } else
+            return "Không còn lỗi dữ liệu";
+    }
+
 }
