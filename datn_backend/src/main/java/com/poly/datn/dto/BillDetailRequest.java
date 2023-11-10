@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 public class BillDetailRequest {
     private Long id;
 
-    private Long billId;
+    private TBill billId;
 
-    private Long productVariation;
+    private TProductVariation productVariation;
 
     private Integer quantity;
 
@@ -33,8 +33,8 @@ public class BillDetailRequest {
 
     public TBillDetail dto(TBillDetail billDetail){
         billDetail.setId(this.getId());
-        billDetail.setBill(TBill.builder().id(Long.valueOf(this.getBillId())).build());
-        billDetail.setProductVariation(TProductVariation.builder().id(Long.valueOf(this.getProductVariation())).build());
+        billDetail.setBill(this.getBillId());
+        billDetail.setProductVariation(this.getProductVariation());
         billDetail.setQuantity(this.getQuantity());
         billDetail.setPrice(this.getPrice());
         billDetail.setDiscount(this.getDiscount());

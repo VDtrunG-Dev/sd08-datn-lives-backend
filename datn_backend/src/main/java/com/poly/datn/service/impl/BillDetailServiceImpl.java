@@ -43,7 +43,7 @@ public class BillDetailServiceImpl implements BillDetailService {
     public TBillDetail createBillDetail(BillDetailRequest request) {
         //kiem tra co ten san pham chua
         TBillDetail paymentType;
-        List<TBillDetail> foundPaymentypes = billDetailRepository.findByBillId(request.getBillId());
+        List<TBillDetail> foundPaymentypes = billDetailRepository.findByBillId(request.getBillId().getId());
         if (foundPaymentypes.size() > 0) {
             // Da co Xử lý lỗi, ví dụ:
             throw new IllegalArgumentException("Product name already taken");
@@ -112,4 +112,14 @@ public class BillDetailServiceImpl implements BillDetailService {
     public Page<TBillDetail> PageGetAllBillDetailsDoiTra(Pageable pageable) {
         return billDetailRepository.PageGetAllBillDetailsDoiTra(pageable);
     }
+    public Boolean checkProductQuantity(BillDetailRequest request){
+        if(request.getProductVariation().getStatus()==2){
+            return true;
+        } else if(request.getProductVariation().getQuantity()> request.getQuantity()){
+            return true;
+        }
+        return false;
+    }
+
+
 }
