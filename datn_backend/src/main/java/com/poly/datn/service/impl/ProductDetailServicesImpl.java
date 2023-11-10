@@ -1,6 +1,7 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.OptionDTO;
+import com.poly.datn.dto.ProducDetailDTO;
 import com.poly.datn.dto.ProductDTO;
 import com.poly.datn.dto.ProductVariantDTO;
 import com.poly.datn.model.*;
@@ -39,6 +40,9 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
     public String addProductDetail(ProductDTO productDTO) {
         try{
             TProduct product = productRepository.findByName(productDTO.getProductName());
+            if (product == null){
+                return "Sản Phẩm Không Tồn Tại";
+            }
             for(OptionDTO o : productDTO.getOption()){
                 TProductOption productOption = new TProductOption();
                 TOption option = optionRepository.findTOptionsByName(o.getOptionName());
@@ -56,19 +60,20 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
                     variantValueRepository.save(variantValue);
                 }
             }
-            List<String> listProductDetailName = new ArrayList<>();
-            generateProductOptions(productDTO.getOption(),product.getName(),0,"",listProductDetailName);
-            for (String p : listProductDetailName){
+            List<ProducDetailDTO> listProductDetailName = productDTO.getProductDetails();
+//            generateProductOptions(productDTO.getOption(),product.getName(),0,"",listProductDetailName);
+            for (ProducDetailDTO p : listProductDetailName){
                 TProductVariation productVariation = new TProductVariation();
-                productVariation.setQuantity(productDTO.getQuantity());
                 productVariation.setProduct(product);
-                productVariation.setAvatar(productDTO.getAvatar());
-                productVariation.setPriceNow(productDTO.getPriceNow());
-                productVariation.setPrice(productDTO.getPrice());
-                productVariation.setName(p);
+                productVariation.setName(p.getName());
+                productVariation.setPriceNow(p.getPriceNow());
+                productVariation.setPrice(p.getPrice());
+                productVariation.setAvatar(p.getAvatar());
                 productVariation.setStatus(1);
+                System.out.println(p.getName());
                 productVariantRepository.save(productVariation);
             }
+
         }catch (Exception e){
             System.out.println(e);
             return "Thêm Thất Bại";

@@ -14,7 +14,7 @@ public interface IProductService {
 
     Optional<TProduct> getProductById(Long id);
 
-    String createProduct(TProduct product);
+    String createProduct(String name);
 
     String updateProduct(Long id, TProduct updatedProduct);
 

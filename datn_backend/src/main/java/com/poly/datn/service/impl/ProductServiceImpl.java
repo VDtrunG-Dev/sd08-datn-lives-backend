@@ -30,8 +30,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<TProduct> getAllProducts(int pageNumber) {
         List<TProduct> products = productRepository.findAll();
-        int page = (pageNumber - 1) * 10;
-        int endPage = Math.min(page + 10, products.size());
+        int page = (pageNumber - 1) * 2;
+        int endPage = Math.min(page + 2, products.size());
         return products.subList(page,endPage);
     }
 
@@ -42,13 +42,18 @@ public class ProductServiceImpl implements IProductService {
 
 
     @Override
-    public String createProduct(TProduct product) {
-        TProduct foundProducts = productRepository.findByName(product.getName().trim());
+    public String createProduct(String name) {
+        TProduct foundProducts = productRepository.findByName(name.trim());
         if (foundProducts != null) {
             return "Sản Phẩm Đã Tồn Tại";
         }
+        TProduct product = new TProduct();
+        product.setName(name);
+        product.setStatus(1);
+        product.setCreatedAt(LocalDateTime.now());
         productRepository.save(product);
 
+        System.out.println(name);
         return "Thêm Thành Công";
     }
 

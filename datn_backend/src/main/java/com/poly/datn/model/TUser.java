@@ -90,4 +90,8 @@ public class TUser {
     @JsonManagedReference
     private List<TShoppingCartDetail> shoppingCartDetails;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<TUserAddress> userAddresses;
+
 }
