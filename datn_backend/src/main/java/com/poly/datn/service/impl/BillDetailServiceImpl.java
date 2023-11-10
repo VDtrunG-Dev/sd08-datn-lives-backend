@@ -121,5 +121,8 @@ public class BillDetailServiceImpl implements BillDetailService {
         return false;
     }
 
+    public Boolean checkStatusProduct(){
+        return false;
+    }
 
 }
