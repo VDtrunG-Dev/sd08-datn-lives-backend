@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IUserServices {
 
-    List<TUser> findAll(int pageNumber,String keyword);
+    Page<TUser> findAll(int pageNumber);
 
     TUser findById(Long id);
 

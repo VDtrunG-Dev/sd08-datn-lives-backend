@@ -3,7 +3,6 @@ package com.poly.datn.controller;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.dto.UserDTO;
 import com.poly.datn.model.TUser;
-import com.poly.datn.repository.IUserRepository;
 import com.poly.datn.service.impl.UserServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +17,11 @@ public class UserController {
     @Autowired
     private UserServicesImpl userServices;
 
-    @Autowired
-    private IUserRepository userRepository;
-
     @GetMapping("")
-    private ResponseEntity<?> pageAllUser(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
+    private ResponseEntity<?> pageAllUser(@RequestParam(name = "page",defaultValue = "0") int pageNumber,
                                           @RequestParam(name = "search",defaultValue = "") String search){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công",userServices.findAll(pageNumber,search))
+                new ResponseObject("ok","Thành Công",userServices.findAll(pageNumber))
         );
     }
 
