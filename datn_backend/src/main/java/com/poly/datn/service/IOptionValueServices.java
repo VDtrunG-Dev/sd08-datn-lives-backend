@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface IOptionValueServices {
 
-    List<TOptionValue> findAll(int pageNumber);
+    Page<TOptionValue> findAll(int pageNumber);
+
+    List<String> findByOptionId(Long optionId);
 
     TOptionValue findById(Long id);
 

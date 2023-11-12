@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @RestController
-@CrossOrigin("*")
-    @RequestMapping("/api/address")
+@CrossOrigin("http://localhost:5173")
+@RequestMapping("/api/address")
 public class AddressController {
 
     @Autowired
-    private AddressServicesImpl addressServices = new AddressServicesImpl();
+    private AddressServicesImpl addressServices ;
 
 
     @GetMapping("")
-    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber,
+    private ResponseEntity<?> findAll(@RequestParam(name = "page",defaultValue = "1") int pageNumber,
                                       @RequestParam(name = "search", defaultValue = "") String search){
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", "Thành công",addressServices.findAll(pageNumber,search)));
@@ -54,7 +54,7 @@ public class AddressController {
                 ResponseObject("ok","" ,addressServices.findById(id)));
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     private ResponseEntity<?> findSearch(@RequestParam(name = "search",required = false) String search){
         return ResponseEntity.status(HttpStatus.OK).body(new
                 ResponseObject("ok", "Thành công",addressServices.search(search)));

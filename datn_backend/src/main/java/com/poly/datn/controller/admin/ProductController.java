@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
+
 @RestController
 @RequestMapping(path = "/api/products")
+@CrossOrigin("http://localhost:5173")
 public class ProductController {
 
     @Autowired
@@ -23,22 +24,37 @@ public class ProductController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getAllProduct(@RequestParam(name = "page",defaultValue = "1") int page) {
+    public ResponseEntity<?> getAllProduct(@RequestParam(name = "page",defaultValue = "0") int page,
+                                           @RequestParam(name = "search",defaultValue = "") String search) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công",productService.getAllProducts(page))
+                new ResponseObject("ok","Thành Công",productService.getProducts(page,search))
         );
     }
 
+    @GetMapping("/listNameProduct")
+    public ResponseEntity<?> pgaeNameProduct(@RequestParam(name = "search",defaultValue = "") String search){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công",productService.displayNameProduct(search))
+        );
+    }
+
+    @GetMapping("/findall")
+    public ResponseEntity<?> pageFindAll(@RequestParam(name = "page",defaultValue = "0") int page,
+                                           @RequestParam(name = "search",defaultValue = "") String search) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công",productService.findAll(page,search))
+        );
+    }
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
         Optional<TProduct> foundProduct = productService.getProductById(id);
         if (foundProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Query product successfully!", foundProduct)
+                    new ResponseObject("ok", "Thành Công", foundProduct)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("false", "Cannot find product with id = " + id, "")
+                    new ResponseObject("false", "Không tìm thấy sản phẩm = " + id, "")
             );
         }
     }
@@ -72,14 +88,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestParam(name = "search", required = false) String search) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok","Thành Công", productService.findByKeyword(search))
-        );
-    }
-
-    @PostMapping("/active/{id}")
+    @PutMapping("/active/{id}")
     public ResponseEntity<ResponseObject> acctiveProduct(@PathVariable(name = "id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công", productService.activeProduct(id))

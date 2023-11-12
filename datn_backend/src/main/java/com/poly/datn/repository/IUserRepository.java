@@ -12,8 +12,14 @@ import java.util.List;
 @Repository
 public interface IUserRepository extends JpaRepository<TUser,Long> {
 
-    @Query("SELECT u FROM TUser u WHERE u.status = 1")
-    Page<TUser> findAll(Pageable pageable);
+    @Query("SELECT u FROM TUser u " +
+            "WHERE u.status = 1 " +
+            "AND (u.email LIKE %:search% " +
+            "OR u.lastName LIKE %:search% " +
+            "OR u.firstName LIKE %:search% " +
+            "OR u.phoneNumber LIKE %:search%) " +
+            "ORDER BY u.id DESC")
+    Page<TUser> findAll(Pageable pageable,String search);
 
     @Query("SELECT u FROM TUser u WHERE u.id = :id AND u.status = 1")
     TUser findByIdUser(Long id);

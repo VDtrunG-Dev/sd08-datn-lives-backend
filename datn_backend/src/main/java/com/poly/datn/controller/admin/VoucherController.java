@@ -24,7 +24,7 @@ import java.util.Optional;
 
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/admin/voucher")
 public class VoucherController {
 
@@ -192,7 +192,6 @@ public class VoucherController {
         Optional<TVoucher> voucherOptional = voucherService.getVoucherById(id);
         if (voucherOptional.isPresent()) {
             TVoucher voucher = voucherOptional.get();
-
 
             if (voucher.getStatus() == 0) {
                 voucher.setStatus(1);

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RestController
 @RequestMapping("/api/bill/")
 public class BillController {

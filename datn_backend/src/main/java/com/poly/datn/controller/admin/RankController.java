@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/admin/rank")
 public class RankController {
 

@@ -10,6 +10,8 @@ import com.poly.datn.service.IProductDetailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +42,7 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
     public String addProductDetail(ProductDTO productDTO) {
         try{
             TProduct product = productRepository.findByName(productDTO.getProductName());
-            if (product == null){
-                return "Sản Phẩm Không Tồn Tại";
-            }
+
             for(OptionDTO o : productDTO.getOption()){
                 TProductOption productOption = new TProductOption();
                 TOption option = optionRepository.findTOptionsByName(o.getOptionName());
@@ -69,11 +69,10 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
                 productVariation.setPriceNow(p.getPriceNow());
                 productVariation.setPrice(p.getPrice());
                 productVariation.setAvatar(p.getAvatar());
+                productVariation.setCreatedAt(LocalDate.now());
                 productVariation.setStatus(1);
-                System.out.println(p.getName());
                 productVariantRepository.save(productVariation);
             }
-
         }catch (Exception e){
             System.out.println(e);
             return "Thêm Thất Bại";
@@ -87,7 +86,6 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
             result.add(productName + " [" + currentOption + "]");
             return;
         }
-
         OptionDTO option = options.get(currentIndex);
         if (option.getOptionValueName() != null && !option.getOptionValueName().isEmpty()) {
             for (String value : option.getOptionValueName()) {
@@ -110,12 +108,12 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
             pVariation.setQuantity(productVariation.getQuantity());
             pVariation.setPriceNow(productVariation.getPriceNow());
             pVariation.setDescription(productVariation.getDescription());
+            pVariation.setUpdatedAt(LocalDate.now());
             productVariantRepository.save(pVariation);
         }catch (Exception e){
             return "Cập Nhập Thất Bại";
         }
         return "Cập Nhập Thành Công";
-
     }
 
     @Override
@@ -124,7 +122,6 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
         if(pVariation == null){
             return "Sản Phẩm Đã Xoá Không Tồn Tại";
         }
-
         pVariation.setStatus(1);
         productVariantRepository.save(pVariation);
         return "Cập Nhật Thành Công";
@@ -144,7 +141,7 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
 
     @Override
     public TProductVariation findByName(ProductVariantDTO productVariantDTO) {
-        StringBuilder result = new StringBuilder(productVariantDTO.getProductName() + " [");
+        StringBuilder result = new StringBuilder(productVariantDTO.getProductName() + "[");
         for (int i = 0; i < productVariantDTO.getOptions().size(); i++) {
             result.append(productVariantDTO.getOptions().get(i));
             if (i < productVariantDTO.getOptions().size() - 1) {

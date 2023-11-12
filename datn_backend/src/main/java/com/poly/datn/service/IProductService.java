@@ -10,7 +10,11 @@ public interface IProductService {
 
     TProduct findByName(String name);
 
-    List<TProduct> getAllProducts(int page);
+    List<String> displayNameProduct(String search);
+
+    Page<TProduct> getProducts(int page,String search);
+
+    Page<TProduct> findAll(int page,String search);
 
     Optional<TProduct> getProductById(Long id);
 
@@ -19,8 +23,6 @@ public interface IProductService {
     String updateProduct(Long id, TProduct updatedProduct);
 
     String deleteProduct(Long id);
-
-    List<TProduct> findByKeyword(String keyword);
 
     String activeProduct(Long id);
 }

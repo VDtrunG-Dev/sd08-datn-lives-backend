@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IUserServices {
 
-    Page<TUser> findAll(int pageNumber);
+    Page<TUser> findAll(int pageNumber,String search);
 
     TUser findById(Long id);
 
@@ -18,12 +18,10 @@ public interface IUserServices {
 
     String deleteUserById(Long id);
 
-    String deleteUserByEmail(String email);
-
     String saveUser(UserDTO userDTO);
 
     String updateUser(TUser user);
 
     String activeUser(Long id);
-    List<TUser> searchUser(String keyword);
+
 }

@@ -28,11 +28,19 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<TProduct> getAllProducts(int pageNumber) {
-        List<TProduct> products = productRepository.findAll();
-        int page = (pageNumber - 1) * 2;
-        int endPage = Math.min(page + 2, products.size());
-        return products.subList(page,endPage);
+    public List<String> displayNameProduct(String search) {
+
+        return productRepository.getAllProductName(search);
+    }
+
+    @Override
+    public Page<TProduct> getProducts(int pageNumber,String search) {
+        return productRepository.findALlPage(PageRequest.of(pageNumber,10),search);
+    }
+
+    @Override
+    public Page<TProduct> findAll(int page, String search) {
+        return productRepository.findALlProduct(PageRequest.of(page,10),search);
     }
 
     @Override
@@ -52,21 +60,17 @@ public class ProductServiceImpl implements IProductService {
         product.setStatus(1);
         product.setCreatedAt(LocalDateTime.now());
         productRepository.save(product);
-
-        System.out.println(name);
         return "Thêm Thành Công";
     }
 
     @Override
     public String updateProduct(Long id,TProduct updatedProduct) {
         TProduct product = productRepository.findByIdProduct(id);
-
         if(product == null){
             return "Sản Phẩm Không Tồn Tại";
         }
         product.setName(updatedProduct.getName());
         productRepository.save(product);
-
         return "Cập Nhật thành công";
     }
 
@@ -82,10 +86,6 @@ public class ProductServiceImpl implements IProductService {
         return "Xoá Thành Công";
     }
 
-    @Override
-    public List<TProduct> findByKeyword(String keyword) {
-        return productRepository.findByNameContaining(keyword);
-    }
 
     @Override
     public String activeProduct(Long id) {
