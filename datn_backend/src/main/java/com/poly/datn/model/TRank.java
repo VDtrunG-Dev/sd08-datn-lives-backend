@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,7 +36,19 @@ public class TRank {
     @Column(name = "minimum_points")
     private Integer minimumPoints;
 
-    @Column(name = "status")
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+
+    @Column(name = "updated_by", insertable = false)
+    private String updatedBy;
+
+    @Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "status",insertable = false, columnDefinition = "INTEGER DEFAULT 1")
     private Integer status;
 
     public String getStatusDescription() {
