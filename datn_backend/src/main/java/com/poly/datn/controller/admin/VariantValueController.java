@@ -61,7 +61,7 @@ public class VariantValueController {
 
     @GetMapping("get-inactive-variant-values")
     public ResponseEntity<ResponseObject> getInActiveVariantValues(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        Page<TVariantValue> inActiveVariantValues = variantValueService.getInActiveVariantValues(0, PageRequest.of(page, 5));
+        Page<TVariantValue> inActiveVariantValues = variantValueService.getInActiveVariantValues(0, PageRequest.of(page, 10));
         if (!inActiveVariantValues.isEmpty()) {
             return ResponseEntity.ok(new ResponseObject("ok", "Danh sách giá trị biến thể không hoạt động", inActiveVariantValues));
         } else {
