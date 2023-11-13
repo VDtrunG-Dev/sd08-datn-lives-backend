@@ -2,6 +2,7 @@ package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.dto.ShippingMethodRequest;
+import com.poly.datn.model.TBill;
 import com.poly.datn.model.TPaymentType;
 import com.poly.datn.model.TShippingMethod;
 import com.poly.datn.service.ShippingmethodService;
@@ -145,5 +146,11 @@ public class ShippingmethodController {
     @GetMapping("/search-keyword")
     public List<TShippingMethod> searchAll(@RequestParam(name = "searchInput") String keyWord) {
         return shippingmethodService.searchAllKeyWord(keyWord);
+    }
+
+    @GetMapping("/search-term")
+    public List<TShippingMethod> searchTBill(@RequestParam(name = "searchTerm") String searchTerm) {
+        // Gọi phương thức searchTBill từ TBillService
+        return shippingmethodService.searchTShippingMethodBySearchTerm(searchTerm);
     }
 }

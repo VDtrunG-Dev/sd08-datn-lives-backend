@@ -26,4 +26,6 @@ public interface IBillService {
     void checkVoucherBill(TBill bill);
 
     TBill updateVoucher(Long id,BillRequest billRequest);
+
+    List<TBill> searchTBill(String searchTerm);
 }

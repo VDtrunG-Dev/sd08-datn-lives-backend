@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,7 +61,10 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         } else {
             smethod = request.dto(new TShippingMethod());
         }
+
         // Chua co Tiến hành thêm sản phẩm
+        smethod.setCreatedAt(getCurrentDate());
+        smethod.setUpdatedAt(getCurrentDate());
         return shippingmethodRepository.save(smethod);
     }
 
@@ -69,6 +74,7 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         if (sMethodOptional.isPresent() && checkEmpty(request) ) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod = request.dto(sMethod);
+            sMethod.setUpdatedAt(getCurrentDate());
             return shippingmethodRepository.save(sMethod);
         } else {
             return null;
@@ -81,6 +87,7 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         if (sMethodOptional.isPresent() ) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod.setStatus(1);
+            sMethod.setUpdatedAt(getCurrentDate());
             return shippingmethodRepository.save(sMethod);
         } else {
             return null;
@@ -94,6 +101,7 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
         if (sMethodOptional.isPresent()) {
             TShippingMethod sMethod = sMethodOptional.get();
             sMethod.setStatus(0);
+            sMethod.setUpdatedAt(getCurrentDate());
             shippingmethodRepository.save(sMethod);
         }
     }
@@ -126,6 +134,11 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
     }
 
     @Override
+    public List<TShippingMethod> searchTShippingMethodBySearchTerm(String searchTerm) {
+        return shippingmethodRepository.searchTShippingMethodBySearchTerm(searchTerm);
+    }
+
+    @Override
     public String messageValidate(ShippingMethodRequest request) {
         if (!checkEmpty(request)) {
             return "Không bỏ trống dữ liệu";
@@ -133,6 +146,11 @@ public class ShippingmethodServiceImpl implements ShippingmethodService {
             return "Đã có phương thức vận chuyển này vui lòng đổi tên khác";
         } else
             return "Không còn lỗi dữ liệu";
+    }
+    public Date getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = new Date(calendar.getTimeInMillis());
+        return currentDate;
     }
 
 }

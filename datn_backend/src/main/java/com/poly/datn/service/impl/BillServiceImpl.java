@@ -134,8 +134,13 @@ public class BillServiceImpl implements IBillService {
             } else
                 // Không tìm thấy voucher phù hợp
                 return null;
-        } else 
+        } else
         return null;
+    }
+
+    @Override
+    public List<TBill> searchTBill(String searchTerm) {
+        return billRepository.searchTBillBySearchTerm(searchTerm);
     }
 
 

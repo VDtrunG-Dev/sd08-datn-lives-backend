@@ -1,5 +1,6 @@
 package com.poly.datn.repository;
 
+import com.poly.datn.model.TBill;
 import com.poly.datn.model.TShippingMethod;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,15 @@ public interface ShippingmethodRepository extends JpaRepository<TShippingMethod,
 
     @Query(value = "select id,name,price,description,created_by,updated_by,created_at,updated_at,status from t_shipping_method where status=0",nativeQuery = true)
     Page<TShippingMethod> PageGetAllDeletedSmethods(Pageable pageable);
+
+    @Query("SELECT ts FROM TShippingMethod ts WHERE " +
+            "ts.name LIKE %:searchTerm% OR " +
+            "" +
+            "ts.description LIKE %:searchTerm% OR " +
+            "ts.createdBy LIKE %:searchTerm% OR " +
+            "" +
+            "" +
+            "ts.createdBy LIKE %:searchTerm% OR " +
+            "ts.updatedBy LIKE %:searchTerm%")
+    List<TShippingMethod> searchTShippingMethodBySearchTerm(String searchTerm);
 }

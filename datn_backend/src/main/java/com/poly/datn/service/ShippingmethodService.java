@@ -35,5 +35,6 @@ public interface ShippingmethodService {
     Boolean checkEmpty(ShippingMethodRequest request);
     String messageValidate(ShippingMethodRequest request);
     Boolean checkExist(ShippingMethodRequest request);
+    List<TShippingMethod> searchTShippingMethodBySearchTerm(String searchTerm);
 
 }

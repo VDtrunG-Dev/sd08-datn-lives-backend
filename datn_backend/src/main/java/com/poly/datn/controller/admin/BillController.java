@@ -139,4 +139,10 @@ public class BillController {
             );
         }
     }
+
+    @GetMapping("search-term")
+    public List<TBill> searchTBill(@RequestParam(name = "searchTerm") String searchTerm) {
+        // Gọi phương thức searchTBill từ TBillService
+        return billService.searchTBill(searchTerm);
+    }
 }
