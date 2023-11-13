@@ -69,7 +69,7 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
                 productVariation.setPriceNow(p.getPriceNow());
                 productVariation.setPrice(p.getPrice());
                 productVariation.setAvatar(p.getAvatar());
-                productVariation.setCreatedAt(LocalDate.now());
+                productVariation.setCreatedAt(LocalDateTime.now());
                 productVariation.setStatus(1);
                 productVariantRepository.save(productVariation);
             }
@@ -108,7 +108,7 @@ public class ProductDetailServicesImpl implements IProductDetailServices {
             pVariation.setQuantity(productVariation.getQuantity());
             pVariation.setPriceNow(productVariation.getPriceNow());
             pVariation.setDescription(productVariation.getDescription());
-            pVariation.setUpdatedAt(LocalDate.now());
+            pVariation.setUpdatedAt(LocalDateTime.now());
             productVariantRepository.save(pVariation);
         }catch (Exception e){
             return "Cập Nhập Thất Bại";
