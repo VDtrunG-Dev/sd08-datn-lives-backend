@@ -5,6 +5,7 @@ import com.poly.datn.repository.IRoleRepository;
 import com.poly.datn.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -69,20 +70,32 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public List<TRole> searchAll(String nameRole, String description, String createdBy) {
-        return roleRepository.findAll().stream()
-                .filter(roleByName -> roleByName.getName().contains(nameRole))
-                .filter(roleByName -> roleByName.getDescription().contains(description))
-                .filter(roleByName -> roleByName.getCreatedBy().contains(createdBy))
+    public Page<TRole> searchAll(String nameRole, String description, Long id, String createdBy, Pageable pageable) {
+        List<TRole> filteredRoles = roleRepository.findAll(pageable)
+                .stream()
+                .filter(role -> role.getName().contains(nameRole))
+                .filter(role -> role.getDescription().contains(description))
+                .filter(role -> role.getCreatedBy().contains(createdBy))
+                .filter(role -> role.getId().equals(id))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredRoles, pageable, filteredRoles.size());
+
     }
 
+
+
+
+
     @Override
-    public List<TRole> searchByKeyword(String keyword) {
-        return roleRepository.findAll().stream()
+    public Page<TRole> searchByKeyword(String keyword, Pageable pageable) {
+        List<TRole> filteredRoles = roleRepository.findAll(pageable)
+                .stream()
                 .filter(role -> role.getName().contains(keyword)
                         || role.getDescription().contains(keyword)
                         || role.getRoleCode().contains(keyword))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredRoles, pageable, filteredRoles.size());
     }
 }

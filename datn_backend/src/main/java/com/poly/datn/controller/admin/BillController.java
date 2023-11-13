@@ -5,6 +5,7 @@ import com.poly.datn.model.TBill;
 import com.poly.datn.service.impl.BillServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -93,12 +94,12 @@ public class BillController {
     public ResponseEntity<ResponseObject> searchAll(
             @RequestParam String customer,
             @RequestParam String shippingMethod,
-            @RequestParam BigDecimal cash
-    ) {
-        List<TBill> result = billService.searchAll(customer, shippingMethod, cash);
-        if (!result.isEmpty()) {
+            @RequestParam BigDecimal cash,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TBill> resultPage = billService.searchAll(customer, shippingMethod, cash, PageRequest.of(page, 10));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm hóa đơn thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm hóa đơn thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -108,11 +109,13 @@ public class BillController {
     }
 
     @GetMapping("search-by-keyword/")
-    public ResponseEntity<ResponseObject> searchByKeyword(@RequestParam String keyword) {
-        List<TBill> result = billService.searchByKeyword(keyword);
-        if (!result.isEmpty()) {
+    public ResponseEntity<ResponseObject> searchByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TBill> resultPage = billService.searchByKeyword(keyword, PageRequest.of(page, 10));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm hóa đơn theo từ khóa thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm hóa đơn theo từ khóa thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -120,4 +123,5 @@ public class BillController {
             );
         }
     }
+
 }

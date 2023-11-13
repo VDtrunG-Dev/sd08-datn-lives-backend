@@ -5,6 +5,7 @@ import com.poly.datn.repository.IProductVariationRepository;
 import com.poly.datn.service.IProductVariantServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,15 +61,7 @@ public class ProductVariantServicesImpl implements IProductVariantServices {
         productVariationRepository.deleteById(id);
     }
 
-    @Override
-    public List<TProductVariation> searchAll(String name, String sku, String description) {
-        return productVariationRepository.findAll().stream()
-                .filter(roleByName -> roleByName.getName().contains(name))
-                .filter(roleByName -> roleByName.getDescription().contains(description))
-                .filter(roleByName -> roleByName.getSku().contains(sku))
-                .collect(Collectors.toList());
 
-    }
 
     @Override
     public Page<TProductVariation> getAllStatus(Integer page) {
@@ -82,11 +75,29 @@ public class ProductVariantServicesImpl implements IProductVariantServices {
     }
 
     @Override
-    public List<TProductVariation> searchByKeyword(String keyword) {
-        return productVariationRepository.findAll().stream()
-                .filter(productVariation -> productVariation.getSku().contains(keyword)
-                        || productVariation.getName().contains(keyword)
-                        || productVariation.getDescription().contains(keyword))
+    public Page<TProductVariation> searchAll(String name, String sku, String description, Pageable pageable) {
+        Page<TProductVariation> resultPage = productVariationRepository.findAll(pageable);
+        List<TProductVariation> filteredVariations = resultPage.getContent()
+                .stream()
+                .filter(variation -> variation.getName().contains(name))
+                .filter(variation -> variation.getSku().contains(sku))
+                .filter(variation -> variation.getDescription().contains(description))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredVariations, pageable, filteredVariations.size());
     }
+
+    @Override
+    public Page<TProductVariation> searchByKeyword(String keyword, Pageable pageable) {
+        Page<TProductVariation> resultPage = productVariationRepository.findAll(pageable);
+        List<TProductVariation> filteredVariations = resultPage.getContent()
+                .stream()
+                .filter(variation -> variation.getName().contains(keyword)
+                        || variation.getSku().contains(keyword)
+                        || variation.getDescription().contains(keyword))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredVariations, pageable, filteredVariations.size());
+    }
+
 }

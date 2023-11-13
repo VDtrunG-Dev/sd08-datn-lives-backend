@@ -5,6 +5,7 @@ import com.poly.datn.repository.IBillRepository;
 import com.poly.datn.service.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -56,21 +57,31 @@ public class BillServiceImpl implements IBillService {
                 })
                 .orElse(null);
     }
+
     @Override
-    public List<TBill> searchAll(String customer, String shippingMethod, BigDecimal cash) {
-        return billRepository.findAll().stream()
+    public Page<TBill> searchAll(String customer, String shippingMethod, BigDecimal cash, Pageable pageable) {
+
+        List<TBill> filteredBills = billRepository.findAll(pageable)
+                .stream()
                 .filter(billByName -> billByName.getCustomer().getLastName().contains(customer))
                 .filter(billByName -> billByName.getShippingMethod().getName().contains(shippingMethod))
                 .filter(billByName -> billByName.getCash().equals(cash))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredBills, pageable, filteredBills.size());
     }
 
     @Override
-    public List<TBill> searchByKeyword(String keyword) {
-        return billRepository.findAll().stream()
+    public Page<TBill> searchByKeyword(String keyword, Pageable pageable) {
+
+        List<TBill> filteredBills = billRepository.findAll(pageable)
+                .stream()
                 .filter(bill -> bill.getCustomer().getLastName().contains(keyword)
                         || bill.getShippingMethod().getName().contains(keyword)
                         || bill.getCash().equals(keyword))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(filteredBills, pageable, filteredBills.size());
     }
+
 }

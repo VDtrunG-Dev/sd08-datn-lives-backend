@@ -21,7 +21,7 @@ public interface IRoleService {
     Page<TRole> getInActiveRoles(Integer status, Pageable pageable);
     Page<TRole> getAllStatus(Integer page);
 
-    List<TRole> searchAll(String nameRole, String description, String createdBy);
-    List<TRole> searchByKeyword(String keyword);
+    Page<TRole> searchAll(String nameRole, String description,Long id, String createdBy, Pageable pageable);
+    Page<TRole> searchByKeyword(String keyword, Pageable pageable);
 
 }

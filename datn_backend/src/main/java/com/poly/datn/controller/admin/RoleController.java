@@ -60,7 +60,7 @@ public class RoleController {
     }
     @GetMapping("get-active-roles")
     public ResponseEntity<ResponseObject> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        Page<TRole> activeRoles = roleService.getAll(1, PageRequest.of(page, 5));
+        Page<TRole> activeRoles = roleService.getAll(1, PageRequest.of(page, 10));
         if (!activeRoles.isEmpty()) {
             return ResponseEntity.ok(new ResponseObject("ok", "Danh sách vai trò hoạt động", activeRoles));
         } else {
@@ -124,7 +124,7 @@ public class RoleController {
     }
     @GetMapping("in-active-roles")
     public ResponseEntity<ResponseObject> getInActiveRoles(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        Page<TRole> inActiveRoles = roleService.getInActiveRoles(0, PageRequest.of(page, 5));
+        Page<TRole> inActiveRoles = roleService.getInActiveRoles(0, PageRequest.of(page, 10));
         if (!inActiveRoles.isEmpty()) {
             return ResponseEntity.ok(new ResponseObject("ok", "Danh sách vai trò không hoạt động", inActiveRoles));
         } else {
@@ -137,12 +137,13 @@ public class RoleController {
     public ResponseEntity<ResponseObject> searchAll(
             @RequestParam String nameRole,
             @RequestParam String description,
-            @RequestParam String createBy
-    ) {
-        List<TRole> result = roleService.searchAll(nameRole, description, createBy);
-        if (!result.isEmpty()) {
+            @RequestParam String createBy,
+            @RequestParam Long id,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TRole> resultPage = roleService.searchAll(nameRole, description, id, createBy, PageRequest.of(page, 10));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -151,12 +152,15 @@ public class RoleController {
         }
     }
 
+
     @GetMapping("search-by-keyword/")
-    public ResponseEntity<ResponseObject> searchByKeyword(@RequestParam String keyword) {
-        List<TRole> result = roleService.searchByKeyword(keyword);
-        if (!result.isEmpty()) {
+    public ResponseEntity<ResponseObject> searchByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TRole> resultPage = roleService.searchByKeyword(keyword, PageRequest.of(page, 5));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -164,5 +168,6 @@ public class RoleController {
             );
         }
     }
+
 
 }

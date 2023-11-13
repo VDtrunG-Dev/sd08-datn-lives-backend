@@ -18,9 +18,10 @@ public interface IProductVariantServices {
     TProductVariation updateProductVariation(Long id, TProductVariation updatedProductVariation);
 
     void deleteProductVariation(Long id);
-
-    List<TProductVariation> searchAll(String name, String sku, String description);
     Page<TProductVariation> getAllStatus(Integer page);
     Page<TProductVariation> getActiveProductVariations(Integer status, Pageable pageable);
-    List<TProductVariation> searchByKeyword(String keyword);
+    Page<TProductVariation> searchAll(String name, String sku, String description, Pageable pageable);
+
+    Page<TProductVariation> searchByKeyword(String keyword, Pageable pageable);
+
 }

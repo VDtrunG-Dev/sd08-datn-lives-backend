@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface IRoleRepository extends JpaRepository<TRole, Long> {
-    List<TRole> findAll();
+    Page<TRole> findAll(Pageable pageable);
+
     Page<TRole> findByStatus(Integer status, Pageable pageable);
 
 }

@@ -2,7 +2,7 @@ package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TProductVariation;
-import com.poly.datn.service.impl.ProductVariationServiceImpl;
+import com.poly.datn.service.impl.ProductVariantServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ProductVariationController {
     @Autowired
 
-    private ProductVariationServiceImpl productVariationService;
+    private ProductVariantServicesImpl productVariationService;
 
     @GetMapping("view")
     public ResponseEntity<ResponseObject> getAllProductVariations() {
@@ -99,12 +99,12 @@ public class ProductVariationController {
     public ResponseEntity<ResponseObject> searchAll(
             @RequestParam String name,
             @RequestParam String sku,
-            @RequestParam String description
-    ) {
-        List<TProductVariation> result = productVariationService.searchAll(name, sku, description);
-        if (!result.isEmpty()) {
+            @RequestParam String description,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TProductVariation> resultPage = productVariationService.searchAll(name, sku, description, PageRequest.of(page, 10));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -114,11 +114,13 @@ public class ProductVariationController {
     }
 
     @GetMapping("search-by-keyword")
-    public ResponseEntity<ResponseObject> searchByKeyword(@RequestParam String keyword) {
-        List<TProductVariation> result = productVariationService.searchByKeyword(keyword);
-        if (!result.isEmpty()) {
+    public ResponseEntity<ResponseObject> searchByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0", name = "page") Integer page) {
+        Page<TProductVariation> resultPage = productVariationService.searchByKeyword(keyword, PageRequest.of(page, 10));
+        if (!resultPage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Tìm kiếm thành công", result)
+                    new ResponseObject("ok", "Tìm kiếm thành công", resultPage)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -126,6 +128,7 @@ public class ProductVariationController {
             );
         }
     }
+
 
     @PutMapping("delete-fake/{id}")
     public ResponseEntity<ResponseObject> deleteFake(@PathVariable Long id) {
