@@ -53,10 +53,16 @@ public class RoleController {
 
     @PostMapping("add")
     public ResponseEntity<ResponseObject> createRole(@RequestBody TRole role) {
-        TRole createdRole = roleService.createRole(role);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("ok", "Tạo vai trò thành công", createdRole)
-        );
+        try {
+            TRole createdRole = roleService.createRole(role);
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    new ResponseObject("ok", "Tạo vai trò thành công", createdRole)
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("failed", "" + e.getMessage(), null)
+            );
+        }
     }
     @GetMapping("get-active-roles")
     public ResponseEntity<ResponseObject> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {

@@ -2,6 +2,7 @@ package com.poly.datn.controller.admin;
 
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TProductVariation;
+import com.poly.datn.model.TRole;
 import com.poly.datn.service.impl.ProductVariantServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -66,11 +67,17 @@ public class ProductVariationController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<ResponseObject> createProductVariation(@RequestBody TProductVariation productVariation) {
-        TProductVariation createdProductVariation = productVariationService.createProductVariation(productVariation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("ok", "Tạo biến thể sản phẩm thành công", createdProductVariation)
-        );
+    public ResponseEntity<ResponseObject> createRole(@RequestBody TProductVariation productVariation ){
+        try {
+            TProductVariation createdProductVariation = productVariationService.createProductVariation(productVariation);
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    new ResponseObject("ok", "Tạo biến thể sản phẩm thành công", createdProductVariation)
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("failed", "" + e.getMessage(), null)
+            );
+        }
     }
 
     @PutMapping("update/{id}")

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,14 @@ public class ProductVariantServicesImpl implements IProductVariantServices {
 
     @Override
     public TProductVariation createProductVariation(TProductVariation productVariation) {
+        if (StringUtils.isEmpty(productVariation.getName())
+                || StringUtils.isEmpty(productVariation.getDescription())
+                || StringUtils.isEmpty(productVariation.getSku())
+                || StringUtils.isEmpty(productVariation.getPriceNow())
+                || StringUtils.isEmpty(productVariation.getQuantity())
+                || StringUtils.isEmpty(productVariation.getPrice())) {
+            throw new IllegalArgumentException("Không được bỏ trống xin vui lòng nhập đầy đủ thông tin");
+        }
         return productVariationRepository.save(productVariation);
     }
 

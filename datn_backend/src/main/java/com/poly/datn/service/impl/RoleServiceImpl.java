@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,16 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public TRole createRole(TRole role) {
+        if (StringUtils.isEmpty(role.getRoleCode())
+                || StringUtils.isEmpty(role.getName())
+                || StringUtils.isEmpty(role.getDescription())
+                || StringUtils.isEmpty(role.getDescription())) {
+            throw new IllegalArgumentException("Không được bỏ trống xin vui lòng nhập đầy đủ thông tin");
+        }
+        if (roleRepository.existsByRoleCode(role.getRoleCode())) {
+            throw new IllegalArgumentException("Role code đã tồn tại");
+        }
+
         return roleRepository.save(role);
     }
 

@@ -13,5 +13,7 @@ public interface IRoleRepository extends JpaRepository<TRole, Long> {
     Page<TRole> findAll(Pageable pageable);
 
     Page<TRole> findByStatus(Integer status, Pageable pageable);
+    boolean existsByRoleCode(String roleCode);
+
 
 }
