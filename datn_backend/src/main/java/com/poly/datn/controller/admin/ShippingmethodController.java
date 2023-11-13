@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -124,7 +125,7 @@ public class ShippingmethodController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PatchMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteShippingmethod(@PathVariable Long id) {
         // Các logic kiểm tra và xử lý nên thực hiện trong ShippingmethodService
         // ShippingmethodService sẽ xử lý việc xóa sản phẩm.

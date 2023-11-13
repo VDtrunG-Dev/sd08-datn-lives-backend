@@ -1,5 +1,7 @@
 package com.poly.datn.dto;
 
+import com.poly.datn.model.TBill;
+import com.poly.datn.model.TBillDetail;
 import com.poly.datn.model.TShippingMethod;
 import com.poly.datn.model.TUser;
 import com.poly.datn.model.TVoucher;
@@ -9,10 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 
+@Getter
+@Setter
 public class BillRequest {
 
     private Long id;
@@ -56,4 +62,11 @@ public class BillRequest {
     private Date updatedAt;
 
     private Integer status;
+
+    public TBill dto(TBill bill){
+        bill.setId(this.getId());
+        bill.setVoucher(this.getVoucher());
+        bill.setStatus(this.getStatus());
+        return bill;
+    }
 }

@@ -1,8 +1,11 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.BillDetailRequest;
+import com.poly.datn.dto.BillRequest;
 import com.poly.datn.model.TBillDetail;
+import com.poly.datn.model.TVoucher;
 import com.poly.datn.repository.BillDetailRepository;
+import com.poly.datn.repository.IVoucherRepository;
 import com.poly.datn.service.BillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +22,8 @@ public class BillDetailServiceImpl implements BillDetailService {
     @Autowired
     private BillDetailRepository billDetailRepository;
 
+    @Autowired
+    private IVoucherRepository voucherRepository;
     @Override
     public List<TBillDetail> getAllActice() {
         return billDetailRepository.getAllActive();
@@ -124,5 +130,7 @@ public class BillDetailServiceImpl implements BillDetailService {
     public Boolean checkStatusProduct(){
         return false;
     }
+
+
 
 }

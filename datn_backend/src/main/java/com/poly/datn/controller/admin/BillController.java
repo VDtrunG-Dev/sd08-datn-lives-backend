@@ -1,7 +1,9 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.BillRequest;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TBill;
+import com.poly.datn.model.TShippingMethod;
 import com.poly.datn.service.impl.BillServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -117,6 +119,23 @@ public class BillController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject("failed", "Không tìm thấy kết quả tìm kiếm theo từ khóa", null)
+            );
+        }
+    }
+
+    @PutMapping("update-voucher/{id}")
+    public ResponseEntity<ResponseObject> updateVoucher(BillRequest billRequest,@PathVariable Long id) {
+        TBill updatedBill = billService.updateBillStatus(id, 1);
+        BigDecimal totalAmount=updatedBill.getTotalAmount();
+        System.out.println(totalAmount);
+        if (totalAmount.compareTo(BigDecimal.valueOf(0))>0) {
+            billService.checkVoucherBill(updatedBill);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Áp dụng voucher thành công", billService.updateVoucher(id,billRequest))
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Không thể áp dụng voucher", null)
             );
         }
     }

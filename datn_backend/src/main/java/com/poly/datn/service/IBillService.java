@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.BillRequest;
 import com.poly.datn.model.TBill;
 import org.springframework.data.domain.Page;
 
@@ -22,4 +23,7 @@ public interface IBillService {
 
     List<TBill> searchAll(String customer, String shippingMethod, BigDecimal cash);
     List<TBill> searchByKeyword(String keyword);
+    void checkVoucherBill(TBill bill);
+
+    TBill updateVoucher(Long id,BillRequest billRequest);
 }
