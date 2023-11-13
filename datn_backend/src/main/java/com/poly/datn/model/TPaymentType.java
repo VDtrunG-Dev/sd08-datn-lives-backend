@@ -15,6 +15,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,13 +34,19 @@ public class TPaymentType {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
-    private Date createdAt;
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
 
-    @Column(name = "updated_at", insertable = false)
-    private Date updatedAt;
+    @Column(name = "updated_by", insertable = false)
+    private String updatedBy;
 
-    @Column(name = "status")
+    @Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "status",insertable = false, columnDefinition = "INTEGER DEFAULT 1")
     private Integer status;
 
 }

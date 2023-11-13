@@ -18,8 +18,6 @@ public class PaymentTypeRequest {
     public TPaymentType dto(TPaymentType paymentType){
         paymentType.setId(this.getId());
         paymentType.setName(this.getName());
-        paymentType.setCreatedAt(this.getCreatedAt());
-        paymentType.setUpdatedAt(this.getUpdatedAt());
         paymentType.setStatus(this.getStatus());
         return paymentType;
     }
