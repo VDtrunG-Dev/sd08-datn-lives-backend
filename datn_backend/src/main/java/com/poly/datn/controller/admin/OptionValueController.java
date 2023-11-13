@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/optionvalue")
 public class OptionValueController {
 
@@ -22,6 +22,13 @@ public class OptionValueController {
     private ResponseEntity<?> pageFindAll(@RequestParam(name = "page",defaultValue = "0") int pageNumber){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công",optionValueServices.findAll(pageNumber))
+        );
+    }
+
+    @GetMapping("/findByOptionId/{id}")
+    private ResponseEntity<?> pageFindByOption(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công",optionValueServices.findByOptionId(id))
         );
     }
 

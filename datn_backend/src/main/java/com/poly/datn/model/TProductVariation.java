@@ -1,5 +1,6 @@
 package com.poly.datn.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -72,10 +74,10 @@ public class TProductVariation {
     private String updatedBy;
 
     @Column(name = "created_at", insertable = false, updatable = false)
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", insertable = false)
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "status")
     private Integer status;

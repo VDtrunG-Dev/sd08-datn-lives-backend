@@ -1,14 +1,8 @@
 package com.poly.datn.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,13 +26,14 @@ public class TShoppingCartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_variation_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("cartDetails")
     private TProductVariation productVariation;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private TUser user;
 
     @Column(name = "quantity")

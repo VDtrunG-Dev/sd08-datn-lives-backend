@@ -34,8 +34,9 @@ public class UserServicesImpl implements IUserServices {
 
     @Autowired
     private IRankRepository rankRepository;
+
     @Override
-    public Page<TUser> findAll(int pageNumber) {
+    public Page<TUser> findAll(int pageNumber,String search) {
         Pageable pageable = PageRequest.of(pageNumber,10);
         return userRepository.findAll(pageable);
 
@@ -64,18 +65,6 @@ public class UserServicesImpl implements IUserServices {
         return "Xoá Thành Công";
     }
 
-    @Override
-    public String deleteUserByEmail(String email) {
-        TUser user = findByEmail(email);
-        if (user == null){
-            return "Tài Khoản Không Tồn Tại";
-        }
-        else {
-            user.setStatus(0);
-            userRepository.save(user);
-        }
-        return "Xoá Thành Công";
-    }
 
     @Override
     public String saveUser(UserDTO userDto) {
@@ -145,12 +134,6 @@ public class UserServicesImpl implements IUserServices {
         }
         return "Cập Nhật Thành Công";
     }
-
-    @Override
-    public List<TUser> searchUser(String keyword) {
-        return userRepository.findAll();
-    }
-
 
     private String validateUser(UserDTO user){
         if (user.getEmail().isEmpty()){

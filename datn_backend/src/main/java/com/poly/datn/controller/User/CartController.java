@@ -13,17 +13,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/cart")
 public class CartController {
 
     @Autowired
     private ICartServices cartServices;
 
+    @GetMapping("/findcart")
+    private ResponseEntity<?> pageFind(HttpSession session){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("succses","Thành Công",cartServices.findCart(session))
+        );
+    }
     @PostMapping(value = "/add",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> pageAdd(HttpServletRequest request, HttpSession session, @RequestBody ProductVariantDTO productVariantDTO){
+    public ResponseEntity<?> pageAdd(HttpSession session, @RequestBody ProductVariantDTO productVariantDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ResponseObject("succses",cartServices.addCart(session,productVariantDTO),"")
         );
     }
+
+
+//    @PutMapping("/update")
+//    public ResponseEntity<?> pageUpdate(@RequestBody )
+
 }

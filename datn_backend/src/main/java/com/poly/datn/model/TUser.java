@@ -88,7 +88,7 @@ public class TUser {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<TShoppingCartDetail> shoppingCartDetails;
+    private List<TShoppingCartDetail> cartDetails;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference

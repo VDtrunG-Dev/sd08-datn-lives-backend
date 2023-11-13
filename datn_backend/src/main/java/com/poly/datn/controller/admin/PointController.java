@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/admin/point")
 public class PointController {
 

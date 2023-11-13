@@ -27,7 +27,7 @@ public class OptionServicesImpl implements IOptionServices {
 
     @Override
     public Page<TOption> findAll(int page) {
-        return optionRepository.findAll(PageRequest.of(page,5));
+        return optionRepository.findAll(PageRequest.of(page,10));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class OptionServicesImpl implements IOptionServices {
         }
         try{
             option.setStatus(0);
-            optionRepository.save(option);
+            optionRepository.delete(option);
         }catch (Exception e){
             return "Xoá Thất Bại";
         }
@@ -105,8 +105,8 @@ public class OptionServicesImpl implements IOptionServices {
     }
 
     @Override
-    public List<TOption> searchOption(String keyword) {
-        return optionRepository.findByNameContaining(keyword);
+    public List<String> getOptionName() {
+        return optionRepository.getOptionName();
     }
 
 

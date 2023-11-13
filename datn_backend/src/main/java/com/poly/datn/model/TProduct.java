@@ -43,9 +43,6 @@ public class TProduct {
     @Column(name = "status")
     private Integer status;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<TVariantValue> variantValues;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonManagedReference

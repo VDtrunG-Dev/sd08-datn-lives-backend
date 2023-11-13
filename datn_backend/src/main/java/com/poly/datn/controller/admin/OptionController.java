@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/api/option")
 public class OptionController {
 
@@ -18,9 +18,16 @@ public class OptionController {
     private IOptionServices optionServices;
 
     @GetMapping("")
-    private ResponseEntity<?> pageOption(@RequestParam(name = "page",defaultValue = "1") int page){
+    private ResponseEntity<?> pageOption(@RequestParam(name = "page",defaultValue = "0") int page){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok","Thành Công",optionServices.findAll(page)
+        ));
+    }
+
+    @GetMapping("/optionname")
+    private ResponseEntity<?> pageGetOptionName(@RequestParam(name = "page",defaultValue = "0") int page){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok","Thành Công",optionServices.getOptionName()
         ));
     }
 
@@ -41,7 +48,7 @@ public class OptionController {
     @PostMapping("/add")
     private ResponseEntity<?> pageAdd(@RequestBody OptionDTO optionDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("",optionServices.save(optionDto),optionDto)
+                new ResponseObject("succes",optionServices.save(optionDto),optionDto)
         );
     }
 
@@ -53,20 +60,14 @@ public class OptionController {
         );
     }
 
-    @GetMapping("/active/{id}")
+    @PutMapping("/active/{id}")
     private ResponseEntity<?> pageActive(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("Ok",optionServices.active(id),"")
         );
     }
 
-    @GetMapping("/search")
-    private ResponseEntity<?> pageSearch(@RequestParam(name = "search",required = false) String search){
 
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("Ok","Thành Công",optionServices.searchOption(search))
-        );
-    }
 
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<?> pageDelete(@PathVariable Long id){

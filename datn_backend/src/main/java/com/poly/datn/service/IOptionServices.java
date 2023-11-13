@@ -22,6 +22,6 @@ public interface IOptionServices {
 
     String active(Long id);
 
-    List<TOption> searchOption(String keyword);
+    List<String> getOptionName();
 
 }

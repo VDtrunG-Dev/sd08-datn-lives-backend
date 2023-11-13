@@ -23,11 +23,13 @@ public class OptionValueServicesImpl implements IOptionValueServices {
     private IOptionRepository optionRepository;
 
     @Override
-    public List<TOptionValue> findAll(int pageNumber) {
-        List<TOptionValue> optionValues = optionValueRepository.findAll();
-        int startPage = (pageNumber - 1) * 5;
-        int endPage = Math.min(startPage + 5, optionValues.size());
-        return optionValueRepository.findAll().subList(startPage,endPage);
+    public Page<TOptionValue> findAll(int pageNumber) {
+        return optionValueRepository.findAll(PageRequest.of(pageNumber,10));
+    }
+
+    @Override
+    public List<String> findByOptionId(Long optionId) {
+        return optionValueRepository.getNameOptionByOptionId(optionId);
     }
 
     @Override
