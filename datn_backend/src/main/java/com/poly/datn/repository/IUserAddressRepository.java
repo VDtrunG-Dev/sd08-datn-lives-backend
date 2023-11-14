@@ -14,6 +14,6 @@ public interface IUserAddressRepository extends JpaRepository<TUserAddress,Long>
     @Query("SELECT u FROM TUserAddress u WHERE u.id = :id AND u.status = 1")
     TUserAddress findByIdUserAddress(Long id);
 
-    @Query("SELECT a FROM TUserAddress a WHERE a.customer.id = :idUser AND a.status = 1")
+    @Query("SELECT a.address FROM TUserAddress a WHERE a.customer.id = :idUser AND a.status = 1")
     List<TAddress> findAllByUser(Long idUser);
 }

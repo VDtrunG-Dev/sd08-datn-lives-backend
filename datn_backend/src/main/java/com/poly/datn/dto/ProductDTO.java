@@ -1,5 +1,6 @@
 package com.poly.datn.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.datn.model.TProductVariation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,11 +17,8 @@ import java.util.List;
 public class ProductDTO {
 
     private String productName;
+
     private List<OptionDTO> option;
-    private Integer quantity;
-    private BigDecimal priceNow;
-    private BigDecimal price;
-    private String avatar;
-    private String description;
-//    private List<TProductVariation> productDetails;
+
+    private List<ProducDetailDTO> productDetails;
 }

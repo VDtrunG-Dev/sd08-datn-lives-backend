@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/productdetail")
-@CrossOrigin("*")
+@CrossOrigin("/*")
 public class ProductDetailController {
 
     @Autowired
@@ -21,15 +21,15 @@ public class ProductDetailController {
 
     @GetMapping("")
     private ResponseEntity<?> pageFindAll(){
-        return ResponseEntity.status(HttpStatus.CREATED).body(
+        return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Thành Công",productDetailServices.findAll())
         );
     }
 
-    @PostMapping(value = "/addproductdetails",consumes = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<?> pageAddProductDetail(@RequestBody ProductDTO productDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("ok", productDetailServices.addProductDetail(productDTO),productDTO)
+    @PostMapping("/add")
+    private ResponseEntity<?> pageAdd(@RequestBody ProductDTO productDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("succes", productDetailServices.addProductDetail(productDTO),productDTO)
         );
     }
 

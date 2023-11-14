@@ -1,10 +1,12 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.ProductDTO;
 import com.poly.datn.dto.ResponseObject;
 import com.poly.datn.model.TProduct;
 import com.poly.datn.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping(path = "/api/products")
 public class ProductController {
 
     @Autowired
@@ -41,10 +43,10 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody TProduct product) {
+    @PostMapping(value = "/add",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseObject> insertProduct(@RequestBody ProductDTO productName) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", productService.createProduct(product),product )
+                new ResponseObject("ok", productService.createProduct(productName.getProductName()),productName )
         );
     }
 

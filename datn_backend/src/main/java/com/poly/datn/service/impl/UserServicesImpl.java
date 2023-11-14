@@ -13,6 +13,7 @@ import com.poly.datn.service.IUserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,17 +35,10 @@ public class UserServicesImpl implements IUserServices {
     @Autowired
     private IRankRepository rankRepository;
     @Override
-    public List<TUser> findAll(int pageNumber,String keyword) {
-        List<TUser> users = userRepository.findAll();
-        int page = (pageNumber - 1) * 5;
-        int endPage = Math.min(page + 5, users.size());
-        return userRepository.findAllUser().subList(page,endPage)
-                .stream().filter(
-                user -> user.getFirstName().contains(keyword) ||
-                        user.getLastName().contains(keyword) ||
-                        user.getEmail().contains(keyword) ||
-                        user.getPhoneNumber().contains(keyword)
-        ).collect(Collectors.toList());
+    public Page<TUser> findAll(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber,10);
+        return userRepository.findAll(pageable);
+
     }
 
     @Override
