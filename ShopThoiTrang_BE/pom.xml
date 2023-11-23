@@ -57,6 +57,11 @@
             <version>3.1.0</version>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.32</version> <!-- Chọn phiên bản mới nhất -->
+        </dependency>
+        <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
             <version>8.1.0</version>
