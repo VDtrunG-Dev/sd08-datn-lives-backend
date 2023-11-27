@@ -18,9 +18,11 @@ public class ProductDetail_Material implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer Id;
+
     @ManyToOne
     @JoinColumn(name = "IdMaterial")
     private Material material;
+
     @ManyToOne
     @JoinColumn(name = "IdProductDetail")
     @JsonBackReference

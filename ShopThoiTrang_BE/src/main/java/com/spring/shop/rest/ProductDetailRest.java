@@ -149,7 +149,6 @@ public class ProductDetailRest {
     public ResponseEntity<?> getAllVoucherByMinimun(
     	@PathVariable("tongTien") String tongTien
     	){
-    	System.out.println(tongTien);
     	return ResponseEntity.ok(service.getAllVoucherByTongTien(Integer.parseInt(tongTien)));
     	
     }

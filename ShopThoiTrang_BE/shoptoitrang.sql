@@ -391,4 +391,4 @@ VALUES
     ('admin', GETDATE(), GETDATE(), 'CreatedByExample', 'UpdatedByExample', 1);
 
 INSERT INTO Employee (Code, Fullname, Username, Password, Image, Gender, Phone, Email, CreateDate, UpdateDate, CreateBy, UpdateBy, Status, IdRole)
-VALUES ('EMP001', N'Trung', 'trung', '123', 'avatar.jpg', 1, '123456789', 'johndoe@example.com', '2023-11-02 08:00:00', '2023-11-02 08:00:00', 'Admin', 'Admin', 1, 1);
+VALUES ('EMP001', N'John Doe', 'sy', '123', 'avatar.jpg', 1, '123456789', 'johndoe@example.com', '2023-11-02 08:00:00', '2023-11-02 08:00:00', 'Admin', 'Admin', 1, 1);

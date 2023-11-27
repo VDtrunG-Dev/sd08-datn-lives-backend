@@ -53,14 +53,14 @@ public class FirebaseFileService {
         String imageName = UUID.randomUUID().toString();
         Map<String, String> map = new HashMap<>();
         map.put("firebaseStorageDownloadTokens", imageName);
-        BlobId blobId = BlobId.of("shopthoitrang-f941e.appspot.com", imageName);
+        BlobId blobId = BlobId.of("datn-dd682.appspot.com", imageName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                 .setMetadata(map)
                 .setContentType(file.getContentType())
                 .build();
         storage.create(blobInfo, file.getInputStream());
         StringBuilder url = new StringBuilder();
-        url.append("https://firebasestorage.googleapis.com/v0/b/shopthoitrang-f941e.appspot.com/o/");
+        url.append("https://firebasestorage.googleapis.com/v0/b/datn-dd682.appspot.com/o/");
         url.append(imageName);
         url.append("?alt=media");
         return url.toString();
@@ -69,15 +69,15 @@ public class FirebaseFileService {
     public String deleteFile(String url) {
         try {
             String fileName = 
-            url.replace("https://firebasestorage.googleapis.com/v0/b/shopthoitrang-f941e.appspot.com/o/", "").replace("?alt=media", "");
+            url.replace("https://firebasestorage.googleapis.com/v0/b/datn-dd682.appspot.com/o/", "").replace("?alt=media", "");
             ClassPathResource serviceAccount = new ClassPathResource("firebase-service-account-key.json");
-            String projectId = "shopthoitrang-f941e";
+            String projectId = "datn-dd682";
             Storage storage = StorageOptions.newBuilder()
                     .setProjectId(projectId)
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount.getInputStream()))
                     .build()
                     .getService();
-            String bucketName = "shopthoitrang-f941e.appspot.com";
+            String bucketName = "datn-dd682.appspot.com";
             Bucket bucket = storage.get(bucketName);
             bucket.get(fileName).delete();
             System.out.println("File deleted successfully." + fileName);

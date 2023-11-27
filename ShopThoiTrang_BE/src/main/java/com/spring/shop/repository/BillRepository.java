@@ -15,19 +15,24 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill,Integer> {
     @Query(value = "select  e from Bill e where e.Code = :code")
     public Bill getByCode(@Param("code") String code);
+
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status from Bill b \n" +
             "join Customer c on c.Id = b.IdCustomer " +
             "where (b.Status = :status or :status is null) and c.Id = :idCustomer", nativeQuery = true)
+
     public List<BillResponse> getBillByCustomer(@Param("status") Integer status , @Param("idCustomer") Integer idCustomer);
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status, b.TypeStatus from Bill b \n" +
             "where b.Code = :code order by b.PurchaseDate desc", nativeQuery = true)
     public BillResponse getBillBycode(@Param("code") String code);
+
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status , c.Username from Bill b \n" +
             "join Customer c on c.Id = b.IdCustomer order by b.PurchaseDate desc", nativeQuery = true)
     public List<BillAllResponse> getAllBill();
+
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status, b.TypeStatus from Bill b \n" +
             "where b.Status = :status order by b.PurchaseDate desc", nativeQuery = true)
     public List<BillResponse> getBillByStatus(@Param("status") Integer status);
+
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status, b.TypeStatus from Bill b \n" +
             "where (b.Status = :status or :status is null) and (b.PayStatus = :payStatus or :payStatus is null) and (b.PayType = :payType or :payType is null) and (b.TypeStatus = :typeStatus or :typeStatus is null) and (b.PurchaseDate >= :tungay or :tungay is null) and (b.PurchaseDate <= :denngay or :denngay is null)  order by b.PurchaseDate desc", nativeQuery = true)
     public List<BillResponse> getBillFilter(@Param("status") Integer status,@Param("payStatus") Integer payStatus,@Param("payType") Integer payType,@Param("typeStatus") Integer typeStatus,@Param("tungay") String tungay,@Param("denngay") String denngay );
@@ -39,10 +44,12 @@ public interface BillRepository extends JpaRepository<Bill,Integer> {
     @Query(value = "Select COUNT(b.Id) as 'SoLuong', SUM(b.TotalPrice) as 'DoanhThu' from Bill b\n" +
             "where b.Status = 3 and CONVERT(DATE, b.PurchaseDate) = CONVERT(DATE, GETDATE())", nativeQuery = true)
     public TKNgay getThongKeNgay();
+
     @Query(value = "SELECT COUNT(b.Id) as 'SoLuong', SUM(b.TotalPrice) as 'DoanhThu'\n" +
             "FROM Bill b\n" +
             "WHERE b.Status = 3 AND MONTH(b.PurchaseDate) = MONTH(GETDATE()) AND YEAR(b.PurchaseDate) = YEAR(GETDATE())", nativeQuery = true)
     public TKThang getThongKeThang();
+
     @Query(value = "Select SUM(bi.Quantity) as 'SoLuong' from BillDetail bi\n" +
             "join Bill b on b.Id = bi.IdOrder\n" +
             "WHERE b.Status = 3 AND MONTH(b.PurchaseDate) = MONTH(GETDATE()) AND YEAR(b.PurchaseDate) = YEAR(GETDATE())",nativeQuery = true)
