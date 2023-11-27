@@ -1,0 +1,100 @@
+package com.poly.datn.service.impl;
+
+import com.poly.datn.model.TOption;
+import com.poly.datn.model.TPoints;
+import com.poly.datn.model.TProduct;
+import com.poly.datn.repository.IProductRepository;
+import com.poly.datn.service.IProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+public class ProductServiceImpl implements IProductService {
+
+    @Autowired
+    private IProductRepository productRepository;
+
+    @Override
+    public TProduct findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    @Override
+    public List<String> displayNameProduct(String search) {
+
+        return productRepository.getAllProductName(search);
+    }
+
+    @Override
+    public Page<TProduct> getProducts(int pageNumber,String search) {
+        return productRepository.findALlPage(PageRequest.of(pageNumber,10),search);
+    }
+
+    @Override
+    public Page<TProduct> findAll(int page, String search) {
+        return productRepository.findALlProduct(PageRequest.of(page,10),search);
+    }
+
+    @Override
+    public Optional<TProduct> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+
+    @Override
+    public String createProduct(String name) {
+        TProduct foundProducts = productRepository.findByName(name.trim());
+        if (foundProducts != null) {
+            return "Sản Phẩm Đã Tồn Tại";
+        }
+        TProduct product = new TProduct();
+        product.setName(name);
+        product.setStatus(1);
+        product.setCreatedAt(LocalDateTime.now());
+        productRepository.save(product);
+        return "Thêm Thành Công";
+    }
+
+    @Override
+    public String updateProduct(Long id,TProduct updatedProduct) {
+        TProduct product = productRepository.findByIdProduct(id);
+        if(product == null){
+            return "Sản Phẩm Không Tồn Tại";
+        }
+        product.setName(updatedProduct.getName());
+        productRepository.save(product);
+        return "Cập Nhật thành công";
+    }
+
+    @Override
+    public String deleteProduct(Long id) {
+        TProduct product = productRepository.findByIdProduct(id);
+        try {
+            product.setStatus(0);
+            productRepository.save(product);
+        }catch (Exception e){
+            return "Xoá Thất Bại";
+        }
+        return "Xoá Thành Công";
+    }
+
+
+    @Override
+    public String activeProduct(Long id) {
+        TProduct product = productRepository.findByIdProduct(id);
+        if(product == null){
+            return "Sản Phẩm Không Tồn Tại";
+        }
+        product.setStatus(1);
+        productRepository.save(product);
+        return "Cập Nhập Thành Công";
+    }
+}
