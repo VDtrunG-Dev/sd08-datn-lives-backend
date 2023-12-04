@@ -102,7 +102,6 @@ public class ProductDetailService {
         return repository.findAll();
     }
     public List<Voucher> getAllVoucherByTongTien(Integer tongTien){
-
         return repository.getAllVoucherbyTongTien(tongTien);
     }
 

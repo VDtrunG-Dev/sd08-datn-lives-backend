@@ -38,6 +38,5 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-
     }
 }
