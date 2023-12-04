@@ -1,6 +1,8 @@
 package com.spring.shop.response;
 
-public interface TKNgay {
+import java.util.Date;
+
+public interface TKKhoangNgay {
 	Integer getSoSanPham();
 
 	Integer getSoLuongHuy();

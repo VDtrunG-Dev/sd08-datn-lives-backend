@@ -1,6 +1,7 @@
 package com.spring.shop.service;
 
 import com.spring.shop.entity.*;
+import com.spring.shop.repository.AddressRepository;
 import com.spring.shop.repository.BillRepository;
 import com.spring.shop.request.*;
 import com.spring.shop.response.*;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
@@ -20,6 +22,8 @@ public class BillService {
     @Autowired
     BillRepository repository;
 
+    @Autowired
+    AddressRepository addressRepository;
     public String genCode(){
         // Tạo đối tượng Random
         long timestamp = Instant.now().getEpochSecond();
@@ -56,8 +60,9 @@ public class BillService {
         bill.setPayStatus(request.getPayStatus());
         bill.setPayType(request.getPayType());
         bill.setIdCoupon(request.getIdCoupon());
+//        System.out.println(request.getIdAddress());
        if(request.getIdAddress() != 0){
-           bill.setAddress(Address.builder().Id(request.getIdAddress()).build());
+           bill.setAddress(addressRepository.findById(request.getIdAddress()).get());
        }
         bill.setStatus(request.getStatus());
         bill.setPaymentDate(request.getPaymentDate());
@@ -85,10 +90,13 @@ public class BillService {
         return repository.getBillFilter(status,payStatus,payType,typeStatus,tungay,denngay);
     }
     public Bill updateStatus1(String code, UpdateThanhToanTaiQuay request){
+
         Bill bill = repository.getByCode(code);
         bill.setDelyveryDate(new Date());
         bill.setPayStatus(request.getPayStatus());
         bill.setPaymentDate(new Date());
+        bill.setStatus(request.getStatus());
+        System.out.println(request.getStatus());
         return repository.save(bill);
 
     }
@@ -151,16 +159,26 @@ public class BillService {
     public TKNgay getTKNgay(){
         return repository.getThongKeNgay();
     }
+    public TKTuan getTKTuan(){
+        return repository.getThongKeTuan();
+    }
     public TKThang getTKThang(){
         return repository.getThongKeThang();
+    }
+    public TKNam getTKNam(){
+        return repository.getThongKeNam();
     }
     public TKSLThang getTKSLThang(){
         return repository.getThongKeSoLuongThang();
     }
-    public List<TKSoLuongHD> getTKSoLuongHD(String tungay, String denngay){
-        return repository.getTKSoLuongHD(tungay,denngay);
+    public List<TKKhoangNgay> getTKSoLuongHD(String tungay, String denngay){
+        return repository.getTKKhoangNgay(tungay,denngay);
     }
     public List<TKSoLuongSanPham> getTKSoLuongSanPham(String tungay, String denngay){
         return repository.getTKSoLuongSanPham(tungay,denngay);
+    }
+    public Bill getBillByCode(String code){
+        Bill bill = repository.getByCode(code);
+        return bill;
     }
 }

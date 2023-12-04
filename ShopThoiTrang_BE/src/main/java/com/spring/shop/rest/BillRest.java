@@ -26,6 +26,10 @@ public class BillRest {
     public ResponseEntity<?> addBill(@RequestBody BillRequest request){
         return ResponseEntity.ok(service.add(request));
     }
+    @GetMapping("/getbill/{code}")
+    public ResponseEntity<?> getBill(@PathVariable("code") String code){
+        return ResponseEntity.ok(service.getBillByCode(code));
+    }
     @PostMapping("/billTaiQuay")
     public ResponseEntity<?> billTaiQuay(@RequestBody BillTaiQuayRequest request){
         return ResponseEntity.ok(service.addBillTaiQuay(request));
@@ -57,6 +61,7 @@ public class BillRest {
     }
     @PutMapping("/updateBillTaiQuay/{code}")
     public ResponseEntity<?> updateBillTaiQuay(@PathVariable("code") String code,@RequestBody BillTaiQuayUpdateRequest request){
+System.out.println(request);
         return ResponseEntity.ok(service.update(code,request));
     }
     @PutMapping("/updateStatus/{code}")
@@ -125,9 +130,20 @@ public class BillRest {
     public ResponseEntity<?> gettkngay(){
         return ResponseEntity.ok(service.getTKNgay());
     }
+    
+    @GetMapping("/gettktuan")
+    public ResponseEntity<?> gettktuan(){
+        return ResponseEntity.ok(service.getTKTuan());
+    }
+    
     @GetMapping("/gettkthang")
     public ResponseEntity<?> gettkthang(){
         return ResponseEntity.ok(service.getTKThang());
+    }
+    
+    @GetMapping("/gettknam")
+    public ResponseEntity<?> gettknam(){
+        return ResponseEntity.ok(service.getTKNam());
     }
     @GetMapping("/gettkslthang")
     public ResponseEntity<?> gettkslthang(){
@@ -137,7 +153,7 @@ public class BillRest {
     public ResponseEntity<?> gettksanpham(){
         return ResponseEntity.ok(billDetailService.getTKSanPham());
     }
-    @GetMapping("/gettksoluonghd")
+    @GetMapping("/gettkkhoangngay")
     public ResponseEntity<?> gettksoluonghd(@RequestParam("tungay")String tungay,
                                             @RequestParam("denngay") String denngay){
         return ResponseEntity.ok(service.getTKSoLuongHD(tungay,denngay));

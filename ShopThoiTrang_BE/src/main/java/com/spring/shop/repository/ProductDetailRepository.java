@@ -14,7 +14,7 @@ import com.spring.shop.entity.Voucher;
 public interface ProductDetailRepository extends JpaRepository<ProductDetail,Integer> {
     @Query(value = "Select e from ProductDetail e where e.Id = :id")
     public ProductDetail getById(@Param("id") Integer id);
-    @Query(value = "Select e from ProductDetail e where e.Status = 0 Order by e.CreateDate desc")
+    @Query(value = "Select e from ProductDetail e Order by e.CreateDate desc")
     public List<ProductDetail> getAll();
     @Query(value = "SELECT e.Id, e.Price, e.Discount, e.Description, e.CreateDate, e.UpdateDate, e.CreateBy, e.UpdateBy, e.Status, e.IdProduct, e.IdBrand, e.IdCategory,  e.Weight, e.DiscountDate\n" +
             "FROM ProductDetail e\n" +
@@ -46,6 +46,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Int
             "   (e.IdCategory = :idcategory OR :idcategory IS NULL) AND " +
             "   (e.IdBrand = :idbrand OR :idbrand IS NULL) AND " +
             "   e.Price >= :min AND e.Price <= :max AND e.Status = 0 AND " +
+            "   e.Weight >= :minTL AND e.Weight <= :maxTL AND" +
             "   e.Id IN ( " +
             "       SELECT IdProductDetail " +
             "       FROM ProductDetail_Color_Size " +
@@ -64,7 +65,9 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Int
             @Param("min") Double min,
             @Param("max") Double max,
             @Param("soLuong") Integer soLuong,
-            @Param("soLuong1") Integer soLuong1
+            @Param("soLuong1") Integer soLuong1,
+            @Param("minTL") Integer minTL,
+            @Param("maxTL") Integer maxTL
     );    @Query("Select e from ProductDetail  e where e.product.Code = :code")
     public ProductDetail getByCode(@Param("code") String code);
     @Query(value = "select  e from ProductDetail e where e.Status = 0 and e.category.Id = :id or e.brand.Id = :idBrand ")
