@@ -58,8 +58,11 @@ public class ProductDetailRest {
                                             @RequestParam("min") Double min,
                                             @RequestParam("max") Double max,
                                             @RequestParam(name = "soLuong",required = false) Integer soLuong,
-                                            @RequestParam(name = "soLuong1",required = false) Integer soLuong1){
-        return ResponseEntity.ok(service.getAllbyFilter(name,IdColor,IdSize,IdMaterial,IdCategory,IdBrand,min,max,soLuong,soLuong1));
+                                            @RequestParam(name = "soLuong1",required = false) Integer soLuong1,
+                                            @RequestParam(name = "minTL") Optional<Integer> minTL,
+                                            @RequestParam(name = "maxTL") Optional<Integer> maxTL
+    		){
+        return ResponseEntity.ok(service.getAllbyFilter(name,IdColor,IdSize,IdMaterial,IdCategory,IdBrand,min,max,soLuong,soLuong1,minTL.orElse(0), maxTL.orElse(3000)));
     }
 
     @GetMapping("/phantrang")
@@ -116,6 +119,7 @@ public class ProductDetailRest {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Integer id,@RequestBody ProductDetailRequest request){
+    	System.out.println(request);
         return ResponseEntity.ok(service.update(id,request));
     }
     @GetMapping("/{id}")

@@ -8,14 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="BeeBeta" />
-        <module name="ShopThoiTrang_BE" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="BeeBeta" options="-parameters" />
-      <module name="ShopThoiTrang_BE" options="-parameters" />
     </option>
   </component>
 </project>

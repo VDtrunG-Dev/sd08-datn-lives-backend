@@ -1,6 +1,12 @@
 package com.spring.shop.response;
 
 public interface TKThang {
-    Integer getSoLuong();
-    Double getDoanhThu();
+	Integer getSoSanPham();
+
+	Integer getSoLuongHuy();
+
+	Integer getSoLuongThanhCong();
+
+	Double getDoanhThu();
+    
 }

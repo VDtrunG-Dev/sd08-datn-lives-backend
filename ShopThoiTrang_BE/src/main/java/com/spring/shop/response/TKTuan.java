@@ -1,6 +1,6 @@
 package com.spring.shop.response;
 
-public interface TKNgay {
+public interface TKTuan {
 	Integer getSoSanPham();
 
 	Integer getSoLuongHuy();

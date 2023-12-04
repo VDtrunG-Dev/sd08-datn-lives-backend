@@ -26,4 +26,5 @@ public class ProductDetailRequest {
     private Integer IdDesign;
     private Integer IdShoelace;
     private Date DiscountDate;
+    private Integer status;
 }

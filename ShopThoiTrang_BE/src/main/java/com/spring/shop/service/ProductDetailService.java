@@ -32,10 +32,10 @@ public class ProductDetailService {
     public List<ProductDetail> getAllbyProductName(String name){
         return repository.getAllByProductName(name);
     }
-    public List<ProductDetail> getAllbyFilter(String name,Integer IdColor,Integer IdSize,Integer IdMaterial,Integer IdCategory, Integer IdBrand,Double min , Double max,Integer soLuong,Integer soLuong1){
+    public List<ProductDetail> getAllbyFilter(String name,Integer IdColor,Integer IdSize,Integer IdMaterial,Integer IdCategory, Integer IdBrand,Double min , Double max,Integer soLuong,Integer soLuong1,Integer minTL,Integer maxTL){
         String text = name == null ? "null" : name;
         System.out.println(text);
-        return repository.getAllByFilter(text,IdColor,IdSize,IdMaterial,IdCategory,IdBrand,min,max,soLuong,soLuong1);
+        return repository.getAllByFilter(text,IdColor,IdSize,IdMaterial,IdCategory,IdBrand,min,max,soLuong,soLuong1,minTL,maxTL);
     }
     public Page<ProductDetail> phanTrang(Integer page){
         Pageable pageable = PageRequest.of(page,10);
@@ -56,7 +56,7 @@ public class ProductDetailService {
         productDetail.setCategory(Category.builder().Id(request.getIdCategory()).build());
         productDetail.setDiscountDate(request.getDiscountDate());
         productDetail.setCreateDate(new Date());
-        productDetail.setStatus(0);
+        productDetail.setStatus(request.getStatus());
         return repository.save(productDetail);
     }
     public ProductDetail delete(Integer IdProductDetail){
@@ -74,6 +74,7 @@ public class ProductDetailService {
         productDetail.setCategory(Category.builder().Id(request.getIdCategory()).build());
         productDetail.setDiscountDate(request.getDiscountDate());
         productDetail.setUpdateDate(new Date());
+        productDetail.setStatus(request.getStatus());
         return repository.save(productDetail);
     }
     public ProductDetail getByCode(String code){
@@ -101,6 +102,7 @@ public class ProductDetailService {
         return repository.findAll();
     }
     public List<Voucher> getAllVoucherByTongTien(Integer tongTien){
+
         return repository.getAllVoucherbyTongTien(tongTien);
     }
 
