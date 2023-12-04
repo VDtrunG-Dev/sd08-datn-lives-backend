@@ -151,14 +151,10 @@ public class ProductDetailRest {
     
     @GetMapping("/getAllVoucherByMinimun/{tongTien}")
     public ResponseEntity<?> getAllVoucherByMinimun(
-        @PathVariable("tongTien") Optional<String> tongTienString
-    ) {
-        try {
-            Integer tongTien = Integer.parseInt(tongTienString.orElse("0"));
-            return ResponseEntity.ok(service.getAllVoucherByTongTien(tongTien));
-        } catch (NumberFormatException e) {
-            // Handle the case where tongTien is not a valid integer
-            return ResponseEntity.badRequest().body("Invalid tongTien value: " + tongTienString);
-        }
+    	@PathVariable("tongTien") String tongTien
+    	){
+    	return ResponseEntity.ok(service.getAllVoucherByTongTien(Integer.parseInt(tongTien)));
+    	
     }
+
 }
