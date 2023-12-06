@@ -13,8 +13,6 @@ public class ReturnChangeDetailService {
 
     @Autowired
     ReturnChangeDetailRepo repo;
-
-
     public List<ReturnExchangeDetail> getById(Integer id){
         return repo.findAll();
     }

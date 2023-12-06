@@ -37,7 +37,6 @@ public class AuthController {
         Customer customer = service.getByUsername(loginRequest.getUsername());
         if (customer == null){
              return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("errorMessage");
-
         }
         if (!customer.getPassword().equals(loginRequest.getPassword())){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("errorMessage");
