@@ -5,6 +5,7 @@ import com.spring.shop.request.AddressRequest;
 import com.spring.shop.service.AddressService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,13 @@ public class AddressRest {
     }
     @PostMapping("/add")
     public ResponseEntity<?> addAddresss(@RequestBody AddressRequest request){
+        System.out.println(request);
         return ResponseEntity.ok(service.addAddress(request));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAddresss(@PathVariable("id") int id){
+        service.deleteAddress(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
