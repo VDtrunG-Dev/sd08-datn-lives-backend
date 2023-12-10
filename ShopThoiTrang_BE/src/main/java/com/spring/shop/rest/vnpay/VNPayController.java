@@ -81,4 +81,5 @@ public class VNPayController {
         String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
         return paymentUrl;
     }
+
 }

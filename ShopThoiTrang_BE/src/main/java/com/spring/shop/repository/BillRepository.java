@@ -18,7 +18,7 @@ public interface BillRepository extends JpaRepository<Bill,Integer> {
 
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status from Bill b \n" +
             "join Customer c on c.Id = b.IdCustomer " +
-            "where (b.Status = :status or :status is null) and c.Id = :idCustomer", nativeQuery = true)
+            "where (b.Status = :status or :status is null) and c.Id = :idCustomer ORDER BY b.PurchaseDate DESC ", nativeQuery = true)
 
     public List<BillResponse> getBillByCustomer(@Param("status") Integer status , @Param("idCustomer") Integer idCustomer);
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus,b.IdCoupon, b.IdAddress , b.IdCustomer, b.IdVoucher , b.IdEmployee ,b.Status, b.TypeStatus from Bill b \n" +

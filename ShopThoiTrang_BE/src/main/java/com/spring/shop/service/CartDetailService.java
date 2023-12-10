@@ -58,13 +58,16 @@ public class CartDetailService {
     public Integer getQuantityByCartDetail(Integer id){
         return repository.getQuantityByCartDetail(id);
     }
+
     public Cart getByIdCart(Integer id){
         return cartRepository.getByIdCart(id);
     }
     public Cart getByIdCustomer(Integer id){
         return cartRepository.getByIdCustomer(id);
     }
-    public Cart addCart(CartRequest request){
+
+    public  Cart addCart(CartRequest
+                         request){
         Cart cart = new Cart();
         cart.setCustomer(Customer.builder().Id(request.getIdCustomer()).build());
         return cartRepository.save(cart);

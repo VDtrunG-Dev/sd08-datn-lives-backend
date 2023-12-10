@@ -36,7 +36,6 @@ public class VoucherRest {
     }
     @PostMapping()
     public ResponseEntity<?> add(@Valid @RequestBody VoucherRequest request, BindingResult result){
-    	System.out.println(request.toString());
         if (result.hasErrors()){
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.badRequest().body(list);
@@ -56,6 +55,11 @@ public class VoucherRest {
     @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer Id){
         return ResponseEntity.ok(service.delete(Id));
+    }
+
+    @GetMapping("/getVoucherTop/{totalPrice}")
+    public ResponseEntity<?> getVoucherTop(@PathVariable("totalPrice") String totalPrice){
+        return ResponseEntity.ok(service.getVoucherTop(Integer.parseInt(totalPrice)));
     }
 }
 

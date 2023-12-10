@@ -80,4 +80,5 @@ public class VNPayTaiQuayController {
         String paymentUrl = VNPayTaiQuayConfig.vnp_PayUrl + "?" + queryUrl;
         return paymentUrl;
     }
+
 }
