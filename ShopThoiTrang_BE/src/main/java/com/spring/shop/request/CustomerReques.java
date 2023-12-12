@@ -1,6 +1,8 @@
 package com.spring.shop.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +22,10 @@ public class CustomerReques {
     private String image;
     private Boolean gender;
     @NotBlank(message = "So Dien Thoai không được bỏ trống !")
+    @Pattern(regexp = "^\\+?(?:0|84)\\d{9,10}$", message = "Số điện thoại không hợp lệ")
     private String phone;
     @NotBlank(message = "Email không được bỏ trống !")
+    @Email(message = "Email không hợp lệ")
     private String email;
 
 }

@@ -27,18 +27,44 @@ public class FirebaseRestController {
     private FirebaseFileService firebaseFileService;
 
 
-    @PostMapping(value = "", consumes = "multipart/form-data")
-    public ResponseEntity<Object> uploadFile(@RequestParam("files") MultipartFile[] files) {
+    @PostMapping(value = "/sanpham", consumes = "multipart/form-data")
+    public ResponseEntity<Object> uploadFileSP(@RequestParam(value = "files",required = false) MultipartFile[] files) {
         List<String> listURL = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String urlImage = "";
-            try {
-                urlImage = firebaseFileService.saveTest(file);
-                listURL.add(urlImage);
-            } catch (Exception e) {
-                //  throw internal error;
-                e.printStackTrace();
+
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                String urlImage = "";
+                try {
+                    urlImage = firebaseFileService.saveTest(file);
+
+                    listURL.add(urlImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            listURL.add("https://firebasestorage.googleapis.com/v0/b/datn-dd682.appspot.com/o/z4943271513376_0ce9c57c5777f0a5033a197d309b62ba.jpg?alt=media&token=5fff8ac7-7688-48f0-9fbf-31a2eba1ec09");
+        }
+        return new ResponseEntity<>(listURL, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "", consumes = "multipart/form-data")
+    public ResponseEntity<Object> uploadFile(@RequestParam(value = "files",required = false) MultipartFile[] files) {
+        List<String> listURL = new ArrayList<>();
+
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                String urlImage = "";
+                try {
+                    urlImage = firebaseFileService.saveTest(file);
+
+                    listURL.add(urlImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            listURL.add("https://firebasestorage.googleapis.com/v0/b/datn-dd682.appspot.com/o/044d165d-36ab-47c3-94d5-60b1ef73c8a2?alt=media&token=044d165d-36ab-47c3-94d5-60b1ef73c8a2");
         }
         return new ResponseEntity<>(listURL, HttpStatus.OK);
     }
