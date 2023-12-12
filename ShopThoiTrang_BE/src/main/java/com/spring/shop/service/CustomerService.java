@@ -31,10 +31,10 @@ public class CustomerService {
     public List<Customer> getAllbyFullName(String fullname){
         return customerRepository.searchByFullName('%'+fullname+'%');
     }
-    // add khach hang
+//     add khach hang
     public Customer add(CustomerReques reques){
         Customer customer = new Customer();
-        customer.setCode(reques.getCode());
+//        customer.setCode(genCodeCustom());
         customer.setFullname(reques.getFullname());
         customer.setUsername(reques.getUsername());
         customer.setPassword(reques.getPassword());
@@ -43,12 +43,18 @@ public class CustomerService {
         customer.setPhone(reques.getPhone());
         customer.setEmail(reques.getEmail());
         customer.setStatus(0);
+        System.out.println(customer);
         return customerRepository.save(customer);
+    }
+    public String genCodeCustom() {
+        // Tạo đối tượng Random
+        String code = "KH00" + customerRepository.findAll().size();
+        return code;
     }
     // update khach hang
     public  Customer update(Integer id , CustomerReques reques){
         Customer customer = customerRepository.getById(id);
-        customer.setCode(reques.getCode());
+        customer.setCode(customer.getCode());
         customer.setFullname(reques.getFullname());
         customer.setUsername(reques.getUsername());
         customer.setPassword(reques.getPassword());

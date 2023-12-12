@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmployeeRequest{
-    @NotBlank(message = "Không được bỏ trống Code")
     private String Code;
     @NotBlank(message = "Không được bỏ trống Tên")
     private String Fullname;

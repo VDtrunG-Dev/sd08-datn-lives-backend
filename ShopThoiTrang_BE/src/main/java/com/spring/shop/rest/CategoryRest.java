@@ -25,6 +25,11 @@ public class CategoryRest {
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(service.getAll());
     }
+
+    @GetMapping("/stopworking")
+    public ResponseEntity<?> findCategoryStopƯorking(){
+        return ResponseEntity.ok(service.getStopWorking());
+    }
     @GetMapping("/search/{name}")
     public ResponseEntity<?> getAllByProductName(@PathVariable("name") String name){
         return ResponseEntity.ok(service.getAllbyName(name));
@@ -49,8 +54,18 @@ public class CategoryRest {
         }
         return ResponseEntity.ok(service.update(Id,category));
     }
-    @PutMapping("/delete/{id}")
+    @PutMapping("/deletefake/{id}")
+    public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.deleteFake(Id));
+    }
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer Id){
-        return ResponseEntity.ok(service.delete(Id));
+        service.delete(Id);
+        return ResponseEntity.ok("Thành Công");
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.restore(Id));
     }
 }
