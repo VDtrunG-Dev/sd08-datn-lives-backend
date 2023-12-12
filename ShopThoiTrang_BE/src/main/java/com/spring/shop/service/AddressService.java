@@ -45,6 +45,7 @@ public class AddressService {
 
     public Address addAddress(AddressRequest request){
         Address address = new Address();
+        address.setId(request.getId());
         address.setAddress(request.getAddress());
         address.setFullname(request.getFullname());
         address.setPhone(request.getPhone());
@@ -58,6 +59,11 @@ public class AddressService {
         address.setCreateDate(new Date());
         address.setStatus(0);
         return  repository.save(address);
+    }
+
+    public void deleteAddress(int id){
+        Address address = repository.getAddressById(id);
+        repository.delete(address);
     }
 }
 

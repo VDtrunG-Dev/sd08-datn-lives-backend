@@ -10,8 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerReques {
-    @NotBlank(message = "Mã không được bỏ trống !")
-    @Size(max = 100,message = " Ma  có độ dài nhỏ hơn hoặc bằng 100 kí tự")
+
     private String code;
     @NotBlank(message = "Ten không được bỏ trống !")
     @Size(max = 100,message = " Ma có độ dài nhỏ hơn hoặc bằng 100 kí tự")

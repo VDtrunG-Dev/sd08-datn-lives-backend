@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class EmployeeService {
 
     public Employee add(EmployeeRequest request){
         Employee employee = new Employee();
-        employee.setCode(request.getCode());
+        employee.setCode(genCodeEmpoly());
         employee.setFullname(request.getFullname());
         employee.setUsername(request.getUsername());
         employee.setPassword(request.getPassword());
@@ -46,6 +47,11 @@ public class EmployeeService {
         return repository.save(employee);
     }
 
+    public String genCodeEmpoly() {
+        // Tạo đối tượng Random
+        String code = "NV00" + repository.findAll().size();
+        return code;
+    }
     public Employee update(Integer id,EmployeeRequest request){
         Employee employee = repository.getById(id);
         employee.setCode(request.getCode());

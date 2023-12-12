@@ -22,6 +22,9 @@ public class CategoryService {
     public List<Category> getAll(){
         return repository.getAll();
     }
+    public List<Category> getStopWorking(){
+        return repository.getStopWorking();
+    }
     public List<Category> getAllbyName(String name){
         return repository.searchByName('%'+name+'%');
     }
@@ -40,9 +43,19 @@ public class CategoryService {
         category.setUpdateDate(new Date());
         return repository.save(category);
     }
-    public Category delete(Integer Id){
+    public Category deleteFake(Integer Id){
         Category category = repository.getById(Id);
         category.setStatus(1);
+        return repository.save(category);
+    }
+
+    public void delete(Integer Id){
+        Category category = repository.getById(Id);
+        repository.delete(category);
+    }
+    public Category restore(Integer Id){
+        Category category = repository.getById(Id);
+        category.setStatus(0);
         return repository.save(category);
     }
     public Category getById(Integer Id){

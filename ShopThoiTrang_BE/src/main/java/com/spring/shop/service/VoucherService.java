@@ -1,19 +1,24 @@
 package com.spring.shop.service;
 
 import com.spring.shop.entity.Voucher;
+import com.spring.shop.repository.ProductDetailRepository;
 import com.spring.shop.repository.VoucherRepository;
 import com.spring.shop.request.VoucherRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class VoucherService {
     @Autowired
     VoucherRepository repository;
+
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+
     public List<Voucher> getAll(){
         return repository.getAll();
     }
@@ -71,6 +76,39 @@ public class VoucherService {
         return repository.save(voucher);
     }
 
+    public Voucher getVoucherTop(Integer totalPrice) {
+        List<Voucher> listVoucher = productDetailRepository.getAllVoucherbyTongTien(totalPrice);
+        HashMap<Integer, BigDecimal> hashMap = new HashMap<>();
+
+        BigDecimal tienGiam = null;
+        for (Voucher v : listVoucher) {
+            tienGiam = new BigDecimal(0.0);
+            if (v.getTypeVoucher() == false) {
+                // Giảm tiền
+                hashMap.put(v.getId(), v.getCash());
+            } else {
+                // Giảm phần trăm
+                double tienGiam1 = totalPrice * (v.getDiscount() / 100.0);
+                tienGiam = BigDecimal.valueOf(tienGiam1);
+                hashMap.put(v.getId(), tienGiam);
+            }
+        }
+        List<Map.Entry<Integer, BigDecimal>> list = new LinkedList<>(hashMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Integer, BigDecimal>>() {
+            @Override
+            public int compare(Map.Entry<Integer, BigDecimal> o1, Map.Entry<Integer, BigDecimal> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+
+        });
+        Map<Integer, BigDecimal> sortedHashMap = new LinkedHashMap<>();
+        for (Map.Entry<Integer, BigDecimal> entry : list) {
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        Optional<Map.Entry<Integer, BigDecimal>> firstEntry = sortedHashMap.entrySet().stream().findFirst();
+        Voucher voucher = repository.getById(firstEntry.get().getKey());
+        return voucher;
+    }
 
 
 }
