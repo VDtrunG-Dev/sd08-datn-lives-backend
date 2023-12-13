@@ -110,4 +110,21 @@ public class EmployeeService {
         employee.setUpdateDate(new Date());
         return repository.save(employee);
     }
+
+
+    public Employee restore(Integer Id){
+        Employee employee = repository.getById(Id);
+        employee.setStatus(0);
+        return repository.save(employee);
+    }
+
+    public Employee deleteFake(Integer Id){
+        Employee employee = repository.getById(Id);
+        employee.setStatus(1);
+        return repository.save(employee);
+    }
+
+    public List<Employee> getInActive() {
+        return repository.getInActive();
+    }
 }

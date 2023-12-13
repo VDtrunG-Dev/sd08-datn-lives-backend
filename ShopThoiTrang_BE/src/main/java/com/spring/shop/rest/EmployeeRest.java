@@ -23,6 +23,10 @@ public class EmployeeRest {
     @Autowired
     EmployeeService service;
 
+    @GetMapping("/stopworking")
+    public ResponseEntity<?> findEmployeeInActive(){
+        return ResponseEntity.ok(service.getInActive());
+    }
     @GetMapping()
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(service.getAll());
@@ -82,5 +86,17 @@ public class EmployeeRest {
             return ResponseEntity.badRequest().body(list);
         }
         return ResponseEntity.ok(service.updateprofile(id,form));
+    }
+
+
+
+    //////
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.restore(Id));
+    }
+    @PutMapping("/deletefake/{id}")
+    public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.deleteFake(Id));
     }
 }
