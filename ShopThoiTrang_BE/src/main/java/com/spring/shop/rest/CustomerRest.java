@@ -24,6 +24,10 @@ public class CustomerRest {
     @Autowired
     CustomerService service;
 
+    @GetMapping("/stopworking")
+    public ResponseEntity<?> findCategoryCustomInActive(){
+        return ResponseEntity.ok(service.getInActive());
+    }
     @GetMapping()
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(service.getAll());
@@ -86,6 +90,17 @@ public class CustomerRest {
     public ResponseEntity<?> checkdkdanhgia(@RequestParam("IdCustomer") Integer IdCustomer,
                                             @RequestParam("IdProductDetail") Integer IdProductDetail){
         return ResponseEntity.ok(service.checkdk(IdCustomer,IdProductDetail));
+    }
+
+
+    //////
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.restore(Id));
+    }
+    @PutMapping("/deletefake/{id}")
+    public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.deleteFake(Id));
     }
 
 }
