@@ -2,6 +2,7 @@ package com.spring.shop.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class RegisterForm {
 
     @NotBlank(message = "Tên của bạn không được bỏ trống !")
     @Size(max = 100, message = "Tên của bạn nhỏ hơn 100 kí tự")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Tên của bạn chỉ được chứa chữ cái")
     private String Fullname;
 
     @Email(message = "Email không đúng định dạng !")

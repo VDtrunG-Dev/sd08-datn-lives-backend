@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ForgetForm {
-    @NotBlank(message = "Không được bỏ trống")
+    @NotBlank(message = "Tài Không được bỏ trống")
     private String Username;
-    @NotBlank(message = "Không được bỏ trống")
+    @NotBlank(message = " Email Không được bỏ trống")
     private String Email;
 }
