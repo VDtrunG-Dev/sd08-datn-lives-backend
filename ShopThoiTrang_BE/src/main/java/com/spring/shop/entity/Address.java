@@ -51,7 +51,5 @@ public class Address implements Serializable {
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
     private Customer customer;
-    @JsonIgnore
-    @OneToMany(mappedBy = "address")
-    private Set<Bill> bills = new HashSet<Bill>();
+
 }

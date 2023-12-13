@@ -18,8 +18,16 @@ public interface BillResponse {
     String getNote();
     Integer getPayType();
     Integer getPayStatus();
+    String getFullname();
+    String getPhone();
+    String getAddressDetail();
+    String getCityName();
+    String getDistrictName();
+    String getWardName();
+    String getCityId();
+    String getDistrictId();
+    String getWardId();
     Integer getIdCoupon();
-    Integer getIdAddress();
     Integer getIdCustomer();
     Integer getIdVoucher();
     Integer getIdEmployee();

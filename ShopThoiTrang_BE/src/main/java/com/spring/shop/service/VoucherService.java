@@ -80,10 +80,10 @@ public class VoucherService {
         List<Voucher> listVoucher = productDetailRepository.getAllVoucherbyTongTien(totalPrice);
         HashMap<Integer, BigDecimal> hashMap = new HashMap<>();
 
-        BigDecimal tienGiam = null;
+        BigDecimal tienGiam;
+
         for (Voucher v : listVoucher) {
-            tienGiam = new BigDecimal(0.0);
-            if (v.getTypeVoucher() == false) {
+            if (!v.getTypeVoucher()) {
                 // Giảm tiền
                 hashMap.put(v.getId(), v.getCash());
             } else {
@@ -93,22 +93,31 @@ public class VoucherService {
                 hashMap.put(v.getId(), tienGiam);
             }
         }
-        List<Map.Entry<Integer, BigDecimal>> list = new LinkedList<>(hashMap.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Integer, BigDecimal>>() {
-            @Override
-            public int compare(Map.Entry<Integer, BigDecimal> o1, Map.Entry<Integer, BigDecimal> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
 
-        });
+        List<Map.Entry<Integer, BigDecimal>> list = new LinkedList<>(hashMap.entrySet());
+
+        if (list.isEmpty()) {
+            // Trả về giá trị mặc định hoặc xử lý tình huống không tìm thấy voucher
+            return null; // hoặc throw new YourCustomException("No voucher found");
+        }
+
+        Collections.sort(list, Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
+
         Map<Integer, BigDecimal> sortedHashMap = new LinkedHashMap<>();
         for (Map.Entry<Integer, BigDecimal> entry : list) {
             sortedHashMap.put(entry.getKey(), entry.getValue());
         }
-        Optional<Map.Entry<Integer, BigDecimal>> firstEntry = sortedHashMap.entrySet().stream().findFirst();
-        Voucher voucher = repository.getById(firstEntry.get().getKey());
-        return voucher;
+
+        Integer topVoucherId = sortedHashMap.entrySet().stream().findFirst().map(Map.Entry::getKey).orElse(null);
+
+        if (topVoucherId != null) {
+            return repository.getById(topVoucherId);
+        } else {
+            // Trả về giá trị mặc định hoặc xử lý tình huống không tìm thấy voucher
+            return null; // hoặc throw new YourCustomException("No voucher found");
+        }
     }
+
 
 
 }
