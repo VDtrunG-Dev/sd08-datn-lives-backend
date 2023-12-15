@@ -23,10 +23,7 @@ public class EmployeeRest {
     @Autowired
     EmployeeService service;
 
-    @GetMapping("/stopworking")
-    public ResponseEntity<?> findEmployeeInActive(){
-        return ResponseEntity.ok(service.getInActive());
-    }
+
     @GetMapping()
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(service.getAll());
@@ -98,5 +95,9 @@ public class EmployeeRest {
     @PutMapping("/deletefake/{id}")
     public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
         return ResponseEntity.ok(service.deleteFake(Id));
+    }
+    @GetMapping("/stopworking")
+    public ResponseEntity<?> findEmployeeInActive(){
+        return ResponseEntity.ok(service.getInActive());
     }
 }

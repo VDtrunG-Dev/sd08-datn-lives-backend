@@ -3,6 +3,7 @@ package com.spring.shop.service;
 import java.util.Date;
 import java.util.List;
 
+import com.spring.shop.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,20 @@ public class MaterialService {
     public Material getById(Integer Id){
         Material material = repository.getById(Id);
         return material;
+    }
+    public Material restore(Integer Id){
+        Material Material = repository.getById(Id);
+        Material.setStatus(0);
+        return repository.save(Material);
+    }
+
+    public Material deleteFake(Integer Id){
+        Material Material = repository.getById(Id);
+        Material.setStatus(1);
+        return repository.save(Material);
+    }
+
+    public List<Material> getInActive() {
+        return repository.getInActive();
     }
 }
