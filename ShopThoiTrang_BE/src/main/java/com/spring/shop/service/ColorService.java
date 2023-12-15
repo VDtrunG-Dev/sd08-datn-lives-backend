@@ -3,6 +3,7 @@ package com.spring.shop.service;
 import java.util.Date;
 import java.util.List;
 
+import com.spring.shop.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,19 @@ public class ColorService {
     public Color getById(Integer Id){
         Color color = repository.getById(Id);
         return color;
+    }
+    public Color deleteFake(Integer Id){
+        Color color = repository.getById(Id);
+        color.setStatus(1);
+        return repository.save(color);
+    }
+
+    public Color restore(Integer Id){
+        Color color = repository.getById(Id);
+        color.setStatus(0);
+        return repository.save(color);
+    }
+    public List<Color> getStopWorking(){
+        return repository.getStopWorking();
     }
 }
