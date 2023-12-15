@@ -48,4 +48,19 @@ public class BrandService {
         Brand brand = repository.getById(Id);
         return brand;
     }
+    public Brand restore(Integer Id){
+        Brand Brand = repository.getById(Id);
+        Brand.setStatus(0);
+        return repository.save(Brand);
+    }
+
+    public Brand deleteFake(Integer Id){
+        Brand Brand = repository.getById(Id);
+        Brand.setStatus(1);
+        return repository.save(Brand);
+    }
+
+    public List<Brand> getInActive() {
+        return repository.getInActive();
+    }
 }
