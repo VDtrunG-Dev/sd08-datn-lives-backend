@@ -140,4 +140,19 @@ public class CustomerService {
         return customerRepository.checkDanhGia(IdCustomer,IdProductDetail);
     }
 
+    public Customer restore(Integer Id){
+        Customer Customer = customerRepository.getById(Id);
+        Customer.setStatus(0);
+        return customerRepository.save(Customer);
+    }
+
+    public Customer deleteFake(Integer Id){
+        Customer Customer = customerRepository.getById(Id);
+        Customer.setStatus(1);
+        return customerRepository.save(Customer);
+    }
+
+    public List<Customer> getInActive() {
+        return customerRepository.getInActive();
+    }
 }

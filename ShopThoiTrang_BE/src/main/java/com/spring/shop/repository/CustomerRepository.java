@@ -13,8 +13,11 @@ import com.spring.shop.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer , Integer> {
-    @Query(value = "Select e from Customer e where e.Status = 0")
+    @Query(value = "Select e from Customer e where e.Status = 0 order by e.CreateDate desc")
     public List<Customer> getAll();
+
+    @Query(value = "Select e from Customer e where e.Status = 1 order by e.CreateDate desc")
+    public List<Customer> getInActive();
 
     @Query(value = "select e from Customer e where e.Status = 0 and e.Fullname like :fullname" )
     public List<Customer> searchByFullName(@Param("fullname") String fullname);

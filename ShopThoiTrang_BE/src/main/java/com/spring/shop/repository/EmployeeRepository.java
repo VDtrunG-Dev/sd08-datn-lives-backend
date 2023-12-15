@@ -9,8 +9,11 @@ import com.spring.shop.entity.Employee;
 import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
-    @Query(value = "Select e from Employee e ")
+    @Query(value = "Select e from Employee e where e.Status = 0  order by e.CreateDate desc")
     public List<Employee> getAll();
+    @Query(value = "Select e from Employee e where e.Status = 1   order by e.CreateDate desc")
+    public List<Employee> getInActive();
+
     @Query(value = "Select e from Employee e where e.Status = 0 and e.Fullname like :fullname")
     public List<Employee> searchByName(@Param("fullname") String fullname);
     @Query(value = "select e from Employee e where e.Id = :id")
