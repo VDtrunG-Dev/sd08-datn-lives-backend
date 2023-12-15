@@ -45,4 +45,19 @@ public class MaterialService {
         Material material = repository.getById(Id);
         return material;
     }
+    public Material restore(Integer Id){
+        Material Material = repository.getById(Id);
+        Material.setStatus(0);
+        return repository.save(Material);
+    }
+
+    public Material deleteFake(Integer Id){
+        Material Material = repository.getById(Id);
+        Material.setStatus(1);
+        return repository.save(Material);
+    }
+
+    public List<Material> getInActive() {
+        return repository.getInActive();
+    }
 }
