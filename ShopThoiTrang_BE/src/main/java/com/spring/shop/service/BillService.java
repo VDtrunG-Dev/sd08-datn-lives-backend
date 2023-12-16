@@ -2,11 +2,14 @@ package com.spring.shop.service;
 
 import com.spring.shop.entity.*;
 import com.spring.shop.repository.AddressRepository;
+import com.spring.shop.repository.BillDetailRepository;
+import com.spring.shop.repository.BillHistoryRepository;
 import com.spring.shop.repository.BillRepository;
 import com.spring.shop.request.*;
 import com.spring.shop.response.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,12 @@ public class BillService {
     BillRepository repository;
 
     @Autowired
+    BillHistoryRepository repositoryBillHistory;
+
+    @Autowired
+    BillDetailRepository repositoryBillDetail;
+
+    @Autowired
     AddressRepository addressRepository;
     public String genCode(){
         // Tạo đối tượng Random
@@ -31,6 +40,7 @@ public class BillService {
     }
 
     public Bill add(BillRequest request){
+        Address address = addressRepository.getAddressById(request.getIdAddress());
         Bill bill = new Bill();
         bill.setCode(genCode());
         bill.setPurchaseDate(new Date());
@@ -41,7 +51,17 @@ public class BillService {
         bill.setPayStatus(request.getPayStatus());
         bill.setPayType(request.getPayType());
         bill.setIdCoupon(request.getIdCoupon());
-        bill.setAddress(Address.builder().Id(request.getIdAddress()).build());
+        if(request.getIdAddress() != 0){
+            bill.setFullname(address.getFullname());
+            bill.setPhone(address.getPhone());
+            bill.setAddressDetail(address.getAddress());
+            bill.setCityName(address.getCityName());
+            bill.setDistrictName(address.getDistrictName());
+            bill.setWardName(address.getWardName());
+            bill.setCityId(address.getCityId());
+            bill.setDistrictId(address.getDistrictId());
+            bill.setWardId(address.getWardId());
+        }
         if(request.getIdCustomer() != -1){
             bill.setCustomer(Customer.builder().Id(request.getIdCustomer()).build());
         }
@@ -52,6 +72,7 @@ public class BillService {
     }
     public Bill update(String code, BillTaiQuayUpdateRequest request){
         Bill bill = repository.getByCode(code);
+        Address address = addressRepository.getAddressById(request.getIdAddress());
         bill.setNote(request.getNote());
         bill.setShipPrice(request.getShipPrice());
         bill.setTotalPrice(request.getTotalPrice());
@@ -59,9 +80,17 @@ public class BillService {
         bill.setPayStatus(request.getPayStatus());
         bill.setPayType(request.getPayType());
         bill.setIdCoupon(request.getIdCoupon());
-//        System.out.println(request.getIdAddress());
-       if(request.getIdAddress() != 0){
-           bill.setAddress(addressRepository.findById(request.getIdAddress()).get());
+
+       if(request.getIdAddress() != null && request.getIdAddress() != 0){
+           bill.setFullname(address.getFullname());
+           bill.setPhone(address.getPhone());
+           bill.setAddressDetail(address.getAddress());
+           bill.setCityName(address.getCityName());
+           bill.setDistrictName(address.getDistrictName());
+           bill.setWardName(address.getWardName());
+           bill.setCityId(address.getCityId());
+           bill.setDistrictId(address.getDistrictId());
+           bill.setWardId(address.getWardId());
        }
         bill.setStatus(request.getStatus());
         bill.setPaymentDate(request.getPaymentDate());
@@ -110,9 +139,17 @@ public class BillService {
         bill.setStatus(updateBillStatus.getStatus());
         return repository.save(bill);
     }
-    public Bill updateDiaChi(String Code , Integer IdDiachi){
+    public Bill updateDiaChi(String Code,AddressKhachLe addressKhachLe ){
         Bill bill = repository.getByCode(Code);
-        bill.setAddress(Address.builder().Id(IdDiachi).build());
+        bill.setFullname(addressKhachLe.getFullname());
+        bill.setPhone(addressKhachLe.getPhone());
+        bill.setAddressDetail(addressKhachLe.getAddress());
+        bill.setCityName(addressKhachLe.getCityName());
+        bill.setDistrictName(addressKhachLe.getDistrictName());
+        bill.setWardName(addressKhachLe.getWardName());
+        bill.setCityId(addressKhachLe.getCityId());
+        bill.setDistrictId(addressKhachLe.getDistrictId());
+        bill.setWardId(addressKhachLe.getWardId());
         return repository.save(bill);
     }
     public Bill updateTongTien(String Code , BigDecimal money){
@@ -126,6 +163,12 @@ public class BillService {
         repository.save(bill);
     }
     public void deleteBill(String code){
+        for(BillHistory billHistory : repositoryBillHistory.getAllByBillCode(code) ){
+            repositoryBillHistory.delete(billHistory);
+        }
+        for(BillDetail billDetail : repositoryBillDetail.getAllByBill(code) ){
+            repositoryBillDetail.delete(billDetail);
+        }
         Bill bill = repository.getByCode(code);
         repository.delete(bill);
     }
@@ -175,4 +218,6 @@ public class BillService {
     public List<TKSoLuongSanPham> getTKSoLuongSanPham(String tungay, String denngay){
         return repository.getTKSoLuongSanPham(tungay,denngay);
     }
+
+
 }

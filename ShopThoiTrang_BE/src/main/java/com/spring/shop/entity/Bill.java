@@ -1,6 +1,5 @@
 package com.spring.shop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Table(name = "Bill")
 public class Bill implements Serializable {
     @jakarta.persistence.Id
@@ -59,13 +58,28 @@ public class Bill implements Serializable {
     private String CodeGHN;
     @Column(name = "IdCoupon")
     private Integer IdCoupon;
+    @Column(name = "Fullname")
+    private String Fullname;
+    @Column(name = "Phone")
+    private String Phone;
+    @Column(name = "AddressDetail")
+    private String AddressDetail;
+    @Column(name = "CityName")
+    private String CityName;
+    @Column(name = "DistrictName")
+    private String DistrictName;
+    @Column(name = "WardName")
+    private String WardName;
+    @Column(name = "CityId")
+    private Integer CityId;
+    @Column(name = "DistrictId")
+    private Integer DistrictId;
+    @Column(name = "WardId")
+    private Integer WardId;
     @Column(name = "Status")
     private Integer Status;
     @Column(name = "TypeStatus")
     private Integer TypeStatus;
-    @ManyToOne
-    @JoinColumn(name = "IdAddress")
-    private Address address;
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
     private Customer customer;

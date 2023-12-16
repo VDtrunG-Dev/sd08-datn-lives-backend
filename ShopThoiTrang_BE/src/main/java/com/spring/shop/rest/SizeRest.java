@@ -62,13 +62,12 @@ public class SizeRest {
     public ResponseEntity<?> delete(@PathVariable("id") Integer Id){
         return ResponseEntity.ok(service.delete(Id));
     }
-
-    @PutMapping("/restore/{id}")
-    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
-        return ResponseEntity.ok(service.restore(Id));
-    }
     @PutMapping("/deletefake/{id}")
     public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
         return ResponseEntity.ok(service.deleteFake(Id));
+    }
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.restore(Id));
     }
 }

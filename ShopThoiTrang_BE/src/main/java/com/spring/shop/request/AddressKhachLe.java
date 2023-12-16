@@ -2,9 +2,11 @@ package com.spring.shop.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class AddressKhachLe {
     private Integer Id;
     private String Fullname;

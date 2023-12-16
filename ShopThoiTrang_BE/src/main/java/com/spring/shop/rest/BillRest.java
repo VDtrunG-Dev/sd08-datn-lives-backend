@@ -57,7 +57,6 @@ public class BillRest {
     }
     @PutMapping("/updateBillTaiQuay/{code}")
     public ResponseEntity<?> updateBillTaiQuay(@PathVariable("code") String code,@RequestBody BillTaiQuayUpdateRequest request){
-System.out.println(request);
         return ResponseEntity.ok(service.update(code,request));
     }
     @PutMapping("/updateStatus/{code}")
@@ -78,9 +77,10 @@ System.out.println(request);
         service.updateStatus(updateBillStatus);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @PutMapping("/updateDiaChi")
-    public ResponseEntity<?> updateDiaChi(@RequestParam("Code") String Code, @RequestParam("IdAddress") Integer IdDiachi){
-        service.updateDiaChi(Code,IdDiachi);
+    @PostMapping("/updateDiaChi")
+    public ResponseEntity<?> updateDiaChi(@RequestParam("Code") String Code,@RequestBody AddressKhachLe addressKhachLe){
+        service.updateDiaChi(Code,addressKhachLe);
+        System.out.println();
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/updateTongTien")

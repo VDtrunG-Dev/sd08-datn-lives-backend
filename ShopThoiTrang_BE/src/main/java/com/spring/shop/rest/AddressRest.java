@@ -20,10 +20,10 @@ public class AddressRest {
     public ResponseEntity<?> getAddressByCustomer(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.getAddressByCustomer(id));
     }
-    @GetMapping("/getBill/{code}")
-    public ResponseEntity<?> getBill(@PathVariable("code") String code){
-        return ResponseEntity.ok(service.getAddressByBill(code));
-    }
+//    @GetMapping("/getBill/{code}")
+//    public ResponseEntity<?> getBill(@PathVariable("code") String code){
+//        return ResponseEntity.ok(service.getAddressByBill(code));
+//    }
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getAddressById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.getAddressById(id));
