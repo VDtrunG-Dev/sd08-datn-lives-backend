@@ -2,6 +2,8 @@ package com.spring.shop.service;
 
 import com.spring.shop.entity.*;
 import com.spring.shop.repository.AddressRepository;
+import com.spring.shop.repository.BillDetailRepository;
+import com.spring.shop.repository.BillHistoryRepository;
 import com.spring.shop.repository.BillRepository;
 import com.spring.shop.request.*;
 import com.spring.shop.response.*;
@@ -21,6 +23,12 @@ import java.util.Random;
 public class BillService {
     @Autowired
     BillRepository repository;
+
+    @Autowired
+    BillHistoryRepository repositoryBillHistory;
+
+    @Autowired
+    BillDetailRepository repositoryBillDetail;
 
     @Autowired
     AddressRepository addressRepository;
@@ -155,6 +163,12 @@ public class BillService {
         repository.save(bill);
     }
     public void deleteBill(String code){
+        for(BillHistory billHistory : repositoryBillHistory.getAllByBillCode(code) ){
+            repositoryBillHistory.delete(billHistory);
+        }
+        for(BillDetail billDetail : repositoryBillDetail.getAllByBill(code) ){
+            repositoryBillDetail.delete(billDetail);
+        }
         Bill bill = repository.getByCode(code);
         repository.delete(bill);
     }
@@ -204,4 +218,6 @@ public class BillService {
     public List<TKSoLuongSanPham> getTKSoLuongSanPham(String tungay, String denngay){
         return repository.getTKSoLuongSanPham(tungay,denngay);
     }
+
+
 }

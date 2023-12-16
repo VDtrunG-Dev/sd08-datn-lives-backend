@@ -17,4 +17,5 @@ public interface BillHistoryRepository extends JpaRepository<BillHistory,Integer
     public List<BillHistoryResponse> getAllByBill(@Param("code") String code);
     @Query(value = "select e from BillHistory e where e.bill.Code = :code")
     public List<BillHistory> getAllByBillCode(@Param("code") String code);
+
 }
