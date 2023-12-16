@@ -3,6 +3,7 @@ package com.spring.shop.service;
 import java.util.Date;
 import java.util.List;
 
+import com.spring.shop.entity.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +39,25 @@ public class SizeService {
     }
     public Size delete(Integer Id){
         Size size = repository.getById(Id);
-        size.setStatus(1);
-        return repository.save(size);
+        repository.delete(size);
+        return size;
     }
     public Size getById(Integer Id){
         Size size = repository.getById(Id);
         return size;
+    }
+    public Size deleteFake(Integer Id){
+        Size size = repository.getById(Id);
+        size.setStatus(1);
+        return repository.save(size);
+    }
+
+    public Size restore(Integer Id){
+        Size size = repository.getById(Id);
+        size.setStatus(0);
+        return repository.save(size);
+    }
+    public List<Size> getStopWorking(){
+        return repository.getStopWorking();
     }
 }

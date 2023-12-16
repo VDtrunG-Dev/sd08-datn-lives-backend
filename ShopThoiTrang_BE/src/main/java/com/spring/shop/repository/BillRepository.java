@@ -29,7 +29,7 @@ public interface BillRepository extends JpaRepository<Bill,Integer> {
 
     @Query(value = "SELECT b.Id, b.Code, b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice, b.TotalPriceLast, b.Note, b.PayType, b.PayStatus, b.Fullname, b.Phone, b.AddressDetail, b.CityName, b.DistrictName, b.WardName, b.CityId, b.DistrictId, b.WardId, b.IdCoupon, b.IdCustomer, b.IdVoucher, b.IdEmployee, b.Status, b.TypeStatus\n" +
 			"FROM Bill b \n" +
-            "join Customer c on c.Id = b.IdCustomer order by b.PurchaseDate desc", nativeQuery = true)
+            "join Customer c on c.Id = b.IdCustomer order by b.PurchaseDate desc  ", nativeQuery = true)
     public List<BillAllResponse> getAllBill();
 
     @Query(value = "Select b.Id , b.Code,b.PurchaseDate, b.EstimatedDate, b.PaymentDate, b.DelyveryDate, b.TotalPrice, b.ShipPrice ,b.TotalPriceLast, b.Note, b.PayType, b.PayStatus, b.Fullname,b.Phone,b.AddressDetail,b.CityName,b.DistrictName," +

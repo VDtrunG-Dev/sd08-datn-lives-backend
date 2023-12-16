@@ -1,5 +1,6 @@
 package com.spring.shop.repository;
 
+import com.spring.shop.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface ColorRepository extends JpaRepository<Color,Integer> {
     @Query(value = "Select e from Color e where e.Status = 0 order by e.CreateDate desc ")
     public List<Color> getAll();
+
     @Query(value = "Select e from Color e where e.Status = 0 and e.Name like :name")
     public List<Color> searchByName(@Param("name") String name);
     @Query(value = "select e from Color e where e.Id = :id")
@@ -25,4 +27,8 @@ public interface ColorRepository extends JpaRepository<Color,Integer> {
             "where pd.Id = :id \n" +
             "Group by c.Id")
     public List<Integer> getColorByProduct(@Param("id") Integer id);
+
+    @Query(value = "Select e from Color e where e.Status = 1 order by e.CreateDate desc ")
+    public List<Color> getStopWorking();
+
 }

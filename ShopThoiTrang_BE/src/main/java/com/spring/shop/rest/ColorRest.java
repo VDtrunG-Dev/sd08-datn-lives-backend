@@ -60,8 +60,21 @@ public class ColorRest {
         }
         return ResponseEntity.ok(service.update(Id,request));
     }
+    @PutMapping("/deletefake/{id}")
+    public ResponseEntity<?> deleteFake(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.deleteFake(Id));
+    }
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<?> restore(@PathVariable("id") Integer Id){
+        return ResponseEntity.ok(service.restore(Id));
+    }
+    @GetMapping("/stopworking")
+    public ResponseEntity<?> findColorStopWorking(){
+        return ResponseEntity.ok(service.getStopWorking());
+    }
     @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer Id){
         return ResponseEntity.ok(service.delete(Id));
     }
+
 }
