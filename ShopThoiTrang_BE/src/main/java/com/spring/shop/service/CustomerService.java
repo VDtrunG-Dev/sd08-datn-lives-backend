@@ -34,7 +34,7 @@ public class CustomerService {
 //     add khach hang
     public Customer add(CustomerReques reques){
         Customer customer = new Customer();
-//        customer.setCode(genCodeCustom());
+        customer.setCode(genCodeCustom());
         customer.setFullname(reques.getFullname());
         customer.setUsername(reques.getUsername());
         customer.setPassword(reques.getPassword());
@@ -47,7 +47,6 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
     public String genCodeCustom() {
-        // Tạo đối tượng Random
         String code = "KH00" + customerRepository.findAll().size();
         return code;
     }
