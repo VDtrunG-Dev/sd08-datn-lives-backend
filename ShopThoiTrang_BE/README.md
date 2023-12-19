@@ -1,4 +1,4 @@
-<h1>BeeBetaShoes - Website bán giày thể thao BeeBetaShoes</h1>
+<h1>Live Stores</h1>
 <p>Cách chạy project</p>
 <p>B1. Cài sql có trong project</p>
 <p>B2. Clone project</p>
