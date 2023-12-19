@@ -24,15 +24,16 @@ public class EmployeeService {
     EmployeeRepository repository;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom random = new SecureRandom();
-    public List<Employee> getAll(){
+
+    public List<Employee> getAll() {
         return repository.getAll();
     }
 
-    public List<Employee> getAllbyName(String name){
-        return repository.searchByName('%'+name+'%');
+    public List<Employee> getAllbyName(String name) {
+        return repository.searchByName('%' + name + '%');
     }
 
-    public Employee add(EmployeeRequest request){
+    public Employee add(EmployeeRequest request) {
         Employee employee = new Employee();
         employee.setCode(genCodeEmpoly());
         employee.setFullname(request.getFullname());
@@ -42,6 +43,7 @@ public class EmployeeService {
         employee.setGender(request.getGender());
         employee.setPhone(request.getPhone());
         employee.setEmail(request.getEmail());
+        employee.setCreateDate(new Date());
         employee.setStatus(0);
         employee.setRole(Role.builder().Id(request.getIdRole()).build());
         return repository.save(employee);
@@ -52,9 +54,10 @@ public class EmployeeService {
         String code = "NV00" + repository.findAll().size();
         return code;
     }
-    public Employee update(Integer id,EmployeeRequest request){
+
+    public Employee update(Integer id, EmployeeRequest request) {
         Employee employee = repository.getById(id);
-        employee.setCode(request.getCode());
+//        employee.setCode(request.getCode());
         employee.setFullname(request.getFullname());
         employee.setUsername(request.getUsername());
         employee.setPassword(request.getPassword());
@@ -62,22 +65,23 @@ public class EmployeeService {
         employee.setGender(request.getGender());
         employee.setPhone(request.getPhone());
         employee.setEmail(request.getEmail());
-        employee.setStatus(0);
+        employee.setStatus(request.getStatus());
         employee.setRole(Role.builder().Id(request.getIdRole()).build());
         return repository.save(employee);
     }
 
-    public Employee delete(Integer Id){
+    public Employee delete(Integer Id) {
         Employee employee = repository.getById(Id);
         employee.setStatus(1);
         return repository.save(employee);
     }
 
-    public Employee getById(Integer Id){
+    public Employee getById(Integer Id) {
         Employee employee = repository.getById(Id);
         return employee;
     }
-    public Employee getByUsername(String username){
+
+    public Employee getByUsername(String username) {
         return repository.getByUsername(username);
     }
 
@@ -90,15 +94,17 @@ public class EmployeeService {
         }
         return sb.toString();
     }
+
     // quên mật khẩu
-    public Employee forget(ForgetForm form){
+    public Employee forget(ForgetForm form) {
         Employee employee = repository.getByUsername(form.getUsername());
         employee.setPassword(generateRandomString(8));
         employee.setUpdateDate(new Date());
         return repository.save(employee);
     }
+
     // đổi mật khẩu
-    public Employee change(Integer idEmployee, ChangeForm form){
+    public Employee change(Integer idEmployee, ChangeForm form) {
         Employee employee = repository.getById(idEmployee);
         employee.setPassword(form.getRePasswordMoi());
         employee.setUpdateDate(new Date());
@@ -106,7 +112,7 @@ public class EmployeeService {
     }
 
     //cập nhật profile
-    public Employee updateprofile(Integer idEmployee, CapNhatProfile form){
+    public Employee updateprofile(Integer idEmployee, CapNhatProfile form) {
         Employee employee = repository.getById(idEmployee);
         employee.setFullname(form.getFullname());
         employee.setEmail(form.getEmail());
@@ -118,13 +124,13 @@ public class EmployeeService {
     }
 
 
-    public Employee restore(Integer Id){
+    public Employee restore(Integer Id) {
         Employee employee = repository.getById(Id);
         employee.setStatus(0);
         return repository.save(employee);
     }
 
-    public Employee deleteFake(Integer Id){
+    public Employee deleteFake(Integer Id) {
         Employee employee = repository.getById(Id);
         employee.setStatus(1);
         return repository.save(employee);
