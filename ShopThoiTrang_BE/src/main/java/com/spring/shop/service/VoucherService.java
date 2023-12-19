@@ -19,10 +19,21 @@ public class VoucherService {
     @Autowired
     ProductDetailRepository productDetailRepository;
 
-    public List<Voucher> getAll(){
-        return repository.getAll();
+    public List<Voucher> getAllActive(){
+        return repository.getAllActive();
     }
 
+    public List<Voucher> getAllPrepare(){
+        return repository.getAllPrepare();
+    }
+
+    public List<Voucher> getAllStop(){
+        return repository.getAllStop();
+    }
+
+    public List<Voucher> getAllDelete(){
+        return repository.getAllDelete();
+    }
     public List<Voucher> getAllbyName(String name){
         return repository.searchByName('%'+name+'%');
     }

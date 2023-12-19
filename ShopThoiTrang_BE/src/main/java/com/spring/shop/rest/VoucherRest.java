@@ -22,10 +22,23 @@ public class VoucherRest {
     VoucherService service;
 
     @GetMapping()
-    public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<?> getAllActive(){
+        return ResponseEntity.ok(service.getAllActive());
     }
 
+    @GetMapping("/prepare")
+    public ResponseEntity<?> getAllPrepare(){
+        return ResponseEntity.ok(service.getAllPrepare());
+    }
+
+    @GetMapping("/stop")
+    public ResponseEntity<?> getAllStop(){
+        return ResponseEntity.ok(service.getAllStop());
+    }
+    @GetMapping("/delete")
+    public ResponseEntity<?> getAllDelete(){
+        return ResponseEntity.ok(service.getAllDelete());
+    }
     @GetMapping("/search/{name}")
     public ResponseEntity<?> getAllByVoucher(@PathVariable("name") String name){
         return ResponseEntity.ok(service.getAllbyName(name));
