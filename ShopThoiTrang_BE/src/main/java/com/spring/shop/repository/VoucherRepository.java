@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
-    @Query("SELECT e FROM Voucher e WHERE e.Status = 0 AND e.StartDate < CURRENT_DATE AND e.EndDate > CURRENT_DATE")
+    @Query("SELECT e FROM Voucher e WHERE e.Status = 0 AND e.StartDate <= CURRENT_DATE AND e.EndDate >= CURRENT_DATE")
     public List<Voucher> getAllActive();
 
     @Query("SELECT e FROM Voucher e WHERE e.Status = 0 AND e.StartDate > CURRENT_DATE  AND e.EndDate > CURRENT_DATE ORDER BY e.StartDate DESC")

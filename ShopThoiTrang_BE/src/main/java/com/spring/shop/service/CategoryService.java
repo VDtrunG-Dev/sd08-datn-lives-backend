@@ -45,13 +45,17 @@ public class CategoryService {
     }
     public Category deleteFake(Integer Id){
         Category category = repository.getById(Id);
+        System.out.println(Id);
+
         category.setStatus(1);
         return repository.save(category);
     }
 
     public void delete(Integer Id){
+        System.out.println("Ai đó đang ");
         Category category = repository.getById(Id);
-        repository.delete(category);
+        category.setStatus(1);
+        repository.save(category);
     }
     public Category restore(Integer Id){
         Category category = repository.getById(Id);
