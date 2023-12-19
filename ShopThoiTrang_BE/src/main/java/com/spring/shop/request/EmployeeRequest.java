@@ -25,5 +25,6 @@ public class EmployeeRequest{
     @Email(message = "Email không hợp lệ")
     private String Email;
 
+    private Integer status;
     private Integer IdRole;
 }
