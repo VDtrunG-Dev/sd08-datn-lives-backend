@@ -24,7 +24,7 @@ public interface CustomerRepository extends JpaRepository<Customer , Integer> {
 
     @Query(value = "select e from Customer e where e.Id = :id")
     public Customer getById(@Param("id") Integer Id);
-    @Query(value = "select e from Customer e where e.Username = :username")
+    @Query(value = "select e from Customer e where e.Status = 0 and  e.Username = :username")
     public Customer getByUsername(@Param("username") String username);
     @Query(value = "select e from Customer e where e.Username = :username")
     public Optional<Customer> getByUsernamejwt(@Param("username") String username);

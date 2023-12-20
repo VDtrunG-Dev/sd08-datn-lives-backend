@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface GetVoucherRepo extends JpaRepository<Voucher,Integer> {
-    @Query(value = "select e from Voucher e where e.Status = 0")
+    @Query(value = "select e from Voucher e where e.Status = 0 AND e.StartDate <= CURRENT_DATE AND e.EndDate >= CURRENT_DATE")
     List<Voucher> getAll();
 }
