@@ -26,7 +26,7 @@ public class ValidateForm {
     private String Weight;
     @NotBlank(message = "Giảm giá không được bỏ trống !")
     @Pattern(regexp = "^[0-9]\\d*$",message = "Giảm giá phải là số nguyên dương !")
-    @Pattern(regexp = "^(?:100|[0-9]|[1-9]\\d)$",message = "Giảm giá trong khoảng từ 0 đến 100 !")
+    @Pattern(regexp = "^(?:99|[1-9]|[0-9]\\d)$",message = "Giảm giá trong khoảng từ 1 đến 99 !")
     private String Discount;
     @Size(max = 1000,message = "Mô tả có độ dài nhỏ hơn hoặc bằng 255 kí tự")
     private String Description;

@@ -38,4 +38,6 @@ public class VoucherRequest {
 
     private Integer Minimum;
 
+
+
 }

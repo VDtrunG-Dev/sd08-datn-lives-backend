@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -51,13 +52,14 @@ public class VoucherService {
         voucher.setCode(request.getCode());
         voucher.setName(request.getName());
         voucher.setTypeVoucher(request.getTypeVoucher());
-        voucher.setIsVoucher(request.getIsVoucher());
+        voucher.setIsVoucher(false);
         voucher.setDiscount(request.getDiscount());
         voucher.setCash(request.getCash());
         voucher.setStartDate(request.getStartDate());
         voucher.setEndDate(request.getEndDate());
         voucher.setStatus(0);
         voucher.setMinimum(request.getMinimum());
+        voucher.setCreateDate(new java.sql.Timestamp(new java.util.Date().getTime()));
 
         return repository.save(voucher);
     }
