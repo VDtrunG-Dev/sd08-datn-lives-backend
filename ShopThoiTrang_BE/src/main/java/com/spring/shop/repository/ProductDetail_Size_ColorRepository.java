@@ -12,7 +12,7 @@ import com.spring.shop.response.ProductDetailResponse;
 
 @Repository
 public interface ProductDetail_Size_ColorRepository extends JpaRepository<ProductDetail_Size_Color,Integer> {
-    @Query(value = "Select e from ProductDetail_Size_Color  e where  e.productDetail.Id =:id")
+    @Query(value = "Select e from ProductDetail_Size_Color  e where  e.productDetail.Id =:id ")
     List<ProductDetail_Size_Color> getAllById(@Param("id") Integer id);
     @Query(value = "Select p from ProductDetail_Size_Color p \n" +
             "where p.productDetail.Id= :idProduct and p.color.Id= :idColor")
