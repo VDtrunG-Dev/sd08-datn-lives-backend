@@ -90,7 +90,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Int
     public List<Voucher> getAllVoucher();
     
     @Query(value = "SELECT e from Voucher e where e.Status = 0 AND e.Minimum <= :tongTien AND " +
-            "e.StartDate <= GETDATE() AND e.EndDate >= GETDATE()")
+            "e.StartDate <= GETDATE() AND e.EndDate >= GETDATE()  order by e.Discount desc")
     public List<Voucher> getAllVoucherbyTongTien(@Param("tongTien") Integer tongTien);
 
 }
