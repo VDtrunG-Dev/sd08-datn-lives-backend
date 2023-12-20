@@ -12,11 +12,12 @@ import lombok.Setter;
 public class RegisterForm {
     @NotBlank(message = "Tên tài khoản không được bỏ trống !")
     @Size(max = 10, message = "Tên tài khoản nhỏ hơn 10 kí tự")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Tên của bạn chỉ được chứa chữ cái")
+//    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Tên của bạn chỉ được chứa chữ cái và số")
     private String Username;
 
     @NotBlank(message = "Tên của bạn không được bỏ trống !")
     @Size(max = 100, message = "Tên của bạn nhỏ hơn 100 kí tự")
+//    @Pattern(regexp = "^[a-zA-Z]+$", message = "Tên của bạn chỉ được chứa chữ cái")
     private String Fullname;
 
     @Email(message = "Email không đúng định dạng !")
