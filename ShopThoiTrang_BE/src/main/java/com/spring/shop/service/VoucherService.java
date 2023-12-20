@@ -91,17 +91,19 @@ public class VoucherService {
         List<Voucher> listVoucher = productDetailRepository.getAllVoucherbyTongTien(totalPrice);
         HashMap<Integer, BigDecimal> hashMap = new HashMap<>();
 
-        BigDecimal tienGiam;
-
         for (Voucher v : listVoucher) {
             if (!v.getTypeVoucher()) {
                 // Giảm tiền
-                hashMap.put(v.getId(), v.getCash());
+                if (v.getCash() != null) {
+                    hashMap.put(v.getId(), v.getCash());
+                }
             } else {
                 // Giảm phần trăm
-                double tienGiam1 = totalPrice * (v.getDiscount() / 100.0);
-                tienGiam = BigDecimal.valueOf(tienGiam1);
-                hashMap.put(v.getId(), tienGiam);
+                if (v.getDiscount() != null) {
+                    double tienGiam1 = totalPrice * (v.getDiscount() / 100.0);
+                    BigDecimal tienGiam = BigDecimal.valueOf(tienGiam1);
+                    hashMap.put(v.getId(), tienGiam);
+                }
             }
         }
 
@@ -124,10 +126,10 @@ public class VoucherService {
         if (topVoucherId != null) {
             return repository.getById(topVoucherId);
         } else {
-            // Trả về giá trị mặc định hoặc xử lý tình huống không tìm thấy voucher
-            return null; // hoặc throw new YourCustomException("No voucher found");
+            return null;
         }
     }
+
 
 
 
